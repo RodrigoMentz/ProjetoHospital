@@ -1,0 +1,27 @@
+﻿<button type="button" @onclick="OnClick" class="btn btn-primary d-flex align-items-center justify-content-center @(string.IsNullOrEmpty(Class) ? string.Empty : Class)" disabled="@Disabled">
+
+    @if (!string.IsNullOrEmpty(IconeGoogle))
+    {
+        <span class="material-symbols-outlined">
+            @IconeGoogle
+        </span>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(IconeBootstrap))
+    {
+        <i class="bi @IconeBootstrap"></i>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(TextoSecundario))
+    {
+        <div class="d-flex w-100 justify-content-between">
+            <span class="fs-5"><strong>@Texto</strong></span>
+            <span class="fs-5">@TextoSecundario</span>
+        </div>
+    }
+    else
+    {
+        <span class="fs-5"><strong>@Texto</strong></span>
+    }
+
+</button>

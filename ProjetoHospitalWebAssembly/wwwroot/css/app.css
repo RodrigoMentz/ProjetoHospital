@@ -1,3 +1,18 @@
+:root {
+    --cor-principal: #2e4156;
+    --cor-secundaria: #d3d3d3;
+    --cor-terciaria: #9db3c0;
+    --cor-limpeza-corrente: #a01a58;
+    --cor-limpeza-terminal: #ff6700;
+    --cor-fundo: #e8e9eb;
+    --cor-principal-com-transparencia: rgba(46, 65, 86, 0.5);
+    --cor-secundaria-com-transparencia: rgba(211, 211, 211, 0.5);
+}
+
+html {
+    background-color: var(--cor-fundo);
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

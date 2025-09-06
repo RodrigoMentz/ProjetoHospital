@@ -1,0 +1,17 @@
+﻿.btn-secondary {
+    background-color: var(--cor-secundaria);
+    border-color: var(--cor-principal);
+    border-width: 3px;
+    color: var(--cor-principal);
+    border-radius: 10px !important;
+}
+
+    .btn-secondary:active,
+    .btn-secondary:hover,
+    .btn-secondary:focus,
+    .btn-secondary:focus-visible {
+        background-color: var(--cor-secundaria) !important;
+        border-color: var(--cor-principal);
+        color: var(--cor-principal) !important;
+        box-shadow: 0 0 0 .25rem var(--cor-principal-com-transparencia) !important;
+    }

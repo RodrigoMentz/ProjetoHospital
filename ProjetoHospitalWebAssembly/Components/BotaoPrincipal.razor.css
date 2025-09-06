@@ -1,0 +1,17 @@
+﻿.btn-primary {
+    background-color: var(--cor-principal);
+    border-color: var(--cor-principal);
+    border-width: 3px;
+    color: var(--cor-secundaria);
+    border-radius: 10px !important;
+}
+
+    .btn-primary:active,
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:focus-visible {
+        background-color: var(--cor-principal) !important;
+        border-color: var(--cor-principal) !important;
+        color: var(--cor-secundaria) !important;
+        box-shadow: 0 0 0 .25rem var(--cor-principal-com-transparencia);
+    }

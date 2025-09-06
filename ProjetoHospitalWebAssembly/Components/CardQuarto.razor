@@ -1,0 +1,30 @@
+﻿@using ProjetoHospitalShared
+<div class="card @(TipoLimpeza == TipoLimpezaEnum.Corrente ? "corrente" : "terminal")">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-start">
+            <div class="d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-bed fa-2xl"></i>
+            </div>
+            <div class="ms-2">
+                <span class="quarto fs-5 fw-bold ms-1">Quarto 01</span>
+                <div class="d-flex align-items-center justify-content-center">
+                    <i class="fa-solid fa-location-dot fa-lg"></i>
+                    <span class="fs-5 ms-1">Andar 01</span>
+                </div>
+            </div>
+        </div>
+        <div class="hr my-3"></div>
+        <div class="d-flex justify-content-between align-items-center">
+            <ul>
+                <li>
+                    <span class="fw-bold">Aguardando para limpeza</span>
+                </li>
+            </ul>
+            <button type="button" class="btn">
+                <span class="fw-bold">
+                    FINALIZAR LIMPEZA
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
