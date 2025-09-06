@@ -1,4 +1,5 @@
 ﻿@page "/quartos"
+@using ProjetoHospitalShared
 @using ProjetoHospitalWebAssembly.Components
 <div class="card">
     <div class="cabecalho px-3 py-2">
@@ -7,20 +8,10 @@
     <div class="card-body">
         <div class="row">
             <div class="col-6">
-                <div class="d-flex align-items-center justify-content-between">
-                    <span class="corrente fw-bold fs-3">Limpeza corrente</span>
-                    <div class="numero-corrente d-flex justify-content-center align-items-center">
-                        <span class="fw-bold">3</span>
-                    </div>
-                </div>
+                <NumeroQuartos Texto="Limpeza corrente" Quantidade="3" TipoLimpeza="TipoLimpezaEnum.Corrente" />
             </div>
             <div class="col-6">
-                <div class="d-flex align-items-center justify-content-between">
-                    <span class="terminal fw-bold fs-3">Limpeza terminal</span>
-                    <div class="numero-terminal d-flex justify-content-center align-items-center">
-                        <span class="fw-bold">3</span>
-                    </div>
-                </div>
+                <NumeroQuartos Texto="Limpeza corrente" Quantidade="3" TipoLimpeza="TipoLimpezaEnum.Terminal" />
             </div>
         </div>
     </div>
@@ -30,8 +21,16 @@
     <BotaoSecundario Texto="Andar 02" />
 </div>
 <div class="mt-4">
-    <CardQuarto TipoLimpeza="ProjetoHospitalShared.TipoLimpezaEnum.Corrente" />
+    <CardQuarto TipoLimpeza="TipoLimpezaEnum.Corrente" />
 </div>
 <div class="mt-4">
-    <CardQuarto TipoLimpeza="ProjetoHospitalShared.TipoLimpezaEnum.Terminal" />
+    <CardQuarto TipoLimpeza="TipoLimpezaEnum.Terminal" />
+</div>
+
+<div class="mt-4">
+    <NumeroQuartos />
+</div>
+
+<div class="mt-4">
+    <CardStatusQuartoPainel />
 </div>

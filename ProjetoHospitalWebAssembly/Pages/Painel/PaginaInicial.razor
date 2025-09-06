@@ -1,0 +1,10 @@
+﻿@page "/painel"
+@using ProjetoHospitalShared
+@using ProjetoHospitalWebAssembly.Components
+
+<div class="d-flex flex-row align-items-center justify-content-center gap-3">
+    <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" />
+    <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" />
+    <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_corrente" />
+    <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" />
+</div>

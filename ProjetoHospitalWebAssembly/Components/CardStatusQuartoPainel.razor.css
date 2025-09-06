@@ -1,0 +1,57 @@
+﻿.fundo-circulo {
+    border-radius: 12px;
+    width: 2rem;
+    height: 2rem;
+}
+
+.circulo {
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+}
+
+.ocupados .quantidade {
+    color: var(--cor-principal);
+}
+
+.ocupados .fundo-circulo {
+    background-color: var(--cor-principal-com-transparencia);
+}
+
+    .ocupados .circulo {
+        background-color: var(--cor-principal);
+    }
+
+.disponiveis .quantidade {
+    color: var(--cor-disponivel);
+}
+
+.disponiveis .fundo-circulo {
+    background-color: var(--cor-disponivel-com-transparencia);
+}
+    .disponiveis .circulo {
+        background-color: var(--cor-disponivel);
+    }
+
+.limpeza-corrente .quantidade {
+    color: var(--cor-limpeza-corrente);
+}
+
+.limpeza-corrente .fundo-circulo {
+    background-color: var(--cor-limpeza-corrente-com-transparencia);
+}
+    .limpeza-corrente .circulo {
+        background-color: var(--cor-limpeza-corrente);
+    }
+
+.limpeza-terminal .quantidade {
+    color: var(--cor-limpeza-terminal);
+}
+
+.limpeza-terminal .fundo-circulo {
+    background-color: var(--cor-limpeza-terminal-com-transparencia);
+}
+    .limpeza-terminal .circulo {
+        background-color: var(--cor-limpeza-terminal);
+    }

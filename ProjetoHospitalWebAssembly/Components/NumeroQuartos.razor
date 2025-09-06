@@ -1,0 +1,11 @@
+﻿@using ProjetoHospitalShared
+<div class="d-flex align-items-center justify-content-between @(TipoLimpeza == TipoLimpezaEnum.Corrente ? "corrente" : "terminal")">
+    @* Tipo limpeza *@
+    @if (!string.IsNullOrEmpty(Texto))
+    {
+        <span class="status fw-bold fs-3">@Texto</span>
+    }
+    <div class="numero d-flex justify-content-center align-items-center">
+        <span class="fw-bold">3</span>
+    </div>
+</div>
