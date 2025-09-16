@@ -3,24 +3,24 @@ using ProjetoHospitalShared;
 
 namespace ProjetoHospitalWebAssembly.Components
 {
-    public partial class CardStatusQuartoPainel
+    public partial class BadgeStatusQuarto
     {
         [Parameter]
         public StatusQuartoEnum Status { get; set; }
 
         [Parameter]
-        public int Quantidade { get; set; } = 0;
+        public string Class { get; set; } = string.Empty;
 
         private string Texto => Status switch
         {
-            StatusQuartoEnum.Ocupado => "Ocupados",
-            StatusQuartoEnum.Disponivel => "Disponíveis",
+            StatusQuartoEnum.Ocupado => "Ocupado",
+            StatusQuartoEnum.Disponivel => "Disponível",
             StatusQuartoEnum.Limpeza_corrente => "Limpeza Corrente",
             StatusQuartoEnum.Limpeza_terminal => "Limpeza Terminal",
             _ => string.Empty
         };
 
-        private string ClasseCss =>  Status switch
+        private string ClasseTextoEFundo => Status switch
         {
             StatusQuartoEnum.Ocupado => "ocupados",
             StatusQuartoEnum.Disponivel => "disponiveis",

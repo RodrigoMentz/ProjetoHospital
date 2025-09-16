@@ -2,9 +2,78 @@
 @using ProjetoHospitalShared
 @using ProjetoHospitalWebAssembly.Components
 
-<div class="d-flex flex-row align-items-center justify-content-center gap-3">
-    <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" />
-    <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" />
-    <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_corrente" />
-    <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" />
+<div class="d-flex flex-row align-items-center justify-content-center gap-4">
+    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Ocupado" />
+    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Disponivel" />
+    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Limpeza_corrente" />
+    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Limpeza_terminal" />
+</div>
+<div class="d-flex mt-4">
+    <div class="d-flex flex-grow-1">
+        <BotaoPrincipal Texto="Andar 1" />
+        <BotaoSecundario Class="ms-4" Texto="Andar 2" />
+
+    </div>
+    <div class="d-flex flex-row align-items-center">
+        <div class="circulo ocupados" />
+        <span class="ms-1 fs-5">Ocupado</span>
+        <div class="ms-3 circulo disponiveis" />
+        <span class="ms-1 fs-5">Disponível</span>
+        <div class="ms-3 circulo limpeza-corrente" />
+        <span class="ms-1 fs-5">Limpeza corrente</span>
+        <div class="ms-3 circulo limpeza-terminal" />
+        <span class="ms-1 fs-5">Limpeza terminal</span>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2 class="fs-4">Leitos</h2>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-hover m-0">
+            <thead>
+                <tr>
+                    <th scope="col">Leito</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Última limpeza</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <BadgeStatusQuarto Status="StatusQuartoEnum.Ocupado" />
+                    </td>
+                    <td>Otto</td>
+                    <td>mdo</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <BadgeStatusQuarto Status="StatusQuartoEnum.Disponivel" />
+                    </td>
+                    <td>Thornton</td>
+                    <td>fat</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_corrente" />
+                    </td>
+                    <td>Doe</td>
+                    <td>social</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_terminal" />
+                    </td>
+                    <td>Doe</td>
+                    <td>social</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

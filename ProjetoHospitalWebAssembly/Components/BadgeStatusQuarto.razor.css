@@ -1,0 +1,19 @@
+﻿.ocupados {
+    color: var(--cor-principal);
+    background-color: var(--cor-principal-com-transparencia);
+}
+
+.disponiveis {
+    color: var(--cor-disponivel);
+    background-color: var(--cor-disponivel-com-transparencia);
+}
+
+.limpeza-corrente {
+    color: var(--cor-limpeza-corrente);
+    background-color: var(--cor-limpeza-corrente-com-transparencia);
+}
+
+.limpeza-terminal {
+    color: var(--cor-limpeza-terminal);
+    background-color: var(--cor-limpeza-terminal-com-transparencia);
+}

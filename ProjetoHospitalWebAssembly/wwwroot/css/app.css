@@ -7,7 +7,8 @@
     --cor-limpeza-terminal: #ff6700;
     --cor-limpeza-terminal-com-transparencia: #ff67001A;
     --cor-fundo: #e8e9eb;
-    --cor-principal-com-transparencia: rgba(46, 65, 86, 0.5);
+    --cor-principal-com-transparencia: #2e41561A;
+    --cor-principal-com-transparencia-dois: #rgba(46, 65, 86, 0.5);
     --cor-secundaria-com-transparencia: rgba(211, 211, 211, 0.5);
     --cor-disponivel: #16A34A;
     --cor-disponivel-com-transparencia: #16A34A1A;

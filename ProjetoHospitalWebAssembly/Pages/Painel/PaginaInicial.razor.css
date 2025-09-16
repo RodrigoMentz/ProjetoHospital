@@ -1,0 +1,46 @@
+﻿.circulo {
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+}
+
+.ocupados {
+    background-color: var(--cor-principal);
+}
+
+.disponiveis {
+    background-color: var(--cor-disponivel);
+}
+
+.limpeza-corrente {
+    background-color: var(--cor-limpeza-corrente);
+}
+
+.limpeza-terminal {
+    background-color: var(--cor-limpeza-terminal);
+}
+
+/*tabela*/
+
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    background-color: white;
+}
+
+.card-body {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+table tr th {
+    background-color: rgb(241, 243, 245);
+}
+table tr:last-child td {
+    border-bottom: none;
+}

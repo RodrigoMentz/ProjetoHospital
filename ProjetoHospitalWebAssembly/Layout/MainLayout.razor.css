@@ -6,6 +6,17 @@
 
 main {
     flex: 1;
+    background-color: var(--cor-fundo);
+}
+
+.main {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
 .sidebar {
@@ -16,6 +27,7 @@ article.content {
     margin: 0px 20px;
     box-shadow: 0 0 0 20px var(--cor-fundo);
     background-color: var(--cor-fundo);
+    min-height: 100vh;
 }
 
 .top-row {
@@ -76,7 +88,7 @@ article.content {
         width: 0;
     }
 
-    .top-row, article {
+    .top-row {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
