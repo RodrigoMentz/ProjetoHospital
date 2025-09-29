@@ -1,7 +1,39 @@
 ﻿@page "/setores"
 @using ProjetoHospitalWebAssembly.Components
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between mt-4">
     <h1 class="fs-3">Gerenciar Setores</h1>
     <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar setor" />
+</div>
+<div class="card mt-4">
+    <div class="card-header">
+        <h2 class="fs-4">Setores</h2>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-hover m-0">
+            <thead>
+                <tr>
+                    <th scope="col">Setor</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var setor in setores)
+                {
+                    <tr>
+                        <td>
+                            <span>@setor.Nome</span>
+                        </td>
+                        <td>
+                            <BadgeStatusAtivo Ativo="setor.Ativo" />
+                        </td>
+                        <td class="d-flex flex-row">
+                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

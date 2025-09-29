@@ -4,9 +4,15 @@
     flex-direction: column;
 }
 
+.menu-superior {
+    background-color: var(--cor-terciaria);
+
+}
+
 main {
     flex: 1;
     background-color: var(--cor-fundo);
+    margin-top: 3.5rem !important;
 }
 
 .main {

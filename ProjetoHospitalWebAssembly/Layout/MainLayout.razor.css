@@ -54,6 +54,21 @@ article.content {
         text-overflow: ellipsis;
     }
 
+.navbar {
+    background-color: rgb(241, 243, 245);
+    border-radius: 12px;
+}
+
+.nav-link.active {
+    color: var(--cor-principal);
+    background-color: var(--cor-secundaria);
+    border-radius: 10px;
+}
+
+.nav-link:not(.active) {
+    text-decoration: underline;
+}
+
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;

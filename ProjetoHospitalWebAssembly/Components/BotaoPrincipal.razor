@@ -20,6 +20,6 @@
     }
     else
     {
-        <span class="fs-5"><strong>@Texto</strong></span>
+        <span class="@(string.IsNullOrEmpty(ClassTexto) ? "fs-5 fw-bold" : ClassTexto)">@Texto</span>
     }
 </button>

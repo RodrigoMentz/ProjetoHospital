@@ -1,11 +1,25 @@
 ﻿@inherits LayoutComponentBase
 <div id="painel" class="page">
-    @* <div class="sidebar">
-        <NavMenu />
-    </div> *@
     <main>
         <div class="main">
             <article class="content">
+            <div>
+                <nav class="navbar navbar-expand-md">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <a class="nav-link fw-semibold @(abaAtiva == "painel" ? "active" : string.Empty)" aria-current="page" href="/painel" @onclick='() => OnChangeAba("painel")'>Home</a>
+                                <a class="nav-link fw-semibold @(abaAtiva == "setores" ? "active" : string.Empty)" aria-current="page" href="/setores" @onclick='() => OnChangeAba("setores")'>Setores</a>
+                                <a class="nav-link fw-semibold @(abaAtiva == "quartos" ? "active" : string.Empty)" aria-current="page" href="/quartos" @onclick='() => OnChangeAba("quartos")'>Quartos</a>
+                                <a class="nav-link fw-semibold @(abaAtiva == "leitos" ? "active" : string.Empty)" aria-current="page" href="/leitos" @onclick='() => OnChangeAba("leitos")'>Leitos</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
                 @Body
             </article>
         </div>

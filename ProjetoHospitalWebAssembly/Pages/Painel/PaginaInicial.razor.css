@@ -1,24 +1,4 @@
-﻿/*menu*/
-
-.navbar {
-    background-color: rgb(241, 243, 245);
-    border-radius: 12px;
-}
-
-.nav-link.active {
-    color: var(--cor-principal);
-    background-color: var(--cor-secundaria);
-    border-radius: 10px;
-}
-
-.nav-link:not(.active)
-{
-    text-decoration: underline;
-}
-
-/*fim menu*/
-
-.circulo {
+﻿.circulo {
     display: block;
     width: 0.75rem;
     height: 0.75rem;
@@ -40,27 +20,3 @@
 .limpeza-terminal {
     background-color: var(--cor-limpeza-terminal);
 }
-
-/*tabela*/
-
-/*.card {
-    border-radius: 12px;
-}
-
-.card-header {
-    border-top-left-radius: 12px !important;
-    border-top-right-radius: 12px !important;
-    background-color: white;
-}
-
-.card-body {
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-table tr th {
-    background-color: rgb(241, 243, 245);
-}
-table tr:last-child td {
-    border-bottom: none;
-}*/

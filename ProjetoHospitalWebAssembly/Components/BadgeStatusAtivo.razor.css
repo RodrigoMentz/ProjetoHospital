@@ -1,0 +1,9 @@
+﻿.inativo {
+    color: var(--cor-inativo);
+    background-color: var(--cor-inativo-com-transparencia);
+}
+
+.ativo {
+    color: var(--cor-disponivel);
+    background-color: var(--cor-disponivel-com-transparencia);
+}
