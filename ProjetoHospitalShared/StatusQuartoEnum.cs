@@ -4,7 +4,7 @@
     {
         Ocupado,
         Disponivel,
-        Limpeza_corrente,
+        Limpeza_concorrente,
         Limpeza_terminal
     }
 }

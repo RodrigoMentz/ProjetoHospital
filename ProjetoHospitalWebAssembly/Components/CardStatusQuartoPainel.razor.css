@@ -34,15 +34,15 @@
         background-color: var(--cor-disponivel);
     }
 
-.limpeza-corrente .quantidade {
-    color: var(--cor-limpeza-corrente);
+.limpeza-concorrente .quantidade {
+    color: var(--cor-limpeza-concorrente);
 }
 
-.limpeza-corrente .fundo-circulo {
-    background-color: var(--cor-limpeza-corrente-com-transparencia);
+.limpeza-concorrente .fundo-circulo {
+    background-color: var(--cor-limpeza-concorrente-com-transparencia);
 }
-    .limpeza-corrente .circulo {
-        background-color: var(--cor-limpeza-corrente);
+    .limpeza-concorrente .circulo {
+        background-color: var(--cor-limpeza-concorrente);
     }
 
 .limpeza-terminal .quantidade {

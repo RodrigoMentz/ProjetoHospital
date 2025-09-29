@@ -2,8 +2,8 @@
     --cor-principal: #2e4156;
     --cor-secundaria: #d3d3d3;
     --cor-terciaria: #9db3c0;
-    --cor-limpeza-corrente: #a01a58;
-    --cor-limpeza-corrente-com-transparencia: #a01a581A;
+    --cor-limpeza-concorrente: #a01a58;
+    --cor-limpeza-concorrente-com-transparencia: #a01a581A;
     --cor-limpeza-terminal: #ff6700;
     --cor-limpeza-terminal-com-transparencia: #ff67001A;
     --cor-fundo: #e8e9eb;
@@ -120,4 +120,27 @@ a, .btn-link {
 
 code {
     color: #c02d76;
+}
+
+#painel .card {
+    border-radius: 12px;
+}
+
+#painel .card-header {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    background-color: white;
+}
+
+#painel .card-body {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#painel table tr th {
+    background-color: rgb(241, 243, 245);
+}
+
+#painel table tr:last-child td {
+    border-bottom: none;
 }

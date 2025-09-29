@@ -1,4 +1,24 @@
-﻿.circulo {
+﻿/*menu*/
+
+.navbar {
+    background-color: rgb(241, 243, 245);
+    border-radius: 12px;
+}
+
+.nav-link.active {
+    color: var(--cor-principal);
+    background-color: var(--cor-secundaria);
+    border-radius: 10px;
+}
+
+.nav-link:not(.active)
+{
+    text-decoration: underline;
+}
+
+/*fim menu*/
+
+.circulo {
     display: block;
     width: 0.75rem;
     height: 0.75rem;
@@ -13,8 +33,8 @@
     background-color: var(--cor-disponivel);
 }
 
-.limpeza-corrente {
-    background-color: var(--cor-limpeza-corrente);
+.limpeza-concorrente {
+    background-color: var(--cor-limpeza-concorrente);
 }
 
 .limpeza-terminal {
@@ -23,7 +43,7 @@
 
 /*tabela*/
 
-.card {
+/*.card {
     border-radius: 12px;
 }
 
@@ -43,4 +63,4 @@ table tr th {
 }
 table tr:last-child td {
     border-bottom: none;
-}
+}*/

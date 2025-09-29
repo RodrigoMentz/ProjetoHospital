@@ -18,7 +18,7 @@ namespace ProjetoHospitalWebAssembly.Components
         {
             StatusQuartoEnum.Ocupado => "Ocupados",
             StatusQuartoEnum.Disponivel => "Disponíveis",
-            StatusQuartoEnum.Limpeza_corrente => "Limpeza Corrente",
+            StatusQuartoEnum.Limpeza_concorrente => "Limpeza Concorrente",
             StatusQuartoEnum.Limpeza_terminal => "Limpeza Terminal",
             _ => string.Empty
         };
@@ -27,7 +27,7 @@ namespace ProjetoHospitalWebAssembly.Components
         {
             StatusQuartoEnum.Ocupado => "ocupados",
             StatusQuartoEnum.Disponivel => "disponiveis",
-            StatusQuartoEnum.Limpeza_corrente => "limpeza-corrente",
+            StatusQuartoEnum.Limpeza_concorrente => "limpeza-concorrente",
             StatusQuartoEnum.Limpeza_terminal => "limpeza-terminal",
             _ => string.Empty
         };

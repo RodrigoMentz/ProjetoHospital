@@ -8,9 +8,9 @@
     background-color: var(--cor-disponivel-com-transparencia);
 }
 
-.limpeza-corrente {
-    color: var(--cor-limpeza-corrente);
-    background-color: var(--cor-limpeza-corrente-com-transparencia);
+.limpeza-concorrente {
+    color: var(--cor-limpeza-concorrente);
+    background-color: var(--cor-limpeza-concorrente-com-transparencia);
 }
 
 .limpeza-terminal {

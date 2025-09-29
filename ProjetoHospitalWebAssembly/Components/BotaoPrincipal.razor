@@ -1,5 +1,4 @@
 ﻿<button type="button" @onclick="OnClick" class="btn btn-primary d-flex align-items-center justify-content-center @(string.IsNullOrEmpty(Class) ? string.Empty : Class)" disabled="@Disabled">
-
     @if (!string.IsNullOrEmpty(IconeGoogle))
     {
         <span class="material-symbols-outlined">
@@ -15,7 +14,7 @@
     @if (!string.IsNullOrWhiteSpace(TextoSecundario))
     {
         <div class="d-flex w-100 justify-content-between">
-            <span class="fs-5"><strong>@Texto</strong></span>
+            <span class="@(string.IsNullOrEmpty(ClassTexto) ? "fs-5 fw-bold" : ClassTexto)">@Texto</span>
             <span class="fs-5">@TextoSecundario</span>
         </div>
     }
@@ -23,5 +22,4 @@
     {
         <span class="fs-5"><strong>@Texto</strong></span>
     }
-
 </button>

@@ -8,6 +8,9 @@
         public string Class { get; set; } = string.Empty;
 
         [Parameter]
+        public string ClassTexto { get; set; } = string.Empty;
+
+        [Parameter]
         public string IconeGoogle { get; set; } = string.Empty;
 
         [Parameter]

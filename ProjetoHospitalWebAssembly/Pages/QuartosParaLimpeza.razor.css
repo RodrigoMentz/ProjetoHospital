@@ -15,8 +15,8 @@
     border-bottom-right-radius: 12px;
 }
 
-.corrente {
-    color: var(--cor-limpeza-corrente);
+.concorrente {
+    color: var(--cor-limpeza-concorrente);
     line-height: normal;
 }
 
@@ -25,10 +25,10 @@
     line-height: normal;
 }
 
-.numero-corrente {
+.numero-concorrente {
     border-radius: 50%;
-    color: var(--cor-limpeza-corrente);
-    border: 3px solid var(--cor-limpeza-corrente);
+    color: var(--cor-limpeza-concorrente);
+    border: 3px solid var(--cor-limpeza-concorrente);
     width: 40px;
     height: 40px;
     padding: 25px;
@@ -43,7 +43,7 @@
     padding: 25px;
 }
 
-    .numero-corrente span,
+    .numero-concorrente span,
     .numero-terminal span {
         font-size: 2.5em;
     }

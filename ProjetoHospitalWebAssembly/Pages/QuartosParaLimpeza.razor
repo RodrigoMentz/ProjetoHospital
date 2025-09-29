@@ -1,17 +1,19 @@
-﻿@page "/quartos"
+﻿@page "/quartos-para-limpar"
+@layout MainLayoutApp
 @using ProjetoHospitalShared
 @using ProjetoHospitalWebAssembly.Components
+
 <div class="card">
     <div class="cabecalho px-3 py-2">
         <h1>Necessitam limpeza</h1>
     </div>
-    <div class="card-body">
+    <div class="card-body px-2 py-2">
         <div class="row">
-            <div class="col-6">
-                <NumeroQuartos Texto="Limpeza corrente" Quantidade="3" TipoLimpeza="TipoLimpezaEnum.Corrente" />
+            <div class="col-12 col-md-6 mb-3">
+                <NumeroQuartos Texto="Limpeza concorrente" Quantidade="3" TipoLimpeza="TipoLimpezaEnum.Concorrente" />
             </div>
-            <div class="col-6">
-                <NumeroQuartos Texto="Limpeza corrente" Quantidade="3" TipoLimpeza="TipoLimpezaEnum.Terminal" />
+            <div class="col-12 col-md-6 mb-3">
+                <NumeroQuartos Texto="Limpeza Terminal" Quantidade="3" TipoLimpeza="TipoLimpezaEnum.Terminal" />
             </div>
         </div>
     </div>
@@ -21,16 +23,8 @@
     <BotaoSecundario Texto="Andar 02" />
 </div>
 <div class="mt-4">
-    <CardQuarto TipoLimpeza="TipoLimpezaEnum.Corrente" />
+    <CardQuarto TipoLimpeza="TipoLimpezaEnum.Concorrente" />
 </div>
 <div class="mt-4">
     <CardQuarto TipoLimpeza="TipoLimpezaEnum.Terminal" />
-</div>
-
-<div class="mt-4">
-    <NumeroQuartos />
-</div>
-
-<div class="mt-4">
-    <CardStatusQuartoPainel />
 </div>

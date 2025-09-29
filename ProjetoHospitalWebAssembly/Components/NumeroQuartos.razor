@@ -1,5 +1,5 @@
 ﻿@using ProjetoHospitalShared
-<div class="d-flex align-items-center justify-content-between @(TipoLimpeza == TipoLimpezaEnum.Corrente ? "corrente" : "terminal")">
+<div class="d-flex flex wrap align-items-center justify-content-between @(TipoLimpeza == TipoLimpezaEnum.Concorrente ? "concorrente" : "terminal")">
     @* Tipo limpeza *@
     @if (!string.IsNullOrEmpty(Texto))
     {

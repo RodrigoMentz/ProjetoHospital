@@ -1,8 +1,8 @@
 ﻿span.status {
     line-height: normal;
 }
-.corrente span.status {
-    color: var(--cor-limpeza-corrente);
+.concorrente span.status {
+    color: var(--cor-limpeza-concorrente);
 }
 
 .terminal span.status {
@@ -20,9 +20,9 @@
     font-size: 2.5em;
 }
 
-.corrente .numero {
-    color: var(--cor-limpeza-corrente);
-    border: 3px solid var(--cor-limpeza-corrente);
+.concorrente .numero {
+    color: var(--cor-limpeza-concorrente);
+    border: 3px solid var(--cor-limpeza-concorrente);
 }
 
 .terminal .numero {

@@ -2,27 +2,63 @@
 @using ProjetoHospitalShared
 @using ProjetoHospitalWebAssembly.Components
 
-<div class="d-flex flex-row align-items-center justify-content-center gap-4">
-    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Ocupado" />
-    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Disponivel" />
-    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Limpeza_corrente" />
-    <CardStatusQuartoPainel ClasseCssExterno="flex-grow-1" Status="StatusQuartoEnum.Limpeza_terminal" />
+<div>
+    <nav class="navbar navbar-expand-md">
+        <div class="container-fluid">
+            @* <a class="navbar-brand" href="#">Navbar</a> *@
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link fw-semibold active" aria-current="page" href="/painel">Home</a>
+                    <a class="nav-link fw-semibold" aria-current="page" href="/setores">Setores</a>
+                    <a class="nav-link fw-semibold" aria-current="page" href="/quartos">Quartos</a>
+                    <a class="nav-link fw-semibold" aria-current="page" href="/leitos">Leitos</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
-<div class="d-flex mt-4">
-    <div class="d-flex flex-grow-1">
-        <BotaoPrincipal Texto="Andar 1" />
-        <BotaoSecundario Class="ms-4" Texto="Andar 2" />
-
+<div class="row g-4 mt-4">
+    <div class="col-12 col-sm-6 col-lg-3">
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" />
     </div>
-    <div class="d-flex flex-row align-items-center">
-        <div class="circulo ocupados" />
-        <span class="ms-1 fs-5">Ocupado</span>
-        <div class="ms-3 circulo disponiveis" />
-        <span class="ms-1 fs-5">Disponível</span>
-        <div class="ms-3 circulo limpeza-corrente" />
-        <span class="ms-1 fs-5">Limpeza corrente</span>
-        <div class="ms-3 circulo limpeza-terminal" />
-        <span class="ms-1 fs-5">Limpeza terminal</span>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_concorrente" />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" />
+    </div>
+</div>
+<div class="d-flex flex-wrap mt-4 gap-3">
+    <div class="d-flex flex-grow-1 gap-3">
+        <BotaoPrincipal Texto="Andar 1" />
+        <BotaoSecundario Texto="Andar 2" />
+    </div>
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+        <div class="d-flex align-items-center gap-1">
+            <div class="circulo ocupados"></div>
+            <span class="fs-5">Ocupado</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-1">
+            <div class="circulo disponiveis"></div>
+            <span class="fs-5">Disponível</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-1">
+            <div class="circulo limpeza-concorrente"></div>
+            <span class="fs-5">Limpeza concorrente</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-1">
+            <div class="circulo limpeza-terminal"></div>
+            <span class="fs-5">Limpeza terminal</span>
+        </div>
     </div>
 </div>
 
@@ -47,7 +83,10 @@
                         <BadgeStatusQuarto Status="StatusQuartoEnum.Ocupado" />
                     </td>
                     <td>Otto</td>
-                    <td>mdo</td>
+                    <td class="d-flex flex-row">
+                        <BotaoSecundario ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                        <BotaoSecundario ClassTexto="fs-6" Class="ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                    </td>
                 </tr>
                 <tr>
                     <td>2</td>
@@ -55,15 +94,21 @@
                         <BadgeStatusQuarto Status="StatusQuartoEnum.Disponivel" />
                     </td>
                     <td>Thornton</td>
-                    <td>fat</td>
+                    <td class="d-flex flex-row">
+                        <BotaoSecundario ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                        <BotaoSecundario ClassTexto="fs-6" Class="ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                    </td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>
-                        <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_corrente" />
+                        <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_concorrente" />
                     </td>
                     <td>Doe</td>
-                    <td>social</td>
+                    <td class="d-flex flex-row">
+                        <BotaoSecundario ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                        <BotaoSecundario ClassTexto="fs-6" Class="ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                    </td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -71,7 +116,10 @@
                         <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_terminal" />
                     </td>
                     <td>Doe</td>
-                    <td>social</td>
+                    <td class="d-flex flex-row">
+                        <BotaoSecundario ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                        <BotaoSecundario ClassTexto="fs-6" Class="ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                    </td>
                 </tr>
             </tbody>
         </table>

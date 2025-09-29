@@ -1,7 +1,7 @@
 ﻿.btn-secondary {
     background-color: var(--cor-secundaria);
     border-color: var(--cor-principal);
-    border-width: 3px;
+    border-width: 2px;
     color: var(--cor-principal);
     border-radius: 10px !important;
 }

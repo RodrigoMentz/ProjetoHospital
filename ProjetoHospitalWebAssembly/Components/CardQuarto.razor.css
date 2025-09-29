@@ -12,17 +12,17 @@
         list-style-type: disc;
     }
 
-.corrente {
-    border: 2px solid var(--cor-limpeza-corrente);
+.concorrente {
+    border: 2px solid var(--cor-limpeza-concorrente);
 }
 
-    .corrente .quarto {
-        color: var(--cor-limpeza-corrente);
+    .concorrente .quarto {
+        color: var(--cor-limpeza-concorrente);
     }
 
-    .corrente .btn {
+    .concorrente .btn {
         color: var(--cor-fundo);
-        background-color: var(--cor-limpeza-corrente);
+        background-color: var(--cor-limpeza-concorrente);
     }
 
 .terminal {
