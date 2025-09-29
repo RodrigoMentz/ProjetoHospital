@@ -17,8 +17,8 @@ namespace ProjetoHospitalWebAssembly.Pages
             new SetorViewModel(5, "Sala vermelha"),
             new SetorViewModel(6, "Bloco cirúrgico"),
         };
-        private List<LeitoParaLimpezaViewModel> leitos = new();
-        private List<LeitoParaLimpezaViewModel> leitosFiltrados = new();
+        private List<LeitoViewModel> leitos = new();
+        private List<LeitoViewModel> leitosFiltrados = new();
 
         private SetorViewModel setorSelecionado = new();
 
@@ -27,20 +27,20 @@ namespace ProjetoHospitalWebAssembly.Pages
             this.isLoading = true;
             this.StateHasChanged();
 
-            var leito1 = new LeitoParaLimpezaViewModel
+            var leito1 = new LeitoViewModel
             {
                Id = 1,
-               NumeroQuarto = "A1",
+               NomeQuarto = "A1",
                IdSetor = 3,
                NomeSetor = "Pediatria",
                Nome = "01",
                TipoLimpeza = TipoLimpezaEnum.Terminal,
             };
 
-            var leito2 = new LeitoParaLimpezaViewModel
+            var leito2 = new LeitoViewModel
             {
                 Id = 1,
-                NumeroQuarto = "102",
+                NomeQuarto = "102",
                 IdSetor = 4,
                 NomeSetor = "Emergência",
                 Nome = "03",

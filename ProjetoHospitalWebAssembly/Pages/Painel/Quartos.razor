@@ -1,7 +1,48 @@
 ﻿@page "/quartos"
 @using ProjetoHospitalWebAssembly.Components
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between mt-4">
     <h1 class="fs-3">Gerenciar Quartos</h1>
     <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar quarto" />
+</div>
+<div class="card mt-4">
+    <div class="card-header">
+        <h2 class="fs-4">Quartos</h2>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-hover m-0">
+            <thead>
+                <tr>
+                    <th scope="col">Quarto</th>
+                    <th scope="col">Setor</th>
+                    <th scope="col">Capacidade</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var quarto in quartos)
+                {
+                    <tr>
+                        <td>
+                            <span>@quarto.Nome</span>
+                        </td>
+                        <td>
+                            <span>@quarto.NomeSetor</span>
+                        </td>
+                        <td>
+                            <span>@quarto.Capacidade @(quarto.Capacidade == 1 ? "leito" : "leitos")</span>
+                        </td>
+                        <td>
+                            <BadgeStatusAtivo Ativo="quarto.Ativo" />
+                        </td>
+                        <td class="d-flex flex-row justify-content-center">
+                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

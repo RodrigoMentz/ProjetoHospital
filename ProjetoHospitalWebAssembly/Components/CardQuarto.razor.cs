@@ -5,6 +5,6 @@ namespace ProjetoHospitalWebAssembly.Components
     public partial class CardQuarto
     {
         [Parameter]
-        public LeitoParaLimpezaViewModel Leito { get; set; }
+        public LeitoViewModel Leito { get; set; }
     }
 }
