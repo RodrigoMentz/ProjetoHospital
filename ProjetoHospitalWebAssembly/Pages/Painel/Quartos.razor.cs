@@ -114,7 +114,7 @@
 
                 var retornoModal = await this.ModalService
                     .Show<ModalCadastroQuarto>(
-                        "Cadastrar quarto",
+                        "Editar quarto",
                         parametros,
                         options)
                     .Result

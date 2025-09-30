@@ -9,29 +9,37 @@
         public LeitoViewModel(
             int id,
             string nome,
-            string numeroQuarto,
-            int idSetor,
-            string nomeSetor,
-            TipoLimpezaEnum tipoLimpeza)
+            int idQuarto,
+            bool ativo)
         {
             this.Id = id;
             this.Nome = nome;
-            this.NomeQuarto = numeroQuarto;
-            this.IdSetor = idSetor;
-            this.NomeSetor = nomeSetor;
-            this.TipoLimpeza = tipoLimpeza;
+            this.IdQuarto = idQuarto;
+            this.Ativo = ativo;
+        }
+
+        public LeitoViewModel(
+            string nome,
+            int idQuarto,
+            bool ativo)
+        {
+            this.Nome = nome;
+            this.IdQuarto = idQuarto;
+            this.Ativo = ativo;
         }
 
         public LeitoViewModel(
             int id,
             string nome,
-            string numeroQuarto,
+            int idQuarto,
+            string nomeQuarto,
             string nomeSetor,
             bool ativo)
         {
             this.Id = id;
             this.Nome = nome;
-            this.NomeQuarto = numeroQuarto;
+            this.IdQuarto = idQuarto;
+            this.NomeQuarto = nomeQuarto;
             this.NomeSetor = nomeSetor;
             this.Ativo = ativo;
         }
@@ -39,6 +47,8 @@
         public int Id { get; set; }
 
         public string Nome { get; set; }
+
+        public int IdQuarto { get; set; }
 
         public string NomeQuarto { get; set; }
 

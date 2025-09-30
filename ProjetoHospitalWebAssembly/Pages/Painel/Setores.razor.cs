@@ -108,7 +108,7 @@
 
                 var retornoModal = await this.ModalService
                     .Show<ModalCadastroSetor>(
-                        "Cadastrar setor",
+                        "Editar setor",
                         parametros,
                         options)
                     .Result
