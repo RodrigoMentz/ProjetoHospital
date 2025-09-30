@@ -7,18 +7,48 @@
         }
 
         public QuartoViewModel(
+            int id,
+            string nome,
+            int idSetor,
+            int capacidade,
+            bool ativo)
+        {
+            this.Id = id;
+            this.Nome = nome;
+            this.IdSetor = idSetor;
+            this.Capacidade = capacidade;
+            this.Ativo = ativo;
+        }
+
+        public QuartoViewModel(
+            string nome,
+            int idSetor,
+            int capacidade,
+            bool ativo)
+        {
+            this.Nome = nome;
+            this.IdSetor = idSetor;
+            this.Capacidade = capacidade;
+            this.Ativo = ativo;
+        }
+
+        public QuartoViewModel(
+            int id,
             string nome,
             int idSetor,
             string nomeSetor,
             int capacidade,
             bool ativo)
         {
+            this.Id = id;
             this.Nome = nome;
             this.IdSetor = idSetor;
             this.NomeSetor = nomeSetor;
             this.Capacidade = capacidade;
             this.Ativo = ativo;
         }
+
+        public int Id { get; set; }
 
         public string Nome { get; set; }
 

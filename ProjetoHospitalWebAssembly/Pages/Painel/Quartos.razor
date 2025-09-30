@@ -3,7 +3,7 @@
 
 <div class="d-flex justify-content-between mt-4">
     <h1 class="fs-3">Gerenciar Quartos</h1>
-    <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar quarto" />
+    <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar quarto" OnClick="AdicionarAsync" />
 </div>
 <div class="card mt-4">
     <div class="card-header">
@@ -37,8 +37,7 @@
                             <BadgeStatusAtivo Ativo="quarto.Ativo" />
                         </td>
                         <td class="d-flex flex-row justify-content-center">
-                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-eye" Texto="Visualizar" />
-                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
+                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" OnClick="() => EditarAsync(quarto)" />
                         </td>
                     </tr>
                 }

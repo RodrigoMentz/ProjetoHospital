@@ -162,6 +162,11 @@ input.form-control:focus {
     box-shadow: 0 0 0 .25rem var(--cor-principal-com-transparencia);
 }
 
+select.form-select:focus {
+    border-color: var(--cor-principal);
+    box-shadow: 0 0 0 .25rem var(--cor-principal-com-transparencia);
+}
+
 .blazored-modal.size-large {
     max-width: 900px !important;
     width: 90vw;

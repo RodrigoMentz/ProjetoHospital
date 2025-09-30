@@ -1,9 +1,20 @@
-﻿using ProjetoHospitalShared.ViewModels;
-
-namespace ProjetoHospitalWebAssembly.Pages.Painel
+﻿namespace ProjetoHospitalWebAssembly.Pages.Painel
 {
-    public partial class Quartos
+    using Blazored.Modal;
+    using Blazored.Modal.Services;
+    using Blazored.Toast.Services;
+    using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Components.Modais;
+
+    public partial class Quartos : ComponentBase
     {
+        [Inject]
+        private IModalService ModalService { get; set; }
+
+        [Inject]
+        private IToastService ToastService { get; set; }
+
         private bool isLoading = false;
 
         private List<QuartoViewModel> quartos = new();
@@ -15,13 +26,118 @@ namespace ProjetoHospitalWebAssembly.Pages.Painel
 
             this.quartos = new List<QuartoViewModel>
             {
-                new QuartoViewModel("101", 1, "SUS", 1, true),
-                new QuartoViewModel("102", 2, "Maternidade", 1, true),
-                new QuartoViewModel("103", 3, "Pediatria", 1, true),
-                new QuartoViewModel("104", 4, "Emergência", 1, true),
-                new QuartoViewModel("105", 5, "Sala vermelha", 1, true),
-                new QuartoViewModel("106", 6, "Bloco cirúrgico", 1, false),
+                new QuartoViewModel(1, "101", 1, "SUS", 1, true),
+                new QuartoViewModel(2, "102", 2, "Maternidade", 1, true),
+                new QuartoViewModel(3, "103", 3, "Pediatria", 1, true),
+                new QuartoViewModel(4, "104", 4, "Emergência", 1, true),
+                new QuartoViewModel(5,"105", 5, "Sala vermelha", 1, true),
+                new QuartoViewModel(6, "106", 6, "Bloco cirúrgico", 1, false),
             };
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task AdicionarAsync()
+        {
+            this.isLoading = true;
+            this.StateHasChanged();
+
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalCadastroQuarto>(
+                        "Cadastrar quarto",
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    var novoQuarto = (QuartoViewModel)retornoModal.Data;
+
+                    if (novoQuarto != null)
+                    {
+                        this.ToastService.ShowSuccess(
+                            "Sucesso: Cadastro de quarto realizado");
+                        // TODO: chamada para adicionar quarto
+                        // TODO: chamada para atualizar a lista de quartos
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task EditarAsync(QuartoViewModel quartoParaEdicao)
+        {
+            this.isLoading = true;
+            this.StateHasChanged();
+
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var parametros = new ModalParameters();
+
+                parametros.Add(
+                    nameof(ModalCadastroQuarto.IdQuarto),
+                    quartoParaEdicao.Id);
+                parametros.Add(
+                    nameof(ModalCadastroQuarto.Nome),
+                    quartoParaEdicao.Nome);
+                parametros.Add(
+                    nameof(ModalCadastroQuarto.IdSetor),
+                    quartoParaEdicao.IdSetor);
+                parametros.Add(
+                    nameof(ModalCadastroQuarto.Capacidade),
+                    quartoParaEdicao.Capacidade);
+                parametros.Add(
+                    nameof(ModalCadastroQuarto.Ativo),
+                    quartoParaEdicao.Ativo);
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalCadastroQuarto>(
+                        "Cadastrar quarto",
+                        parametros,
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    var quartoEditado = (QuartoViewModel)retornoModal.Data;
+
+                    if (quartoEditado != null)
+                    {
+                        this.ToastService.ShowSuccess(
+                            "Sucesso: Atualização de quarto realizada");
+                        // TODO: chamada para editar quarto
+                        // TODO: chamada para atualizar a lista de quartos
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();

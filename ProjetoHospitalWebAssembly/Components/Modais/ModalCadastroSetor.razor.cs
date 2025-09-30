@@ -1,10 +1,10 @@
-﻿using Blazored.Modal;
-using Blazored.Modal.Services;
-using Microsoft.AspNetCore.Components;
-using ProjetoHospitalShared.ViewModels;
-
-namespace ProjetoHospitalWebAssembly.Components.Modais
+﻿namespace ProjetoHospitalWebAssembly.Components.Modais
 {
+    using Blazored.Modal;
+    using Blazored.Modal.Services;
+    using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared.ViewModels;
+
     public partial class ModalCadastroSetor : ComponentBase
     {
         [CascadingParameter]
@@ -20,7 +20,7 @@ namespace ProjetoHospitalWebAssembly.Components.Modais
         public bool Ativo { get; set; }
 
         private bool isLoading = false;
-        private bool exibirMensagemObrigatorioCampo = false;
+        private bool exibirMensagemCampoObrigatorio = false;
 
         private bool ativoInterno { get; set; } = true;
 
@@ -46,7 +46,7 @@ namespace ProjetoHospitalWebAssembly.Components.Modais
         {
             if (string.IsNullOrWhiteSpace(this.NomeSetor))
             {
-                this.exibirMensagemObrigatorioCampo = true;
+                this.exibirMensagemCampoObrigatorio = true;
 
                 return;
             }
