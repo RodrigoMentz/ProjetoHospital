@@ -3,7 +3,7 @@
 
 <div class="d-flex justify-content-between mt-4">
     <h1 class="fs-3">Gerenciar Setores</h1>
-    <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar setor" />
+    <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar setor" OnClick="AdicionarAsync" />
 </div>
 <div class="card mt-4">
     <div class="card-header">
@@ -29,7 +29,7 @@
                             <BadgeStatusAtivo Ativo="setor.Ativo" />
                         </td>
                         <td class="d-flex flex-row justify-content-center">
-                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-pen" Texto="Editar" />
+                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-pen" Texto="Editar" OnClick="() => EditarAsync(setor)" />
                         </td>
                     </tr>
                 }

@@ -21,7 +21,15 @@
         {
             this.Id = id;
             this.Nome = nome;
-            Ativo = ativo;
+            this.Ativo = ativo;
+        }
+
+        public SetorViewModel(
+            string nome,
+            bool ativo)
+        {
+            this.Nome = nome;
+            this.Ativo = ativo;
         }
 
         public int Id { get; set; }

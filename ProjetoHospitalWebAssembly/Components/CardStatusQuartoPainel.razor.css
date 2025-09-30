@@ -55,3 +55,9 @@
     .limpeza-terminal .circulo {
         background-color: var(--cor-limpeza-terminal);
     }
+
+@media (min-width: 992px) {
+    .nome-limpeza {
+        min-height: 60px;
+    }
+}
