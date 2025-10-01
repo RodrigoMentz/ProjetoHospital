@@ -1,0 +1,56 @@
+﻿@if (this.isLoading)
+{
+    <Loading />
+}
+else
+{
+    <form>
+        <div class="mb-3">
+            <label for="nomeUsuario" class="form-label fs-5">Nome do usuário</label>
+            <input type="text" class="form-control" id="nomeUsuario" aria-describedby="Nome do usuário" disabled="@this.isLoading" @bind-value="Nome">
+        </div>
+        @if (this.exibirMensagemNomeCampoObrigatorio)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">O campo Nome do usuário é obrigatório</span>
+            </div>
+        }
+        <div class="mb-3">
+            <label for="numeroTelefone" class="form-label fs-5">Número de telefone</label>
+            <span class="ms-2 text-danger">*Sem espaços, sem (), sem -</span>
+            <input type="tel" class="form-control" id="numeroTelefone" aria-describedby="Número de telefone" disabled="@this.isLoading" @bind-value="NumeroTelefone" inputmode="numeric" pattern="[0-9]*" maxlength="11" placeholder="Ex: 54987654321">
+        </div>
+        @if (this.exibirMensagemNumeroCampoObrigatorio)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">O campo Número de telefone é obrigatório</span>
+            </div>
+        }
+        @if (this.exibirMensagemNumeroFormatoErrado)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">Verifique o formato do Número de telefone. Utilize sem espaços, sem (), sem -</span>
+            </div>
+        }
+        <div class="mb-3">
+            <label for="perfilUsuario" class="form-label fs-5">Perfil</label>
+            <select class="form-select" id="perfilUsuario" aria-label="Perfil do usuário" disabled="@this.isLoading" @bind="Perfil.Id">
+                @foreach (var perfil in perfis)
+                {
+                    <option value="@perfil.Id">@perfil.Nome</option>
+                }
+            </select>
+        </div>
+        @if (this.exibirMensagemPerfilCampoObrigatorio)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">O campo Perfil é obrigatório</span>
+            </div>
+        }
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="ativoUsuario" disabled="@this.isLoading" @bind="ativoInterno">
+            <label class="form-check-label fs-5 ms-2" for="ativoUsuario">Ativo</label>
+        </div>
+        <BotaoPrincipal Texto="Salvar" OnClick="SalvarAsync" />
+    </form>
+}

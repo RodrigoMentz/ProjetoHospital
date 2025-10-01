@@ -22,7 +22,7 @@
         private bool isLoading = false;
         private bool exibirMensagemCampoObrigatorio = false;
 
-        private bool ativoInterno { get; set; } = true;
+        private bool ativoInterno = true;
 
         protected override async Task OnInitializedAsync()
         {

@@ -29,7 +29,7 @@
         private bool exibirMensagemNomeCampoObrigatorio = false;
         private bool exibirMensagemSetorCampoObrigatorio = false;
 
-        private bool ativoInterno { get; set; } = true;
+        private bool ativoInterno = true;
 
         private List<SetorViewModel> setores = new();
 

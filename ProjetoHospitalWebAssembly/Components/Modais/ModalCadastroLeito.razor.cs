@@ -28,7 +28,7 @@
 
         private List<QuartoViewModel> quartos = new();
 
-        private bool ativoInterno { get; set; } = true;
+        private bool ativoInterno = true;
 
         protected override async Task OnInitializedAsync()
         {
