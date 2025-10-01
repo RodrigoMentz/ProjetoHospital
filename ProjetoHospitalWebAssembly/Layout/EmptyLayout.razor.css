@@ -1,0 +1,32 @@
+﻿html {
+    background-color: white;
+}
+
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.main {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+article.content {
+    margin: 0px 20px;
+    min-height: 100vh;
+}
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+}

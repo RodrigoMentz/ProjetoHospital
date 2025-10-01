@@ -1,0 +1,21 @@
+﻿@page "/perfis"
+@layout MainLayoutApp
+
+@if (this.isLoading)
+{
+    <div class="loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    <div class="d-flex align-items-center justify-content-center mt-4">
+        <h1>Selecione o seu perfil</h1>
+    </div>
+    <div class="d-grid gap-4 mt-4">
+        @foreach (var perfil in perfis)
+        {
+            <BotaoSecundario Class="mb-2 py-2" Texto="@perfil.Nome" OnClick="() => SelecionarAsync(perfil)" />
+        }
+    </div>
+}
