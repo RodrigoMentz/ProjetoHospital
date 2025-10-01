@@ -40,9 +40,6 @@
 
         private async Task AdicionarAsync()
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -60,6 +57,9 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var novoQuarto = (QuartoViewModel)retornoModal.Data;
 
                     if (novoQuarto != null)
@@ -83,9 +83,6 @@
 
         private async Task EditarAsync(QuartoViewModel quartoParaEdicao)
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -122,6 +119,9 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var quartoEditado = (QuartoViewModel)retornoModal.Data;
 
                     if (quartoEditado != null)

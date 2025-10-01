@@ -40,9 +40,6 @@
 
         private async Task AdicionarAsync()
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -60,6 +57,9 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var novoLeito = (LeitoViewModel)retornoModal.Data;
 
                     if (novoLeito != null)
@@ -83,9 +83,6 @@
 
         private async Task EditarAsync(LeitoViewModel leitoParaEdicao)
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -119,6 +116,9 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var leitoEditado = (LeitoViewModel)retornoModal.Data;
 
                     if (leitoEditado != null)

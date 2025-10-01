@@ -13,8 +13,8 @@
         [Inject]
         private IModalService ModalService { get; set; }
 
-        [Inject]
-        private ISetorService SetorService { get; set; }
+        //[Inject]
+        //private ISetorService SetorService { get; set; }
 
         [Inject]
         private IToastService ToastService { get; set; }
@@ -48,9 +48,6 @@
 
         private async Task AdicionarAsync()
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -68,6 +65,9 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var novoSetor = (SetorViewModel)retornoModal.Data;
 
                     if (novoSetor != null)
@@ -95,9 +95,6 @@
 
         private async Task EditarAsync(SetorViewModel setorParaEdicao)
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -128,15 +125,18 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var setorEditado = (SetorViewModel)retornoModal.Data;
 
                     if (setorEditado != null)
                     {
                         this.ToastService.ShowSuccess(
                             "Sucesso: Atualização de setor realizada");
-                        var response = await this.SetorService
-                            .AtualizarAsync(setorEditado)
-                            .ConfigureAwait(true);
+                        //var response = await this.SetorService
+                        //    .AtualizarAsync(setorEditado)
+                        //    .ConfigureAwait(true);
 
                         // TODO: chamada para atualizar a lista de setores
                     }
