@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoHospital", "ProjetoHospital\ProjetoHospital.csproj", "{AEA65057-4E93-4648-BA9F-BB4FB14579F8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{237E6342-883D-4726-B223-FD6AA0208AF2} = {237E6342-883D-4726-B223-FD6AA0208AF2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoHospitalWebAssembly", "ProjetoHospitalWebAssembly\ProjetoHospitalWebAssembly.csproj", "{12394457-5034-4F03-A850-DE323770CA0E}"
 EndProject

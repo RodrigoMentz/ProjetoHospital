@@ -10,9 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.11" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="3.2.0"/>
-    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.2.0"/>
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjetoHospitalShared\ProjetoHospitalShared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,11 +6,15 @@
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Components.Modais;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class Setores : ComponentBase
     {
         [Inject]
         private IModalService ModalService { get; set; }
+
+        [Inject]
+        private ISetorService SetorService { get; set; }
 
         [Inject]
         private IToastService ToastService { get; set; }
@@ -23,6 +27,10 @@
         {
             this.isLoading = true;
             this.StateHasChanged();
+
+            //var setoress = await this.SetorService
+            //    .GetAsync()
+            //    .ConfigureAwait(true);
 
             this.setores = new List<SetorViewModel>
             {
@@ -66,7 +74,11 @@
                     {
                         this.ToastService.ShowSuccess(
                             "Sucesso: Cadastro de setor realizado");
-                        // TODO: chamada para adicionar setor
+
+                        //var response = await this.SetorService
+                        //    .CriarAsync(novoSetor)
+                        //    .ConfigureAwait(true);
+
                         // TODO: chamada para atualizar a lista de setores
                     }
                 }
@@ -122,7 +134,10 @@
                     {
                         this.ToastService.ShowSuccess(
                             "Sucesso: Atualização de setor realizada");
-                        // TODO: chamada para editar setor
+                        var response = await this.SetorService
+                            .AtualizarAsync(setorEditado)
+                            .ConfigureAwait(true);
+
                         // TODO: chamada para atualizar a lista de setores
                     }
                 }
