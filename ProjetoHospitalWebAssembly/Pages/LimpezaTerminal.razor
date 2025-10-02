@@ -1,0 +1,83 @@
+﻿@page "/limpeza-terminal/{idLeito}"
+@layout MainLayoutApp
+
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    <div>
+        <h1>Verifique se realizou todos os itens abaixo:</h1>
+        <div class="mt-3 mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="tirarLixo" @bind="limpeza.TirarLixo">
+            <label class="form-check-label fs-5 ms-2" for="tirarLixo">Tirar lixo</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="vasoSanitario" @bind="limpeza.VasoSanitario">
+            <label class="form-check-label fs-5 ms-2" for="vasoSanitario">Limpar vaso sanitário</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparBox" @bind="limpeza.LimparBox">
+            <label class="form-check-label fs-5 ms-2" for="limparBox">Limpar box</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="revisarMofo" @bind="limpeza.RevisarMofo">
+            <label class="form-check-label fs-5 ms-2" for="revisarMofo">Revisar o mofo no quarto e no banheiro</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparPia" @bind="limpeza.LimparPia">
+            <label class="form-check-label fs-5 ms-2" for="limparPia">Limpar a pia</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparCama" @bind="limpeza.LimparCama">
+            <label class="form-check-label fs-5 ms-2" for="limparCama">Limpar a cama</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparEscadaCama" @bind="limpeza.LimparEscadaCama">
+            <label class="form-check-label fs-5 ms-2" for="limparEscadaCama">Limpar a escada da cama</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparMesaCabeceira" @bind="limpeza.LimparMesaCabeceira">
+            <label class="form-check-label fs-5 ms-2" for="limparMesaCabeceira">Limpar as mesas de cabeceira</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparArmario" @bind="limpeza.LimparArmario">
+            <label class="form-check-label fs-5 ms-2" for="limparArmario">Limpar o armário</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="recolherRoupaSuja" @bind="limpeza.RecolherRoupaSuja">
+            <label class="form-check-label fs-5 ms-2" for="recolherRoupaSuja">Recolher a roupa suja</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="revisarPapelToalhaEHigienico" @bind="limpeza.RevisarPapelToalhaEHigienico">
+            <label class="form-check-label fs-5 ms-2" for="revisarPapelToalhaEHigienico">Revisar o papel toalha e o papel higiênico</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparDispensers" @bind="limpeza.LimparDispensers">
+            <label class="form-check-label fs-5 ms-2" for="limparDispensers">Limpar os dispensers (álcool e sabonete)</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparLixeira" @bind="limpeza.LimparLixeira">
+            <label class="form-check-label fs-5 ms-2" for="limparLixeira">Limpar a lixeira</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparTeto" @bind="limpeza.LimparTeto">
+            <label class="form-check-label fs-5 ms-2" for="limparTeto">Limpar o teto</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparParedes" @bind="limpeza.LimparParedes">
+            <label class="form-check-label fs-5 ms-2" for="limparParedes">Limpar as paredes</label>
+        </div>
+        <div class="mb-3 form-check d-flex align-items-center">
+            <input type="checkbox" class="form-check-input" id="limparChao" @bind="limpeza.LimparChao">
+            <label class="form-check-label fs-5 ms-2" for="limparChao">Limpar o chão</label>
+        </div>
+    </div>
+    <div class="d-grid gap-4">
+        <BotaoSecundario Texto="Marcar todos como realizado" OnClick="MarcarTodosComoRealizado" />
+        <BotaoPrincipal Texto="Finalizar limpeza" OnClick="FinalizarLimpezaAsync" />
+    </div>
+}
