@@ -11,6 +11,7 @@
     public class SetorController : ControllerBase
     {
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync()
         {
             var setores = new List<SetorViewModel>
@@ -27,14 +28,16 @@
         }
 
         [HttpPost("adicionar")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel), 200)]
         public async Task<IActionResult> Criar(
             [FromBody] SetorViewModel setor)
         {
+            var resultado = setor;
             //var resultado = await this.service
             //    .CriarAsync(setor);
 
-            return this.Ok(); // adicionar resultado
+            return this.Ok(resultado); // adicionar resultado
         }
     }
 }

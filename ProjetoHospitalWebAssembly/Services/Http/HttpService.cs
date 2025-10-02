@@ -265,9 +265,7 @@
 
         private string DynamicAddress(string url)
         {
-            var baseAddressSettings = appSettings
-                .ApiBaseUrl
-                .ToString();
+            var baseAddressSettings = "https://localhost:7271/";
             if (baseAddressSettings.Last() == '/')
             {
                 if (baseAddressSettings.Contains(

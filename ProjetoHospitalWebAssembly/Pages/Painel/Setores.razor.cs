@@ -13,8 +13,8 @@
         [Inject]
         private IModalService ModalService { get; set; }
 
-        //[Inject]
-        //private ISetorService SetorService { get; set; }
+        [Inject]
+        private ISetorService SetorService { get; set; }
 
         [Inject]
         private IToastService ToastService { get; set; }
@@ -75,9 +75,9 @@
                         this.ToastService.ShowSuccess(
                             "Sucesso: Cadastro de setor realizado");
 
-                        //var response = await this.SetorService
-                        //    .CriarAsync(novoSetor)
-                        //    .ConfigureAwait(true);
+                        var response = await this.SetorService
+                            .CriarAsync(novoSetor)
+                            .ConfigureAwait(true);
 
                         // TODO: chamada para atualizar a lista de setores
                     }
