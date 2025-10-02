@@ -25,6 +25,9 @@ namespace ProjetoHospitalWebAssembly.Pages
 
         private SetorViewModel setorSelecionado = new();
 
+        private int quantidadeLeitosParaLimpezaConcorrente = 0;
+        private int quantidadeLeitosParaLimpezaTerminal = 0;
+
         protected override async Task OnInitializedAsync()
         {
             this.isLoading = true;
@@ -54,6 +57,14 @@ namespace ProjetoHospitalWebAssembly.Pages
             leitos.Add(leito2);
 
             this.leitosFiltrados = this.leitos;
+
+            this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
+                .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Concorrente)
+                .Count();
+
+            this.quantidadeLeitosParaLimpezaTerminal = this.leitosFiltrados
+                .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Terminal)
+                .Count();
 
             var setorTodos = new SetorViewModel(0, "Todos");
             this.setores.Insert(0, setorTodos);
