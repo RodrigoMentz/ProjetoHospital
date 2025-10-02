@@ -6,6 +6,9 @@ namespace ProjetoHospitalWebAssembly.Pages
 {
     public partial class QuartosParaLimpeza
     {
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = null!;
+
         private bool isLoading = false;
 
         private List<SetorViewModel> setores = new()
@@ -74,6 +77,20 @@ namespace ProjetoHospitalWebAssembly.Pages
             this.leitosFiltrados = this.leitos
                 .Where(l => l.IdSetor == setor.Id)
                 .ToList();
+        }
+
+        private void LimparLeito(LeitoViewModel leito)
+        {
+            if (leito.TipoLimpeza == TipoLimpezaEnum.Concorrente)
+            {
+                this.NavigationManager
+                    .NavigateTo($"/limpeza-concorrente/{leito.Id}");
+            }
+            else
+            {
+                this.NavigationManager
+                    .NavigateTo($"/limpeza-terminal/{leito.Id}");
+            }
         }
     }
 }

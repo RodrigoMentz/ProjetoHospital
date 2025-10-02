@@ -5,6 +5,7 @@
         Ocupado,
         Disponivel,
         Limpeza_concorrente,
-        Limpeza_terminal
+        Limpeza_terminal,
+        Aguardando_Revisao
     }
 }

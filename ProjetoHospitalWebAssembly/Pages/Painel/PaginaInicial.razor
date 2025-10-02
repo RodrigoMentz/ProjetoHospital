@@ -4,17 +4,20 @@
 
 <div class="row g-4 mt-4">
     <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" />
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" Quantidade="this.quantidadeLeitosOcupados" />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" />
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" Quantidade="this.quantidadeLeitosDisponiveis" />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_concorrente" />
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_concorrente" Quantidade="this.quantidadeLeitosLimpezaConcorrente" />
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" />
+        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" Quantidade="this.quantidadeLeitosLimpezaTerminal" />
     </div>
+</div>
+<div class="border border-black d-flex align-items-center justify-content-center w-100 py-5 my-3">
+    <h1>Planta Hospital</h1>
 </div>
 <div class="d-flex flex-wrap mt-4 gap-3">
     <div class="d-flex flex-grow-1 gap-3">
@@ -49,7 +52,7 @@
         <h2 class="fs-4">Leitos</h2>
     </div>
     <div class="card-body p-0 table-responsive">
-        <table class="table table-hover m-0">
+        <table class="table table-hover m-0 align-middle">
             <thead>
                 <tr>
                     <th scope="col">Leito</th>
@@ -59,50 +62,33 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <BadgeStatusQuarto Status="StatusQuartoEnum.Ocupado" />
-                    </td>
-                    <td>Otto</td>
-                    <td class="d-flex flex-row">
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-eye" Texto="Visualizar" />
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>
-                        <BadgeStatusQuarto Status="StatusQuartoEnum.Disponivel" />
-                    </td>
-                    <td>Thornton</td>
-                    <td class="d-flex flex-row">
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-eye" Texto="Visualizar" />
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>
-                        <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_concorrente" />
-                    </td>
-                    <td>Doe</td>
-                    <td class="d-flex flex-row">
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-eye" Texto="Visualizar" />
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>
-                        <BadgeStatusQuarto Status="StatusQuartoEnum.Limpeza_terminal" />
-                    </td>
-                    <td>Doe</td>
-                    <td class="d-flex flex-row">
-                        <BotaoSecundario ClassTexto="fs-6" Class="gap-1" IconeBootstrap="bi-eye" Texto="Visualizar" />
-                        <BotaoSecundario ClassTexto="fs-6" Class="ms-2 gap-1" IconeBootstrap="bi-pen" Texto="Editar" />
-                    </td>
-                </tr>
+                @foreach (var leito in this.leitos)
+                {
+                    <tr>
+                        <td>
+                            <span class="fw-bold">@leito.Nome</span><br />
+                            <span>Quarto @leito.NomeQuarto</span>
+                        </td>
+                        <td>
+                            <BadgeStatusQuarto Status="leito.Status" />
+                        </td>
+                        <td>@leito.DataHoraUltimaLimpeza</td>
+                        <td class="align-middle">
+                            <div class="btn-group gap-3" role="group">
+                                <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                                @if (leito.Status == StatusQuartoEnum.Disponivel)
+                                {
+                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" />
+                                }
+                                @if (leito.Status == StatusQuartoEnum.Ocupado)
+                                {
+                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-check2-circle" Texto="Liberar leito" />
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

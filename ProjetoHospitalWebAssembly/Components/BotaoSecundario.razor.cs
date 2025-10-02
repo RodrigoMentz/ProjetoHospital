@@ -17,6 +17,9 @@
         public string IconeBootstrap { get; set; } = string.Empty;
 
         [Parameter]
+        public string IconeFontAwesome { get; set; } = string.Empty;
+
+        [Parameter]
         public string Texto { get; set; } = string.Empty;
 
         [Parameter]

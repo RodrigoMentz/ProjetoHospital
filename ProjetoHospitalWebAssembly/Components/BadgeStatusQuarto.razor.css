@@ -17,3 +17,8 @@
     color: var(--cor-limpeza-terminal);
     background-color: var(--cor-limpeza-terminal-com-transparencia);
 }
+
+.aguardando-revisao {
+    background-color: var(--cor-aguardando-revisao);
+    color: var(--cor-aguardando-revisao-com-transparencia);
+}

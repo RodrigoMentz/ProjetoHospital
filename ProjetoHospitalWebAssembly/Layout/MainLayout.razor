@@ -12,12 +12,15 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
+                            <div class="navbar-nav w-100">
                                 <a class="nav-link fw-semibold @(abaAtiva == "painel" ? "active" : string.Empty)" aria-current="page" href="/painel" @onclick='() => OnChangeAba("painel")'>Home</a>
                                 <a class="nav-link fw-semibold @(abaAtiva == "setores" ? "active" : string.Empty)" aria-current="page" href="/setores" @onclick='() => OnChangeAba("setores")'>Setores</a>
                                 <a class="nav-link fw-semibold @(abaAtiva == "quartos" ? "active" : string.Empty)" aria-current="page" href="/quartos" @onclick='() => OnChangeAba("quartos")'>Quartos</a>
                                 <a class="nav-link fw-semibold @(abaAtiva == "leitos" ? "active" : string.Empty)" aria-current="page" href="/leitos" @onclick='() => OnChangeAba("leitos")'>Leitos</a>
                                 <a class="nav-link fw-semibold @(abaAtiva == "usuarios" ? "active" : string.Empty)" aria-current="page" href="/usuarios" @onclick='() => OnChangeAba("usuarios")'>Usuários</a>
+                                <div class="d-flex flex-grow-1 justify-content-md-end">
+                                    <BotaoSecundario ClassTexto="fs-6" Texto="Sair" OnClick="FazerLogout" />
+                                </div>
                             </div>
                         </div>
                     </div>

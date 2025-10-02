@@ -6,9 +6,11 @@
     --cor-limpeza-concorrente-com-transparencia: #a01a581A;
     --cor-limpeza-terminal: #ff6700;
     --cor-limpeza-terminal-com-transparencia: #ff67001A;
+    --cor-aguardando-revisao: #BBDEFB;
+    --cor-aguardando-revisao-com-transparencia: #0D47A1;
     --cor-fundo: #e8e9eb;
     --cor-principal-com-transparencia: #2e41561A;
-    --cor-principal-com-transparencia-dois: #rgba(46, 65, 86, 0.5);
+    --cor-principal-com-transparencia-dois: rgba(46, 65, 86, 0.5);
     --cor-secundaria-com-transparencia: rgba(211, 211, 211, 0.5);
     --cor-disponivel: #16A34A;
     --cor-disponivel-com-transparencia: #16A34A1A;
@@ -165,6 +167,10 @@ input.form-control:focus {
 select.form-select:focus {
     border-color: var(--cor-principal);
     box-shadow: 0 0 0 .25rem var(--cor-principal-com-transparencia);
+}
+
+.height-loading {
+    height: 86vh;
 }
 
 .blazored-modal.size-large {

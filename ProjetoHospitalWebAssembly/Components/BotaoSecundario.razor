@@ -11,6 +11,11 @@
         <i class="bi @IconeBootstrap"></i>
     }
 
+    @if (!string.IsNullOrWhiteSpace(IconeFontAwesome))
+    {
+        <i class="@IconeFontAwesome"></i>
+    }
+
     @if (!string.IsNullOrWhiteSpace(TextoSecundario))
     {
         <div class="d-flex w-100 justify-content-between">

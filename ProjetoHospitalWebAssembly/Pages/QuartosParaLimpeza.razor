@@ -5,9 +5,7 @@
 
 @if (this.isLoading)
 {
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
+    <Loading />
 }
 else
 {
@@ -37,7 +35,7 @@ else
     @foreach (var leito in leitosFiltrados)
     {
         <div class="mt-4">
-            <CardQuarto Leito="leito"  />
+            <CardQuarto Leito="leito" OnClick="() => LimparLeito(leito)" />
         </div>
     }
 }

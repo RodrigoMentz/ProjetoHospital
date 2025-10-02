@@ -6,5 +6,8 @@ namespace ProjetoHospitalWebAssembly.Components
     {
         [Parameter]
         public LeitoViewModel Leito { get; set; }
+
+        [Parameter]
+        public EventCallback OnClick { get; set; }
     }
 }

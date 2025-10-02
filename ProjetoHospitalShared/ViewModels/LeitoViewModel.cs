@@ -44,6 +44,24 @@
             this.Ativo = ativo;
         }
 
+        public LeitoViewModel(
+            int id,
+            string nome,
+            int idQuarto,
+            string nomeQuarto,
+            string nomeSetor,
+            StatusQuartoEnum status,
+            DateTime dataHoraUltimaLimpeza)
+        {
+            this.Id = id;
+            this.Nome = nome;
+            this.IdQuarto = idQuarto;
+            this.NomeQuarto = nomeQuarto;
+            this.NomeSetor = nomeSetor;
+            this.Status = status;
+            this.DataHoraUltimaLimpeza = dataHoraUltimaLimpeza;
+        }
+
         public int Id { get; set; }
 
         public string Nome { get; set; }
@@ -57,6 +75,10 @@
         public string NomeSetor { get; set; }
 
         public TipoLimpezaEnum TipoLimpeza { get; set; }
+
+        public StatusQuartoEnum Status { get; set; }
+
+        public DateTime DataHoraUltimaLimpeza { get; set; }
 
         public bool Ativo { get; set; }
     }
