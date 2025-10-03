@@ -5,7 +5,8 @@
     using ProjetoHospitalShared.ViewModels;
 
     public class QuartoService(
-        IGenericRepository<Quarto> quartoRepository) : IQuartoService
+        IGenericRepository<Quarto> quartoRepository)
+        : IQuartoService
     {
         public async Task<ResponseModel<List<QuartoViewModel>>> GetAsync()
         {

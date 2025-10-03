@@ -2,8 +2,10 @@
 {
     using Blazored.Modal;
     using Blazored.Modal.Services;
+    using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class ModalCadastroLeito : ComponentBase
     {
@@ -21,6 +23,12 @@
 
         [Parameter]
         public bool Ativo { get; set; }
+
+        [Inject]
+        private IQuartoService QuartoService { get; set; }
+
+        [Inject]
+        private IToastService ToastService { get; set; }
 
         private bool isLoading = false;
         private bool exibirMensagemNomeCampoObrigatorio = false;
@@ -44,16 +52,34 @@
                 this.ativoInterno = true;
             }
 
-            // TODO: chamada para consultar quartos
-            this.quartos = new List<QuartoViewModel>
+            await this.ConsultarQuartos()
+                .ConfigureAwait(true);
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ConsultarQuartos()
+        {
+            try
             {
-                new QuartoViewModel(1, "101", 1, "SUS", 1, true),
-                new QuartoViewModel(2, "102", 2, "Maternidade", 1, true),
-                new QuartoViewModel(3, "103", 3, "Pediatria", 1, true),
-                new QuartoViewModel(4, "104", 4, "Emergência", 1, true),
-                new QuartoViewModel(5,"105", 5, "Sala vermelha", 1, true),
-                new QuartoViewModel(6, "106", 6, "Bloco cirúrgico", 1, false),
-            };
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.QuartoService
+                    .GetAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.quartos = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();

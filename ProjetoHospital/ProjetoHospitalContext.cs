@@ -25,6 +25,8 @@
         public DbSet<Setor> Setores { get; set; }
         public DbSet<Quarto> Quartos { get; set; }
 
+        public DbSet<Leito> Leitos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -27,5 +27,7 @@
         public bool SoftDelete { get; set; }
 
         public virtual Setor Setor { get; set; }
+
+        public virtual List<Leito> Leitos { get; set; }
     }
 }

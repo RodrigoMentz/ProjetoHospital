@@ -42,9 +42,11 @@ builder.Services.AddDbContext<ProjetoHospitalContext>(opt =>
 
 builder.Services.AddScoped<IGenericRepository<Setor>, GenericRepository<Setor>>();
 builder.Services.AddScoped<IGenericRepository<Quarto>, GenericRepository<Quarto>>();
+builder.Services.AddScoped<IGenericRepository<Leito>, GenericRepository<Leito>>();
 
 builder.Services.AddScoped<ISetorService, SetorService>();
 builder.Services.AddScoped<IQuartoService, QuartoService>();
+builder.Services.AddScoped<ILeitoService, LeitoService>();
 
 var app = builder.Build();
 

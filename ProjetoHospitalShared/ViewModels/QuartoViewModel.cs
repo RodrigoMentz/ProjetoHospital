@@ -10,6 +10,18 @@
             int id,
             string nome,
             int idSetor,
+            string nomeSetor)
+        {
+            this.Id = id;
+            this.Nome = nome;
+            this.IdSetor = idSetor;
+            this.NomeSetor = nomeSetor;
+        }
+
+        public QuartoViewModel(
+            int id,
+            string nome,
+            int idSetor,
             int capacidade,
             bool ativo)
         {

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using ProjetoHospitalShared;
 using ProjetoHospitalShared.ViewModels;
+using ProjetoHospitalWebAssembly.Services;
 
 namespace ProjetoHospitalWebAssembly.Pages
 {
@@ -8,6 +10,12 @@ namespace ProjetoHospitalWebAssembly.Pages
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; } = null!;
+
+        [Inject]
+        private ILeitoService LeitoService { get; set; }
+
+        [Inject]
+        private IToastService ToastService { get; set; }
 
         private bool isLoading = false;
 
@@ -33,42 +41,48 @@ namespace ProjetoHospitalWebAssembly.Pages
             this.isLoading = true;
             this.StateHasChanged();
 
-            var leito1 = new LeitoViewModel
-            {
-               Id = 1,
-               NomeQuarto = "A1",
-               IdSetor = 3,
-               NomeSetor = "Pediatria",
-               Nome = "01",
-               TipoLimpeza = TipoLimpezaEnum.Terminal,
-            };
-
-            var leito2 = new LeitoViewModel
-            {
-                Id = 1,
-                NomeQuarto = "102",
-                IdSetor = 4,
-                NomeSetor = "Emergência",
-                Nome = "03",
-                TipoLimpeza = TipoLimpezaEnum.Concorrente,
-            };
-
-            leitos.Add(leito1);
-            leitos.Add(leito2);
+            await this.Consultarleitos()
+                .ConfigureAwait(true);
 
             this.leitosFiltrados = this.leitos;
 
-            this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
-                .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Concorrente)
-                .Count();
+            //this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
+            //    .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Concorrente)
+            //    .Count();
 
-            this.quantidadeLeitosParaLimpezaTerminal = this.leitosFiltrados
-                .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Terminal)
-                .Count();
+            //this.quantidadeLeitosParaLimpezaTerminal = this.leitosFiltrados
+            //    .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Terminal)
+            //    .Count();
 
             var setorTodos = new SetorViewModel(0, "Todos");
             this.setores.Insert(0, setorTodos);
             this.setorSelecionado = this.setores.First();
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task Consultarleitos()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.LeitoService
+                .GetAsync()
+                .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.leitos = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -86,22 +100,22 @@ namespace ProjetoHospitalWebAssembly.Pages
             }
 
             this.leitosFiltrados = this.leitos
-                .Where(l => l.IdSetor == setor.Id)
+                .Where(l => l.Quarto.IdSetor == setor.Id)
                 .ToList();
         }
 
         private void LimparLeito(LeitoViewModel leito)
         {
-            if (leito.TipoLimpeza == TipoLimpezaEnum.Concorrente)
-            {
-                this.NavigationManager
-                    .NavigateTo($"/limpeza-concorrente/{leito.Id}");
-            }
-            else
-            {
-                this.NavigationManager
-                    .NavigateTo($"/limpeza-terminal/{leito.Id}");
-            }
+            //if (leito.TipoLimpeza == TipoLimpezaEnum.Concorrente)
+            //{
+            //    this.NavigationManager
+            //        .NavigateTo($"/limpeza-concorrente/{leito.Id}");
+            //}
+            //else
+            //{
+            //    this.NavigationManager
+            //        .NavigateTo($"/limpeza-terminal/{leito.Id}");
+            //}
         }
     }
 }
