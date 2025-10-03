@@ -28,19 +28,44 @@
             this.isLoading = true;
             this.StateHasChanged();
 
-            //var setoress = await this.SetorService
-            //    .GetAsync()
-            //    .ConfigureAwait(true);
+            await this.ConsultarSetores()
+                .ConfigureAwait(true);
 
-            this.setores = new List<SetorViewModel>
+            //    var setoress = new List<SetorViewModel>
+            //{
+            //    new SetorViewModel(1, "SUS", true),
+            //    new SetorViewModel(2, "Maternidade", true),
+            //    new SetorViewModel(3, "Pediatria", true),
+            //    new SetorViewModel(4, "Emergência", true),
+            //    new SetorViewModel(5, "Sala vermelha", true),
+            //    new SetorViewModel(6, "Bloco cirúrgico", false),
+            //};
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ConsultarSetores()
+        {
+            try
             {
-                new SetorViewModel(1, "SUS", true),
-                new SetorViewModel(2, "Maternidade", true),
-                new SetorViewModel(3, "Pediatria", true),
-                new SetorViewModel(4, "Emergência", true),
-                new SetorViewModel(5, "Sala vermelha", true),
-                new SetorViewModel(6, "Bloco cirúrgico", false),
-            };
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.SetorService
+                                .GetAsync()
+                                .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.setores = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -79,7 +104,8 @@
                             .CriarAsync(novoSetor)
                             .ConfigureAwait(true);
 
-                        // TODO: chamada para atualizar a lista de setores
+                        await this.ConsultarSetores()
+                            .ConfigureAwait(true);
                     }
                 }
             }
@@ -132,13 +158,76 @@
 
                     if (setorEditado != null)
                     {
-                        this.ToastService.ShowSuccess(
-                            "Sucesso: Atualização de setor realizada");
-                        //var response = await this.SetorService
-                        //    .AtualizarAsync(setorEditado)
-                        //    .ConfigureAwait(true);
+                        var response = await this.SetorService
+                            .AtualizarAsync(setorEditado)
+                            .ConfigureAwait(true);
 
-                        // TODO: chamada para atualizar a lista de setores
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Atualização de setor realizada");
+                        }
+
+                        await this.ConsultarSetores()
+                            .ConfigureAwait(true);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ExcluirAsync(SetorViewModel setorParaExclusao)
+        {
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var parametros = new ModalParameters();
+
+                parametros.Add(
+                    nameof(ModalDeConfirmacao.Texto),
+                    "Você deseja excluir esse setor? Essa ação é irreversível.");
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalDeConfirmacao>(
+                        "Excluir permanentemente o setor",
+                        parametros,
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
+                    var setorExcluido = (bool)retornoModal.Data;
+
+                    if (setorExcluido)
+                    {
+                        var response = await this.SetorService
+                            .DeletarAsync(setorParaExclusao)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Exclusão de setor realizada");
+                        }
+
+                        await this.ConsultarSetores()
+                            .ConfigureAwait(true);
                     }
                 }
             }

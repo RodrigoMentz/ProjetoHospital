@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
+using ProjetoHospital;
+using ProjetoHospital.Entities;
+using ProjetoHospital.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,12 +39,22 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
            .AllowAnyHeader();
 }));
 
-var serverVersion = new MySqlServerVersion(new Version(8, 0, 36));
+var serverVersion = new MySqlServerVersion(new Version(12, 0, 2));
 
-builder.Services.AddDbContext<IdentityDbContext>(opt =>
+builder.Services.AddDbContext<ProjetoHospitalContext>(opt =>
     opt.UseMySql(builder.Configuration.GetConnectionString("SqlServerConnection"), serverVersion));
 
+builder.Services.AddScoped<IGenericRepository<Setor>, GenericRepository<Setor>>();
+
+builder.Services.AddScoped<ISetorService, SetorService>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ProjetoHospitalContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
