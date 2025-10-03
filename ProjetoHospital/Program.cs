@@ -1,9 +1,5 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using ProjetoHospital;
 using ProjetoHospital.Entities;
@@ -45,8 +41,10 @@ builder.Services.AddDbContext<ProjetoHospitalContext>(opt =>
     opt.UseMySql(builder.Configuration.GetConnectionString("SqlServerConnection"), serverVersion));
 
 builder.Services.AddScoped<IGenericRepository<Setor>, GenericRepository<Setor>>();
+builder.Services.AddScoped<IGenericRepository<Quarto>, GenericRepository<Quarto>>();
 
 builder.Services.AddScoped<ISetorService, SetorService>();
+builder.Services.AddScoped<IQuartoService, QuartoService>();
 
 var app = builder.Build();
 

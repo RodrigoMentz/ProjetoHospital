@@ -6,9 +6,13 @@
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Components.Modais;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class Quartos : ComponentBase
     {
+        [Inject]
+        private IQuartoService QuartoService { get; set; }
+
         [Inject]
         private IModalService ModalService { get; set; }
 
@@ -24,15 +28,44 @@
             this.isLoading = true;
             this.StateHasChanged();
 
-            this.quartos = new List<QuartoViewModel>
+            await this.ConsultarQuartos()
+                .ConfigureAwait(true);
+
+            //this.quartos = new List<QuartoViewModel>
+            //{
+            //    new QuartoViewModel(1, "101", 1, "SUS", 1, true),
+            //    new QuartoViewModel(2, "102", 2, "Maternidade", 1, true),
+            //    new QuartoViewModel(3, "103", 3, "Pediatria", 1, true),
+            //    new QuartoViewModel(4, "104", 4, "Emergência", 1, true),
+            //    new QuartoViewModel(5,"105", 5, "Sala vermelha", 1, true),
+            //    new QuartoViewModel(6, "106", 6, "Bloco cirúrgico", 1, false),
+            //};
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ConsultarQuartos()
+        {
+            try
             {
-                new QuartoViewModel(1, "101", 1, "SUS", 1, true),
-                new QuartoViewModel(2, "102", 2, "Maternidade", 1, true),
-                new QuartoViewModel(3, "103", 3, "Pediatria", 1, true),
-                new QuartoViewModel(4, "104", 4, "Emergência", 1, true),
-                new QuartoViewModel(5,"105", 5, "Sala vermelha", 1, true),
-                new QuartoViewModel(6, "106", 6, "Bloco cirúrgico", 1, false),
-            };
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.QuartoService
+                    .GetAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.quartos = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -64,10 +97,18 @@
 
                     if (novoQuarto != null)
                     {
-                        this.ToastService.ShowSuccess(
-                            "Sucesso: Cadastro de quarto realizado");
-                        // TODO: chamada para adicionar quarto
-                        // TODO: chamada para atualizar a lista de quartos
+                        var response = await this.QuartoService
+                            .CriarAsync(novoQuarto)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Cadastro de quarto realizado");
+                        }
+
+                        await this.ConsultarQuartos()
+                            .ConfigureAwait(true);
                     }
                 }
             }
@@ -126,10 +167,76 @@
 
                     if (quartoEditado != null)
                     {
-                        this.ToastService.ShowSuccess(
+                        var response = await this.QuartoService
+                            .AtualizarAsync(quartoEditado)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
                             "Sucesso: Atualização de quarto realizada");
-                        // TODO: chamada para editar quarto
-                        // TODO: chamada para atualizar a lista de quartos
+                        }
+
+                        await this.ConsultarQuartos()
+                            .ConfigureAwait(true);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ExcluirAsync(QuartoViewModel quartoParaExclusao)
+        {
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var parametros = new ModalParameters();
+
+                parametros.Add(
+                    nameof(ModalDeConfirmacao.Texto),
+                    "Você deseja excluir esse quarto? Essa ação é irreversível.");
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalDeConfirmacao>(
+                        "Excluir permanentemente o quarto",
+                        parametros,
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
+                    var quartoExcluido = (bool)retornoModal.Data;
+
+                    if (quartoExcluido)
+                    {
+                        var response = await this.QuartoService
+                            .DeletarAsync(quartoParaExclusao)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Exclusão de quarto realizada");
+                        }
+
+                        await this.ConsultarQuartos()
+                            .ConfigureAwait(true);
                     }
                 }
             }

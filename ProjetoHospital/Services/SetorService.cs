@@ -49,8 +49,8 @@
         public async Task<ResponseModel> AtualizarAsync
             (SetorViewModel setor)
         {
-            var setorDb = await setorRepository.FindAsync
-                (setor.Id)
+            var setorDb = await setorRepository
+                .FindAsync(setor.Id)
                 .ConfigureAwait(false);
 
             setorDb.Nome = setor.Nome;
@@ -68,8 +68,8 @@
         public async Task<ResponseModel> DeletarAsync
             (SetorViewModel setor)
         {
-            var setorDb = await setorRepository.FindAsync
-                (setor.Id)
+            var setorDb = await setorRepository
+                .FindAsync(setor.Id)
                 .ConfigureAwait(false);
 
             setorDb.SoftDelete = true;

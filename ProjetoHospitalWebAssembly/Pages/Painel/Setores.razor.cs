@@ -53,8 +53,8 @@
                 this.StateHasChanged();
 
                 var response = await this.SetorService
-                                .GetAsync()
-                                .ConfigureAwait(true);
+                    .GetAsync()
+                    .ConfigureAwait(true);
 
                 if (response != null && response.Success)
                 {
@@ -97,12 +97,15 @@
 
                     if (novoSetor != null)
                     {
-                        this.ToastService.ShowSuccess(
-                            "Sucesso: Cadastro de setor realizado");
-
                         var response = await this.SetorService
                             .CriarAsync(novoSetor)
                             .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                            "Sucesso: Cadastro de setor realizado");
+                        }
 
                         await this.ConsultarSetores()
                             .ConfigureAwait(true);

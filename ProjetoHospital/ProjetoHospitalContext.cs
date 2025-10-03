@@ -23,6 +23,7 @@
         }
 
         public DbSet<Setor> Setores { get; set; }
+        public DbSet<Quarto> Quartos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

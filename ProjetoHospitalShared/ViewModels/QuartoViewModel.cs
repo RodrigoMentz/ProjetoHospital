@@ -16,6 +16,7 @@
             this.Id = id;
             this.Nome = nome;
             this.IdSetor = idSetor;
+            this.NomeSetor = string.Empty;
             this.Capacidade = capacidade;
             this.Ativo = ativo;
         }
@@ -28,6 +29,7 @@
         {
             this.Nome = nome;
             this.IdSetor = idSetor;
+            this.NomeSetor = string.Empty;
             this.Capacidade = capacidade;
             this.Ativo = ativo;
         }

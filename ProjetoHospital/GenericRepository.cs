@@ -131,7 +131,7 @@
             {
                 foreach (var include in includes)
                 {
-                    data.Include(include);
+                    data = data.Include(include);
                 }
             }
 

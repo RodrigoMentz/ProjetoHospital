@@ -2,8 +2,10 @@
 {
     using Blazored.Modal;
     using Blazored.Modal.Services;
+    using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class ModalCadastroQuarto : ComponentBase
     {
@@ -24,6 +26,12 @@
 
         [Parameter]
         public bool Ativo { get; set; }
+
+        [Inject]
+        public ISetorService SetorService { get; set; }
+
+        [Inject]
+        private IToastService ToastService { get; set; }
 
         private bool isLoading = false;
         private bool exibirMensagemNomeCampoObrigatorio = false;
@@ -47,16 +55,34 @@
                 this.ativoInterno = true;
             }
 
-            // TODO: chamada para consultar setores
-            this.setores = new List<SetorViewModel>
+            await this.ConsultarSetores()
+                .ConfigureAwait(true);
+
+                this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ConsultarSetores()
+        {
+            try
             {
-                new SetorViewModel(1, "SUS", true),
-                new SetorViewModel(2, "Maternidade", true),
-                new SetorViewModel(3, "Pediatria", true),
-                new SetorViewModel(4, "Emergência", true),
-                new SetorViewModel(5, "Sala vermelha", true),
-                new SetorViewModel(6, "Bloco cirúrgico", false),
-            };
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.SetorService
+                    .GetAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.setores = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
