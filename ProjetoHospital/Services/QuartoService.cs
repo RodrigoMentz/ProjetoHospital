@@ -32,8 +32,8 @@
             return response;
         }
 
-        public async Task<ResponseModel> CriarAsync
-            (QuartoViewModel quarto)
+        public async Task<ResponseModel> CriarAsync(
+            QuartoViewModel quarto)
         {
             var quartoDb = new Quarto(
                 quarto.Nome,
@@ -50,8 +50,8 @@
             return response;
         }
 
-        public async Task<ResponseModel> AtualizarAsync
-            (QuartoViewModel quarto)
+        public async Task<ResponseModel> AtualizarAsync(
+            QuartoViewModel quarto)
         {
             var quartoDb = await quartoRepository
                 .FindAsync(quarto.Id)
@@ -71,8 +71,8 @@
             return response;
         }
 
-        public async Task<ResponseModel> DeletarAsync
-            (QuartoViewModel quarto)
+        public async Task<ResponseModel> DeletarAsync(
+            QuartoViewModel quarto)
         {
             var quartoDb = await quartoRepository
                 .FindAsync(quarto.Id)

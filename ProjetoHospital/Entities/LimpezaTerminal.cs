@@ -1,14 +1,14 @@
-﻿namespace ProjetoHospitalShared.ViewModels
+﻿namespace ProjetoHospital.Entities
 {
-    public class LimpezaTerminalViewModel : LimpezaViewModel
+    public class LimpezaTerminal : Limpeza
     {
-        public LimpezaTerminalViewModel()
+        public LimpezaTerminal()
         {
         }
 
-        public LimpezaTerminalViewModel(
+        public LimpezaTerminal(
             bool tirarLixo,
-            bool vasoSanitario,
+            bool limparVasoSanitario,
             bool limparBox,
             bool revisarMofo,
             bool limparPia,
@@ -25,7 +25,7 @@
             bool limparChao)
         {
             this.TirarLixo = tirarLixo;
-            this.LimparVasoSanitario = vasoSanitario;
+            this.LimparVasoSanitario = limparVasoSanitario;
             this.LimparBox = limparBox;
             this.RevisarMofo = revisarMofo;
             this.LimparPia = limparPia;
@@ -43,35 +43,20 @@
         }
 
         public bool TirarLixo { get; set; }
-
         public bool LimparVasoSanitario { get; set; }
-
         public bool LimparBox { get; set; }
-
         public bool RevisarMofo { get; set; }
-
         public bool LimparPia { get; set; }
-
         public bool LimparCama { get; set; }
-
         public bool LimparEscadaCama { get; set; }
-
         public bool LimparMesaCabeceira { get; set; }
-
         public bool LimparArmario { get; set; }
-
         public bool RecolherRoupaSuja { get; set; }
-
         public bool RevisarPapelToalhaEHigienico { get; set; }
-
         public bool LimparDispensers { get; set; }
-
         public bool LimparLixeira { get; set; }
-
         public bool LimparTeto { get; set; }
-
         public bool LimparParedes { get; set; }
-
         public bool LimparChao { get; set; }
     }
 }

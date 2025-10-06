@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ProjetoHospital.Services;
-using ProjetoHospitalShared;
-using ProjetoHospitalShared.ViewModels;
-
-namespace ProjetoHospital.Controllers
+﻿namespace ProjetoHospital.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using ProjetoHospital.Services;
+    using ProjetoHospitalShared;
+    using ProjetoHospitalShared.ViewModels;
+
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]

@@ -2,7 +2,7 @@
 {
     public enum TipoLimpezaEnum
     {
-        Concorrente,
-        Terminal,
+        Concorrente = 0,
+        Terminal = 1,
     }
 }

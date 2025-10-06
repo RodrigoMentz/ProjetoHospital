@@ -1,0 +1,20 @@
+﻿namespace ProjetoHospital.Services
+{
+    using ProjetoHospitalShared;
+    using ProjetoHospitalShared.ViewModels;
+
+    public interface ILimpezaService
+    {
+        Task<ResponseModel<LimpezaViewModel>> CriarLimpezaConcorrenteAsync(
+            LimpezaConcorrenteViewModel limpeza);
+
+        Task<ResponseModel> FinalizarLimpezaConcorrenteAsync(
+            LimpezaConcorrenteViewModel limpeza);
+
+        Task<ResponseModel<LimpezaViewModel>> CriarLimpezaTerminalAsync(
+            LimpezaTerminalViewModel limpeza);
+
+        Task<ResponseModel> FinalizarLimpezaTerminalAsync(
+            LimpezaTerminalViewModel limpeza);
+    }
+}

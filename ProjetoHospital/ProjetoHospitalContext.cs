@@ -23,9 +23,18 @@
         }
 
         public DbSet<Setor> Setores { get; set; }
+
         public DbSet<Quarto> Quartos { get; set; }
 
         public DbSet<Leito> Leitos { get; set; }
+
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        public DbSet<Limpeza> Limpezas { get; set; }
+
+        public DbSet<LimpezaConcorrente> LimpezasConcorrentes { get; set; }
+
+        public DbSet<LimpezaTerminal> LimpezasTerminais { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

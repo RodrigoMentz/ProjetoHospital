@@ -119,6 +119,27 @@
             return await this.DbSet.Where<TEntity>(where).FirstOrDefaultAsync<TEntity>();
         }
 
+        public async Task<TDerived?> FindDerivedAsync<TDerived>(
+            Expression<Func<TDerived, bool>> predicate,
+            params Expression<Func<TDerived, object>>[] includeProperties)
+            where TDerived : class, TEntity
+        {
+            IQueryable<TDerived> query = this.DbSet.OfType<TDerived>();
+
+            if (includeProperties != null && includeProperties.Length > 0)
+            {
+                query = query.Include(includeProperties.First());
+
+                foreach (var include in includeProperties.Skip(1))
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return await query.SingleOrDefaultAsync(predicate)
+                              .ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<TEntity>> FindAllAsync(
             Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] includes)
