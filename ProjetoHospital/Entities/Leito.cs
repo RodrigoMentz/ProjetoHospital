@@ -20,6 +20,10 @@
 
         public bool Ativo { get; set; }
 
+        public bool Ocupado { get; set; }
+
+        public DateTime? UltimaModificacao { get; set; }
+
         public bool SoftDelete { get; set; }
 
         public virtual Quarto Quarto { get; set; }

@@ -1,13 +1,30 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages.Painel
 {
-    using ProjetoHospitalShared;
+    using Blazored.Modal;
+    using Blazored.Modal.Services;
+    using Blazored.Toast.Services;
+    using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Components.Modais;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class PaginaInicial
     {
+        [Inject]
+        private ILeitoService LeitoService { get; set; }
+
+        [Inject]
+        private ILimpezaService LimpezaService { get; set; }
+
+        [Inject]
+        private IToastService ToastService { get; set; }
+
+        [Inject]
+        private IModalService ModalService { get; set; }
+
         private bool isLoading = false;
 
-        private List<LeitoViewModel> leitos = new();
+        private List<LeitoStatusLimpezaViewModel> statusLeitos = new();
         private int quantidadeLeitosOcupados = 0;
         private int quantidadeLeitosDisponiveis = 0;
         private int quantidadeLeitosLimpezaConcorrente = 0;
@@ -18,20 +35,169 @@
             this.isLoading = true;
             this.StateHasChanged();
 
-            //this.leitos = new List<LeitoViewModel>
-            //{
-            //    new LeitoViewModel(1, "101A", 1, "101", "SUS", StatusQuartoEnum.Disponivel, DateTime.Now.AddHours(-2)),
-            //    new LeitoViewModel(2, "101B", 2, "101", "Maternidade", StatusQuartoEnum.Ocupado, DateTime.Now.AddHours(-10)),
-            //    new LeitoViewModel(3, "102A", 3, "102", "Pediatria", StatusQuartoEnum.Aguardando_Revisao, DateTime.Now.AddMinutes(-10)),
-            //    new LeitoViewModel(4, "102B", 4, "102", "Emergência", StatusQuartoEnum.Limpeza_concorrente, DateTime.Now.AddHours(-3)),
-            //    new LeitoViewModel(5, "103A", 5, "103", "Sala vermelha",StatusQuartoEnum.Limpeza_terminal, DateTime.Now.AddHours(-20)),
-            //};
+            await this.ConsultarStatus()
+                .ConfigureAwait(true);
 
-            //this.quantidadeLeitosOcupados = this.leitos.Where(l => l.Status == StatusQuartoEnum.Ocupado).Count();
-            //this.quantidadeLeitosDisponiveis = this.leitos.Where(l => l.Status == StatusQuartoEnum.Disponivel).Count();
-            //this.quantidadeLeitosLimpezaConcorrente = this.leitos.Where(l => l.Status == StatusQuartoEnum.Limpeza_concorrente).Count();
-            //this.quantidadeLeitosLimpezaTerminal = this.leitos.Where(l => l.Status == StatusQuartoEnum.Limpeza_terminal).Count();
+            this.quantidadeLeitosOcupados = this.statusLeitos.Where(l => l.Ocupado).Count();
+            this.quantidadeLeitosDisponiveis = this.statusLeitos.Where(l => !l.Ocupado && !l.PrecisaLimpezaTerminal && !l.PrecisaLimpezaConcorrente).Count();
+            this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente).Count();
+            this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal).Count();
 
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ConsultarStatus()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.LimpezaService
+                    .ConsultarListaStatusLimpezaAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.statusLeitos = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task IniciarInternacao(
+            LeitoStatusLimpezaViewModel leito)
+        {
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var parametros = new ModalParameters();
+
+                parametros.Add(
+                    nameof(ModalDeConfirmacao.Texto),
+                    "Você deseja iniciar uma nova internação neste leito?");
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalDeConfirmacao>(
+                        "Adicionar internação no leito",
+                        parametros,
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
+                    var internacaoConfirmada = (bool)retornoModal.Data;
+
+                    if (internacaoConfirmada)
+                    {
+                        leito.Ocupado = true;
+
+                        var leitoParaAtualizar = new LeitoViewModel(
+                            leito.LeitoId,
+                            leito.Ocupado);
+
+                        var response = await this.LeitoService
+                            .AtualizarOcupadoAsync(leitoParaAtualizar)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Internação no leito realizada");
+                        }
+
+                        await this.ConsultarStatus()
+                            .ConfigureAwait(true);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task EncerrarInternacao(
+            LeitoStatusLimpezaViewModel leito)
+        {
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var parametros = new ModalParameters();
+
+                parametros.Add(
+                    nameof(ModalDeConfirmacao.Texto),
+                    "Você deseja encerrar a internação neste leito?");
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalDeConfirmacao>(
+                        "Encerrar internação no leito",
+                        parametros,
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
+                    var internacaoEncerrada = (bool)retornoModal.Data;
+
+                    if (internacaoEncerrada)
+                    {
+                        leito.Ocupado = false;
+
+                        var leitoParaAtualizar = new LeitoViewModel(
+                            leito.LeitoId,
+                            leito.Ocupado);
+
+                        var response = await this.LeitoService
+                            .AtualizarOcupadoAsync(leitoParaAtualizar)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Internação no leito encerrada");
+                        }
+
+                        await this.ConsultarStatus()
+                            .ConfigureAwait(true);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();

@@ -8,6 +8,17 @@
         IHttpService httpService)
         : ILimpezaService
     {
+        public async Task<ResponseModel<List<LeitoStatusLimpezaViewModel>>> ConsultarListaStatusLimpezaAsync()
+        {
+            var url = "Limpeza/status-limpeza";
+
+            var response = await httpService
+                .GetJsonAsync<ResponseModel<List<LeitoStatusLimpezaViewModel>>>(url)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarConcorrenteAsync(
             LimpezaConcorrenteViewModel limpezaConcorrente)
         {

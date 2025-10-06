@@ -1,16 +1,16 @@
 ﻿@using ProjetoHospitalShared
 
-@* <div class="card @(Leito.TipoLimpeza == TipoLimpezaEnum.Concorrente ? "concorrente" : "terminal")">
+<div class="card @(Leito.PrecisaLimpezaConcorrente ? "concorrente" : "terminal")">
     <div class="card-body">
         <div class="d-flex align-items-center justify-content-start">
             <div class="d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-bed fa-2xl"></i>
             </div>
             <div class="ms-2">
-                <span class="quarto fs-5 fw-bold ms-1">Quarto @Leito.NomeQuarto - @Leito.Nome</span>
+                <span class="quarto fs-5 fw-bold ms-1">Quarto @Leito.QuartoNome - @Leito.LeitoNome</span>
                 <div class="d-flex align-items-center justify-content-center">
                     <i class="fa-solid fa-location-dot fa-lg"></i>
-                    <span class="fs-5 ms-1">Setor @Leito.NomeSetor</span>
+                    <span class="fs-5 ms-1">Setor @Leito.SetorNome</span>
                 </div>
             </div>
         </div>
@@ -28,4 +28,4 @@
             </button>
         </div>
     </div>
-</div> *@
+</div>

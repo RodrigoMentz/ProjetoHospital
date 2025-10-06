@@ -46,6 +46,19 @@
             return response;
         }
 
+        public async Task<ResponseModel> AtualizarOcupadoAsync(LeitoViewModel leito)
+        {
+            var url = $"Leito/atualizar/ocupado";
+
+            var response = await httpService
+                 .PutJsonAsync<LeitoViewModel, ResponseModel>(
+                     url,
+                     leito)
+                 .ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<ResponseModel> DeletarAsync(LeitoViewModel leito)
         {
             var url = $"Leito/deletar";

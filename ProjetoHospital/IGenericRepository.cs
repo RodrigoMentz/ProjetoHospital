@@ -30,6 +30,11 @@ namespace ProjetoHospital
             Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] includes);
 
+        Task<List<TDerived>> FindAllDerivedAsync<TDerived>(
+            Expression<Func<TDerived, bool>> predicate,
+            params Expression<Func<TDerived, object>>[] includeProperties)
+            where TDerived : class, TEntity;
+
         Task<TEntity> FindAsync(params object[] keys);
 
         Task<TEntity> FindAsync(

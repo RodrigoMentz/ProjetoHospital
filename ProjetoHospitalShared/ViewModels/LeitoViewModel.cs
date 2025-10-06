@@ -40,9 +40,20 @@
             this.Ativo = ativo;
         }
 
+        public LeitoViewModel(
+            int id,
+            bool ocupado)
+        {
+            this.Id = id;
+            this.Ocupado = ocupado;
+            this.Nome = string.Empty;
+        }
+
         public int Id { get; set; }
 
         public string Nome { get; set; }
+
+        public bool Ocupado { get; set; }
 
         public int IdQuarto { get; set; }
 

@@ -9,27 +9,22 @@ namespace ProjetoHospitalWebAssembly.Pages
     public partial class QuartosParaLimpeza
     {
         [Inject]
-        private NavigationManager NavigationManager { get; set; } = null!;
+        private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private ILeitoService LeitoService { get; set; }
+        private ILimpezaService LimpezaService { get; set; }
+
+        [Inject]
+        private ISetorService SetorService { get; set; }
 
         [Inject]
         private IToastService ToastService { get; set; }
 
         private bool isLoading = false;
 
-        private List<SetorViewModel> setores = new()
-        {
-            new SetorViewModel(1, "SUS"),
-            new SetorViewModel(2, "Maternidade"),
-            new SetorViewModel(3, "Pediatria"),
-            new SetorViewModel(4, "Emergência"),
-            new SetorViewModel(5, "Sala vermelha"),
-            new SetorViewModel(6, "Bloco cirúrgico"),
-        };
-        private List<LeitoViewModel> leitos = new();
-        private List<LeitoViewModel> leitosFiltrados = new();
+        private List<SetorViewModel> setores = new();
+        private List<LeitoStatusLimpezaViewModel> leitos = new();
+        private List<LeitoStatusLimpezaViewModel> leitosFiltrados = new();
 
         private SetorViewModel setorSelecionado = new();
 
@@ -41,18 +36,34 @@ namespace ProjetoHospitalWebAssembly.Pages
             this.isLoading = true;
             this.StateHasChanged();
 
-            await this.Consultarleitos()
+            var responseSetores = await this.SetorService
+                .GetAsync()
+                .ConfigureAwait(true);
+
+            if (responseSetores != null && responseSetores.Success)
+            {
+                this.setores = responseSetores.Data;
+            }
+            else
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+
+                return;
+            }
+
+                await this.Consultarleitos()
                 .ConfigureAwait(true);
 
             this.leitosFiltrados = this.leitos;
 
-            //this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
-            //    .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Concorrente)
-            //    .Count();
+            this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
+                .Where(l => l.PrecisaLimpezaConcorrente)
+                .Count();
 
-            //this.quantidadeLeitosParaLimpezaTerminal = this.leitosFiltrados
-            //    .Where(l => l.TipoLimpeza == TipoLimpezaEnum.Terminal)
-            //    .Count();
+            this.quantidadeLeitosParaLimpezaTerminal = this.leitosFiltrados
+                .Where(l => l.PrecisaLimpezaTerminal)
+                .Count();
 
             var setorTodos = new SetorViewModel(0, "Todos");
             this.setores.Insert(0, setorTodos);
@@ -69,13 +80,16 @@ namespace ProjetoHospitalWebAssembly.Pages
                 this.isLoading = true;
                 this.StateHasChanged();
 
-                var response = await this.LeitoService
-                .GetAsync()
-                .ConfigureAwait(true);
+                var response = await this.LimpezaService
+                    .ConsultarListaStatusLimpezaAsync()
+                    .ConfigureAwait(true);
 
                 if (response != null && response.Success)
                 {
-                    this.leitos = response.Data;
+                    this.leitos = response.Data
+                        .Where(l => l.PrecisaLimpezaTerminal
+                            || l.PrecisaLimpezaConcorrente)
+                        .ToList();
                 }
             }
             catch (Exception e)
@@ -100,11 +114,11 @@ namespace ProjetoHospitalWebAssembly.Pages
             }
 
             this.leitosFiltrados = this.leitos
-                .Where(l => l.Quarto.IdSetor == setor.Id)
+                .Where(l => l.SetorId == setor.Id)
                 .ToList();
         }
 
-        private void LimparLeito(LeitoViewModel leito)
+        private void LimparLeito(LeitoStatusLimpezaViewModel leito)
         {
             //if (leito.TipoLimpeza == TipoLimpezaEnum.Concorrente)
             //{

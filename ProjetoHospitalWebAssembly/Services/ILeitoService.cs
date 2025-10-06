@@ -11,6 +11,8 @@
 
         Task<ResponseModel> AtualizarAsync(LeitoViewModel leito);
 
+        Task<ResponseModel> AtualizarOcupadoAsync(LeitoViewModel leito);
+
         Task<ResponseModel> DeletarAsync(LeitoViewModel leito);
 
 

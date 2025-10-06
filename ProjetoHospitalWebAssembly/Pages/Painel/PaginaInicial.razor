@@ -62,33 +62,42 @@
                 </tr>
             </thead>
             <tbody>
-                @* @foreach (var leito in this.leitos)
+                @foreach (var leito in this.statusLeitos)
                 {
                     <tr>
                         <td>
-                            <span class="fw-bold">@leito.Nome</span><br />
-                            <span>Quarto @leito.NomeQuarto</span>
+                            <span class="fw-bold">@leito.LeitoNome</span><br />
+                            <span>Quarto @leito.QuartoNome</span>
                         </td>
                         <td>
-                            <BadgeStatusQuarto Status="leito.Status" />
+                            <BadgeStatusQuarto LeitoStatus="leito" />
                         </td>
-                        <td>@leito.DataHoraUltimaLimpeza</td>
+                        <td>
+                            @if (leito.DataHoraUltimaLimpeza == DateTime.MinValue)
+                            {
+                                <span>-</span>
+                            }
+                            else
+                            {
+                                <span>@leito.DataHoraUltimaLimpeza</span>
+                            }
+                        </td>
                         <td class="align-middle">
                             <div class="btn-group gap-3" role="group">
                                 <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
-                                @if (leito.Status == StatusQuartoEnum.Disponivel)
+                                @if (!leito.Ocupado)
                                 {
-                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" />
+                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" OnClick="() => IniciarInternacao(leito)" />
                                 }
-                                @if (leito.Status == StatusQuartoEnum.Ocupado)
+                                @if (leito.Ocupado)
                                 {
-                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-check2-circle" Texto="Liberar leito" />
+                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-check2-circle" Texto="Liberar leito" OnClick="() => EncerrarInternacao(leito)" />
                                 }
 
                             </div>
                         </td>
                     </tr>
-                } *@
+                }
             </tbody>
         </table>
     </div>

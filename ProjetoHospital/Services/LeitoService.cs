@@ -101,6 +101,25 @@
             return response;
         }
 
+        public async Task<ResponseModel> AtualizarOcupadoAsync
+            (LeitoViewModel leito)
+        {
+            var leitoDb = await leitoRepository
+                .FindAsync(leito.Id)
+                .ConfigureAwait(false);
+
+            leitoDb.Ocupado = leito.Ocupado;
+            leitoDb.UltimaModificacao = DateTime.Now;
+
+            await leitoRepository
+                .UpdateAsync(leitoDb)
+                .ConfigureAwait(false);
+
+            var response = new ResponseModel();
+
+            return response;
+        }
+
         public async Task<ResponseModel> DeletarAsync
             (LeitoViewModel leito)
         {

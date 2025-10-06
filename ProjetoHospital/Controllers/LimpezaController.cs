@@ -13,6 +13,18 @@
         ILimpezaService limpezaService)
         : ControllerBase
     {
+        [HttpGet("status-limpeza")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<LeitoStatusLimpezaViewModel>>), 200)]
+        public async Task<IActionResult> ConsultarListaStatusLimpeza()
+        {
+            var resultado = await limpezaService
+                .ConsultarListaStatusLimpezaAsync()
+                .ConfigureAwait(false);
+
+            return Ok(resultado);
+        }
+
         [HttpPost("adicionar/concorrente")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel<LimpezaViewModel>), 200)]

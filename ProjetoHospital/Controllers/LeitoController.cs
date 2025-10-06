@@ -47,6 +47,18 @@ namespace ProjetoHospital.Controllers
             return this.Ok(resultado);
         }
 
+        [HttpPut("atualizar/ocupado")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel), 200)]
+        public async Task<IActionResult> AtualizarOcupado(
+            [FromBody] LeitoViewModel leito)
+        {
+            var resultado = await LeitoService
+                .AtualizarOcupadoAsync(leito);
+
+            return this.Ok(resultado);
+        }
+
         [HttpPut("deletar")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel), 200)]

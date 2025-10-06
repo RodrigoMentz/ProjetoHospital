@@ -19,6 +19,13 @@ namespace ProjetoHospital.Configuration
             builder.Property(l => l.Ativo)
                 .IsRequired();
 
+            builder.Property(l => l.Ocupado)
+               .IsRequired()
+               .HasDefaultValue(false);
+
+            builder.Property(l => l.UltimaModificacao)
+                .IsRequired(false);
+
             builder.HasOne(l => l.Quarto)
                 .WithMany(q => q.Leitos)
                 .HasForeignKey(l => l.IdQuarto)

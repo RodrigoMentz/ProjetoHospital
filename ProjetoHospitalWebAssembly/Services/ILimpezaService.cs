@@ -5,6 +5,8 @@
 
     public interface ILimpezaService
     {
+        Task<ResponseModel<List<LeitoStatusLimpezaViewModel>>> ConsultarListaStatusLimpezaAsync();
+
         Task<ResponseModel<LimpezaViewModel>> CriarConcorrenteAsync(
             LimpezaConcorrenteViewModel limpezaConcorrente);
 

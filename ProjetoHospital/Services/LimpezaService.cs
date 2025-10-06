@@ -6,9 +6,144 @@
     using ProjetoHospitalShared.ViewModels;
 
     public class LimpezaService(
-        IGenericRepository<Limpeza> limpezaRepository)
+        IGenericRepository<Limpeza> limpezaRepository,
+        IGenericRepository<Leito> leitoRepository)
         : ILimpezaService
     {
+        //public async Task<ResponseModel> ConsultarListaStatusLimpezaAsync()
+        //{
+        //    var leitos = await leitoRepository
+        //        .FindAllAsync(
+        //            l => !l.SoftDelete
+        //            && l.Ativo,
+        //            l => l.Quarto);
+
+        //    foreach (var leito in leitos)
+        //    {
+        //        var ocupado = leito.Ocupado;
+
+        //        // se tiver ocupado e ainda nao tiver uma limpeza concorrente iniciada hoje precisa de limpeza
+        //        // se tiver desocupado e nao tiver uma limpeza terminal iniciada precisa de limpeza terminal
+
+        //        // data da ultima alteracao? para ver quando foi liberado e ver se ainda precisa de limpeza terminal
+        //        if (ocupado)
+        //        {
+        //            var limpezaConcorrenteHoje = await limpezaRepository
+        //                .FindDerivedAsync<LimpezaConcorrente>(
+        //                    l => l.LeitoId == leito.Id
+        //                    && l.DataInicioLimpeza.Date == DateTime.Now.Date,
+        //                    l => l.Leito,
+        //                    l => l.Usuario);
+
+        //            if (limpezaConcorrenteHoje == null)
+        //            {
+        //                // precisa de limpeza concorrente
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var limpezaTerminalJaFeita = await limpezaRepository
+        //                .FindDerivedAsync<LimpezaTerminal>(
+        //                    l => l.LeitoId == leito.Id
+        //                    && l.DataInicioLimpeza.Date >= DateTime.Now.Date, // data ultima alteracao
+        //                    l => l.Leito,
+        //                    l => l.Usuario);
+
+        //            if (limpezaTerminalJaFeita == null)
+        //            {
+        //                // precisa de limpeza terminal
+        //            }
+        //        }
+
+        //        var limpezaEmAndamento = await limpezaRepository
+        //            .FindDerivedAsync<Limpeza>(
+        //                l => l.LeitoId == leito.Id
+        //                && l.DataFimLimpeza == null,
+        //                l => l.Leito,
+        //                l => l.Usuario);
+        //        // Aqui você pode montar uma lista de status de limpeza para cada leito
+        //        // e retornar essa lista no response.
+        //    }
+
+        //    var response = new ResponseModel();
+        //    return response;
+        //}
+
+        public async Task<ResponseModel<List<LeitoStatusLimpezaViewModel>>> ConsultarListaStatusLimpezaAsync()
+        {
+            var leitos = await leitoRepository
+                .FindAllAsync(
+                    l => !l.SoftDelete
+                    && l.Ativo,
+                    l => l.Quarto,
+                    l => l.Quarto.Setor);
+
+            var leitoIds = leitos
+                .Select(l => l.Id)
+                .ToList();
+
+            var limpezasHoje = await limpezaRepository
+                .FindAllDerivedAsync<Limpeza>(
+                    l => leitoIds.Contains(l.LeitoId)
+                    && (l.DataFimLimpeza == null
+                        || l.DataInicioLimpeza.Date == DateTime.Today),
+                    l => l.Leito,
+                    l => l.Usuario);
+
+            var listaStatus = new List<LeitoStatusLimpezaViewModel>();
+
+            foreach (var leito in leitos)
+            {
+
+                var existeLimpezaTerminalDepoisDaLiberacao = await limpezaRepository
+                    .FindAllDerivedAsync<LimpezaTerminal>(
+                        l => l.LeitoId == leito.Id
+                        && leito.UltimaModificacao != DateTime.MinValue
+                        && l.DataInicioLimpeza.Date >= leito.UltimaModificacao.Value.Date)
+                    .ConfigureAwait(false);
+
+                var status = new LeitoStatusLimpezaViewModel
+                {
+                    LeitoId = leito.Id,
+                    LeitoNome = leito.Nome,
+                    QuartoNome = leito.Quarto.Nome,
+                    SetorId = leito.Quarto.IdSetor,
+                    SetorNome = leito.Quarto.Setor.Nome,
+                    Ocupado = leito.Ocupado,
+                    PrecisaLimpezaConcorrente = leito.Ocupado && !limpezasHoje.OfType<LimpezaConcorrente>().Any(l => l.LeitoId == leito.Id) && leito.UltimaModificacao.Value.Date != DateTime.Today.Date,
+                    PrecisaLimpezaTerminal = !leito.Ocupado
+                        && leito.UltimaModificacao != DateTime.MinValue
+                        && existeLimpezaTerminalDepoisDaLiberacao == null,
+                    LimpezaEmAndamento = limpezasHoje.Any(l => l.LeitoId == leito.Id && l.DataFimLimpeza == null),
+                    DataHoraUltimaLimpeza = await GetUltimaLimpezaDataAsync(leito.Id).ConfigureAwait(false)
+                };
+
+                listaStatus.Add(status);
+            }
+
+            return new ResponseModel<List<LeitoStatusLimpezaViewModel>>
+            {
+                Data = listaStatus
+            };
+        }
+
+        private async Task<DateTime> GetUltimaLimpezaDataAsync(int leitoId)
+        {
+            var limpezas = await limpezaRepository
+                .FindAllDerivedAsync<Limpeza>(l => l.LeitoId == leitoId);
+
+            if (limpezas == null
+                || !limpezas.Any())
+            {
+                return DateTime.MinValue;
+            }
+
+            var ultimaData = limpezas
+                .Max(l => l.DataFimLimpeza ?? DateTime.MinValue);
+
+            return ultimaData;
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarLimpezaConcorrenteAsync(
             LimpezaConcorrenteViewModel limpeza)
         {
@@ -165,5 +300,7 @@
 
             return response;
         }
+
+        // criar cancelar limpeza
     }
 }

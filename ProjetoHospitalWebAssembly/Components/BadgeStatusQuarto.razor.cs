@@ -1,33 +1,32 @@
-﻿using Microsoft.AspNetCore.Components;
-using ProjetoHospitalShared;
-
-namespace ProjetoHospitalWebAssembly.Components
+﻿namespace ProjetoHospitalWebAssembly.Components
 {
+    using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared.ViewModels;
+
     public partial class BadgeStatusQuarto
     {
         [Parameter]
-        public StatusQuartoEnum Status { get; set; }
+        public LeitoStatusLimpezaViewModel LeitoStatus { get; set; }
 
         [Parameter]
         public string Class { get; set; } = string.Empty;
 
-        private string Texto => Status switch
+        private string Texto => LeitoStatus switch
         {
-            StatusQuartoEnum.Ocupado => "Ocupado",
-            StatusQuartoEnum.Disponivel => "Disponível",
-            StatusQuartoEnum.Limpeza_concorrente => "Limpeza Concorrente",
-            StatusQuartoEnum.Limpeza_terminal => "Limpeza Terminal",
-            StatusQuartoEnum.Aguardando_Revisao => "Aguardando Revisão",
-            _ => string.Empty
+            _ when LeitoStatus.Ocupado && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente => "Ocupado",
+            _ when !LeitoStatus.Ocupado && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente => "Disponível",
+            _ when LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaConcorrente => "Limpeza Concorrente",
+            _ when !LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaTerminal => "Limpeza Terminal",
+            _ => string.Empty /*TODO: aguardando revisao*/
         };
 
-        private string ClasseTextoEFundo => Status switch
+        private string ClasseTextoEFundo => LeitoStatus switch
         {
-            StatusQuartoEnum.Ocupado => "ocupados",
-            StatusQuartoEnum.Disponivel => "disponiveis",
-            StatusQuartoEnum.Limpeza_concorrente => "limpeza-concorrente",
-            StatusQuartoEnum.Limpeza_terminal => "limpeza-terminal",
-            StatusQuartoEnum.Aguardando_Revisao => "aguardando-revisao",
+            _ when LeitoStatus.Ocupado && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente => "ocupados",
+            _ when !LeitoStatus.Ocupado && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente => "disponiveis",
+            _ when LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaConcorrente => "limpeza-concorrente",
+            _ when !LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaTerminal => "limpeza-terminal",
+            //StatusQuartoEnum.Aguardando_Revisao => "aguardando-revisao", 
             _ => string.Empty
         };
     }

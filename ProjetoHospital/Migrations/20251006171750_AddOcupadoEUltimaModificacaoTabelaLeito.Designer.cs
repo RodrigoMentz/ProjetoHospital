@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjetoHospital;
 
@@ -11,9 +12,11 @@ using ProjetoHospital;
 namespace ProjetoHospital.Migrations
 {
     [DbContext(typeof(ProjetoHospitalContext))]
-    partial class ProjetoHospitalContextModelSnapshot : ModelSnapshot
+    [Migration("20251006171750_AddOcupadoEUltimaModificacaoTabelaLeito")]
+    partial class AddOcupadoEUltimaModificacaoTabelaLeito
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,14 +136,12 @@ namespace ProjetoHospital.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Ocupado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("SoftDelete")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("UltimaModificacao")
+                    b.Property<DateTime>("UltimaModificacao")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
