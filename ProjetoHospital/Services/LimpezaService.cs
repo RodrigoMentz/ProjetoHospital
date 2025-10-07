@@ -110,7 +110,7 @@
                     SetorId = leito.Quarto.IdSetor,
                     SetorNome = leito.Quarto.Setor.Nome,
                     Ocupado = leito.Ocupado,
-                    PrecisaLimpezaConcorrente = leito.Ocupado && !limpezasHoje.OfType<LimpezaConcorrente>().Any(l => l.LeitoId == leito.Id) && leito.UltimaModificacao.Value.Date != DateTime.Today.Date,
+                    PrecisaLimpezaConcorrente = leito.Ocupado && !limpezasHoje.OfType<LimpezaConcorrente>().Any(l => l.LeitoId == leito.Id) && leito.UltimaModificacao.Value.Date != DateTime.Today.AddDays(1).Date,
                     PrecisaLimpezaTerminal = !leito.Ocupado
                         && leito.UltimaModificacao != DateTime.MinValue
                         && existeLimpezaTerminalDepoisDaLiberacao == null,

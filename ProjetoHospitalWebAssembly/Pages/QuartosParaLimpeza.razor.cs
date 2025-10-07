@@ -120,16 +120,16 @@ namespace ProjetoHospitalWebAssembly.Pages
 
         private void LimparLeito(LeitoStatusLimpezaViewModel leito)
         {
-            //if (leito.TipoLimpeza == TipoLimpezaEnum.Concorrente)
-            //{
-            //    this.NavigationManager
-            //        .NavigateTo($"/limpeza-concorrente/{leito.Id}");
-            //}
-            //else
-            //{
-            //    this.NavigationManager
-            //        .NavigateTo($"/limpeza-terminal/{leito.Id}");
-            //}
+            if (leito.PrecisaLimpezaConcorrente)
+            {
+                this.NavigationManager
+                    .NavigateTo($"/limpeza-concorrente/{leito.LeitoId}");
+            }
+            else
+            {
+                this.NavigationManager
+                    .NavigateTo($"/limpeza-terminal/{leito.LeitoId}");
+            }
         }
     }
 }

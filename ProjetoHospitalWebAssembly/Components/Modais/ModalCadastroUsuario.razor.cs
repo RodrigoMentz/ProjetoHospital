@@ -4,6 +4,7 @@
     using Blazored.Modal.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
     using System.Text.RegularExpressions;
 
     public partial class ModalCadastroUsuario : ComponentBase
@@ -25,6 +26,9 @@
 
         [Parameter]
         public bool Ativo { get; set; }
+
+        [Inject]
+        public IUsuarioService UsuarioService { get; set; }
 
         private bool isLoading = false;
         private bool exibirMensagemNomeCampoObrigatorio = false;
@@ -51,18 +55,20 @@
             }
 
             // TODO: chamada para consultar perfis
-            this.perfis = new List<PerfilViewModel>
+            var response = await this.UsuarioService
+                .GetPerfisAsync()
+                .ConfigureAwait(true);
+
+            if (response != null && response.Success)
             {
-                new PerfilViewModel(1, "Limpeza"),
-                new PerfilViewModel(2, "Recepcão/Enfermagem"),
-                new PerfilViewModel(3, "Manutenção"),
-            };
+                this.perfis = response.Data;
+            }
 
             if (this.Perfil == null)
             {
-                var perfilIndefinido = new PerfilViewModel(0, "Selecione");
-                this.perfis.Insert(0, perfilIndefinido);
-                this.Perfil = this.perfis.First();
+                var perfilIndefinido = new PerfilViewModel(Guid.Empty.ToString(), "Selecione");
+                this.perfis.Add(perfilIndefinido);
+                this.Perfil = this.perfis.Where(p => p.Nome == "Selecione").FirstOrDefault();
             }
 
             this.isLoading = false;
@@ -129,7 +135,7 @@
             }
 
             if (Perfil == null
-                || Perfil.Id == 0)
+                || Perfil.Id == "0")
             {
                 this.exibirMensagemPerfilCampoObrigatorio = true;
             }

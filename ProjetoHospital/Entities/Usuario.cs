@@ -6,9 +6,11 @@
     {
         public Usuario(
             string nome,
+            string phoneNumber,
             bool ativo)
         {
             this.Nome = nome;
+            this.PhoneNumber = phoneNumber;
             this.Ativo = ativo;
         }
 

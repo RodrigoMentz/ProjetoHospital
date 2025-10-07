@@ -2,11 +2,15 @@
 {
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class Perfis : ComponentBase
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private IUsuarioService UsuarioService { get; set; }
 
         private bool isLoading = false;
 
@@ -18,12 +22,14 @@
             this.StateHasChanged();
 
             // TODO: implementar chamada para consultar perfis
-            this.perfis = new List<PerfilViewModel>
+            var response = await this.UsuarioService
+                .GetPerfisAsync()
+                .ConfigureAwait(true);
+
+            if (response != null && response.Success)
             {
-                new PerfilViewModel(1, "Limpeza"),
-                new PerfilViewModel(2, "Recepcão/Enfermagem"),
-                new PerfilViewModel(3, "Manutenção"),
-            };
+                this.perfis = response.Data;
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -32,20 +38,20 @@
         private async Task SelecionarAsync(PerfilViewModel perfil)
         {
             // TODO: implementar chamada para selecionar perfil
-            if (perfil.Id == 1)
+            if (perfil.Nome == "Limpeza")
             {
                 this.NavigationManager
                     .NavigateTo("/quartos-para-limpar");
             }
-            else if (perfil.Id == 2)
+            else if (perfil.Nome == "Recepcão/Enfermagem")
             {
                 this.NavigationManager
                     .NavigateTo("/painel");
             }
-            else if (perfil.Id == 3)
-            {
-                // TODO: implementar manutencao
-            } 
+            //else if (perfil.Id == 3)
+            //{
+            //    // TODO: implementar manutencao
+            //} 
         }
     }
 }

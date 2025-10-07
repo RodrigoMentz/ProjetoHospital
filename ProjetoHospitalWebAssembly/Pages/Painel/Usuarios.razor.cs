@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Components.Modais;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class Usuarios : ComponentBase
     {
@@ -14,6 +15,9 @@
 
         [Inject]
         private IToastService ToastService { get; set; }
+
+        [Inject]
+        private IUsuarioService UsuarioService { get; set; }
 
         private bool isLoading = false;
 
@@ -24,21 +28,8 @@
             this.isLoading = true;
             this.StateHasChanged();
 
-            var perfis = new List<PerfilViewModel>
-            {
-                new PerfilViewModel(1, "Limpeza"),
-                new PerfilViewModel(2, "Recepcão/Enfermagem"),
-                new PerfilViewModel(3, "Manutenção"),
-            };
 
-            this.usuarios = new List<UsuarioViewModel>
-            {
-                new UsuarioViewModel(1, "João da Silva", perfis.Where(p => p.Id == 1).FirstOrDefault(), "11912345678", true),
-                new UsuarioViewModel(2, "Maria Oliveira", perfis.Where(p => p.Id == 1).FirstOrDefault(), "11923456789", true),
-                new UsuarioViewModel(3, "Carlos Souza", perfis.Where(p => p.Id == 2).FirstOrDefault(), "11934567890", false),
-                new UsuarioViewModel(4, "Ana Pereira", perfis.Where(p => p.Id == 2).FirstOrDefault(), "11945678901", true),
-                new UsuarioViewModel(5, "Pedro Lima", perfis.Where(p => p.Id == 3).FirstOrDefault(), "11956789012", true),
-            };
+
             this.isLoading = false;
             this.StateHasChanged();
         }
@@ -69,9 +60,24 @@
 
                     if (novoUsuario != null)
                     {
-                        this.ToastService.ShowSuccess(
+                        var response = await this.UsuarioService
+                            .CadastrarAsync(novoUsuario)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
                             "Sucesso: Cadastro de usuário realizado");
-                        // TODO: chamada para adicionar usuario
+                        }
+                        else if (response != null && response.Notifications.Any())
+                        {
+                            foreach (var notification in response.Notifications)
+                            {
+                                this.ToastService.ShowError(
+                                    $"Erro: {notification.Message}");
+                            }
+                        }
+
                         // TODO: chamada para atualizar a lista de usuarios
                     }
                 }

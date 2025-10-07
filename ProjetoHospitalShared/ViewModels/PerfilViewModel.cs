@@ -6,14 +6,14 @@
         {
         }
         public PerfilViewModel(
-            int id,
+            string id,
             string nome)
         {
             this.Id = id;
             this.Nome = nome;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Nome { get; set; }
     }
 }
