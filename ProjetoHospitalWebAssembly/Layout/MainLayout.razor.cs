@@ -1,11 +1,16 @@
 ﻿namespace ProjetoHospitalWebAssembly.Layout
 {
     using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalWebAssembly.Services;
 
     public partial class MainLayout
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private IUsuarioService UsuarioService { get; set; }
+
 
         private string abaAtiva = "painel";
 
@@ -14,9 +19,12 @@
             this.abaAtiva = aba;
         }
 
-        private void FazerLogout()
+        private async Task FazerLogout()
         {
-            // TODO: logica para logout
+            await this.UsuarioService
+                .LogoutAsync()
+                .ConfigureAwait(true);
+
             this.NavigationManager
                 .NavigateTo("/inicio");
         }

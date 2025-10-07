@@ -1,5 +1,6 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages
 {
+    using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
@@ -17,6 +18,9 @@
         [Inject]
         private IToastService ToastService { get; set; }
 
+        [Inject]
+        private ILocalStorageService LocalStorageService { get; set; }
+
         private bool isLoading = false;
 
         private string numeroTelefone = string.Empty;
@@ -24,6 +28,26 @@
         private bool exibirSenha = false;
 
         private bool exibirMensagemCamposVazios = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                await this.TratarCacheLogado()
+                    .ConfigureAwait(true);
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
 
         private async Task LoginAsync()
         {
@@ -86,6 +110,38 @@
 
             this.isLoading = false;
             this.StateHasChanged();
+        }
+
+        private async Task TratarCacheLogado()
+        {
+            var IdUsuarioLogado = await this.LocalStorageService
+                .GetItemAsync<string>("IdUsuario")
+                .ConfigureAwait(true);
+
+            var authToken = await this.LocalStorageService
+                .GetItemAsync<string>("authToken")
+                .ConfigureAwait(true);
+
+            var perfilUsuario = await this.LocalStorageService
+                .GetItemAsync<PerfilViewModel>("perfil")
+                .ConfigureAwait(true);
+
+            if (IdUsuarioLogado != null
+                && authToken != null
+                && perfilUsuario != null)
+            {
+                if (perfilUsuario.Nome == "Limpeza")
+                {
+                    this.NavigationManager
+                        .NavigateTo("/quartos-para-limpar");
+                }
+                else if (perfilUsuario.Nome == "Recepcão/Enfermagem")
+                {
+                    this.NavigationManager
+                        .NavigateTo("/painel");
+                }
+                /* TODO: implementar outros perfis*/
+            }
         }
     }
 }

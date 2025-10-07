@@ -3,8 +3,12 @@
 <BlazoredToasts />
 <div class="page">
     <div class="menu-superior fixed-top">
-        <div class="ps-3 py-3">
-            <span class="fs-4">Olá, Rodrigo</span>
+        <div class="p-3 d-flex @(!string.IsNullOrEmpty(nomeUsuario) ? "justify-content-between" : "justify-content-end")">
+            @if (!string.IsNullOrEmpty(nomeUsuario))
+            {
+                <span class="fs-4 text-truncate">Olá, @nomeUsuario</span>
+            }
+            <BotaoSecundario ClassTexto="fs-6" Texto="Sair" OnClick="Logout" />
         </div>
     </div>
     <main>

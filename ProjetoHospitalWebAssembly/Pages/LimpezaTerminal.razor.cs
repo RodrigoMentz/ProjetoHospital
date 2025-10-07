@@ -1,5 +1,6 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages
 {
+    using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
@@ -19,6 +20,9 @@
         [Inject]
         private IToastService ToastService { get; set; }
 
+        [Inject]
+        private ILocalStorageService LocalStorageService { get; set; }
+
         private bool isLoading = false;
 
         private LimpezaTerminalViewModel limpeza = new();
@@ -30,9 +34,22 @@
                 this.isLoading = true;
                 this.StateHasChanged();
 
+                var IdUsuarioLogado = await this.LocalStorageService
+                    .GetItemAsync<string>("IdUsuario")
+                    .ConfigureAwait(true);
+
+                if (string.IsNullOrWhiteSpace(this.IdLeito) ||
+                    string.IsNullOrWhiteSpace(IdUsuarioLogado))
+                {
+                    this.NavigationManager
+                        .NavigateTo($"/inicio");
+
+                    return;
+                }
+
                 this.limpeza.DataInicioLimpeza = DateTime.Now;
                 this.limpeza.LeitoId = int.Parse(this.IdLeito);
-                this.limpeza.UsuarioId = "1"; // TODO: Pegar o ID do usuário logado
+                this.limpeza.UsuarioId = IdUsuarioLogado;
 
                 var response = await LimpezaService
                     .CriarTerminalAsync(this.limpeza)
