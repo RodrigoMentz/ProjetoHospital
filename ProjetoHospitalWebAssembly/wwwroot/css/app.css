@@ -177,3 +177,8 @@ select.form-select:focus {
     max-width: 900px !important;
     width: 90vw;
 }
+
+.blazored-toast-container.position-topright {
+    top: calc(3rem + 50px) !important;
+    right: 1rem !important;
+}

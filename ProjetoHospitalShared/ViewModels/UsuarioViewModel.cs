@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjetoHospitalShared.ViewModels
+﻿namespace ProjetoHospitalShared.ViewModels
 {
     public class UsuarioViewModel
     {
@@ -36,6 +30,14 @@ namespace ProjetoHospitalShared.ViewModels
             this.Perfil = perfil;
             this.NumeroTelefone = numeroTelefone;
             this.Ativo = ativo;
+        }
+
+        public UsuarioViewModel(
+            string? id,
+            string nome)
+        {
+            this.Id = id;
+            this.Nome = nome;
         }
 
         public string? Id { get; set; }

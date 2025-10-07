@@ -38,8 +38,8 @@
                     .GetItemAsync<string>("IdUsuario")
                     .ConfigureAwait(true);
 
-                if (string.IsNullOrWhiteSpace(this.IdLeito) ||
-                    string.IsNullOrWhiteSpace(IdUsuarioLogado))
+                if (string.IsNullOrWhiteSpace(this.IdLeito)
+                    || string.IsNullOrWhiteSpace(IdUsuarioLogado))
                 {
                     this.NavigationManager
                         .NavigateTo($"/inicio");

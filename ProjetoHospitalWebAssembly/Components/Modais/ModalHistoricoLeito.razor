@@ -1,0 +1,37 @@
+﻿@if (this.isLoading)
+{
+    <Loading />
+}
+else
+{
+    <RadzenTimeline Orientation="Orientation.Vertical" LinePosition="LinePosition.Center" Reverse="false" class="rz-m-4">
+        <Items>
+            @foreach (var limpeza in limpezas)
+            {
+                <RadzenTimelineItem PointStyle="PointStyle.Primary">
+                    <LabelContent>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
+                            <div class="d-flex flex-column">
+                                <span>Data de início: @limpeza.DataInicioLimpeza</span>
+                                <span>Data de finalização: @limpeza.DataFimLimpeza</span>
+                            </div>
+                        </RadzenText>
+                    </LabelContent>
+                    <ChildContent>
+                        <div class="d-flex flex-column">
+                            @if (limpeza.TipoLimpeza == 0)
+                            {
+                                <span>Limpeza concorrente</span>
+                            }
+                            else
+                            {
+                                <span>Limpeza terminal</span>
+                            }
+                            <span>Feita por: @limpeza.Usuario.Nome</span>
+                        </div>
+                    </ChildContent>
+                </RadzenTimelineItem>
+            }
+        </Items>
+    </RadzenTimeline>
+}

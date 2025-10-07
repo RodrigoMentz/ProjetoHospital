@@ -7,6 +7,9 @@
     {
         Task<ResponseModel<List<LeitoStatusLimpezaViewModel>>> ConsultarListaStatusLimpezaAsync();
 
+        Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasDoLeito(
+            LeitoViewModel leito);
+
         Task<ResponseModel<LimpezaViewModel>> CriarLimpezaConcorrenteAsync(
             LimpezaConcorrenteViewModel limpeza);
 

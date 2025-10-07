@@ -49,6 +49,13 @@
             this.Nome = string.Empty;
         }
 
+        public LeitoViewModel(
+            int id)
+        {
+            Id = id;
+            this.Nome = string.Empty;
+        }
+
         public int Id { get; set; }
 
         public string Nome { get; set; }

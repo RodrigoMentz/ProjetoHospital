@@ -84,7 +84,7 @@
                         </td>
                         <td class="align-middle">
                             <div class="btn-group gap-3" role="group">
-                                <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" />
+                                <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" OnClick="() => VisualizarDetalhesAsync(leito.LeitoId)" />
                                 @if (!leito.Ocupado)
                                 {
                                     <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" OnClick="() => IniciarInternacao(leito)" />

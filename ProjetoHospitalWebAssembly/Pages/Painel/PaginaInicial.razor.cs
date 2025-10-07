@@ -202,5 +202,44 @@
             this.isLoading = false;
             this.StateHasChanged();
         }
+
+        private async Task VisualizarDetalhesAsync(int IdLeito)
+        {
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                var parametros = new ModalParameters();
+
+                parametros.Add(
+                    nameof(ModalHistoricoLeito.IdLeito),
+                    IdLeito);
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalHistoricoLeito>(
+                        "Histórico de limpezas do leito",
+                        parametros,
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
     }
 }

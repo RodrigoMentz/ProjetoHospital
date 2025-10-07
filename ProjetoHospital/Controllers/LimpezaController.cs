@@ -25,6 +25,19 @@
             return Ok(resultado);
         }
 
+        [HttpPost("limpezas-do-leito")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<LimpezaViewModel>>), 200)]
+        public async Task<IActionResult> ConsultarLimpezasDoleito(
+            [FromBody] LeitoViewModel leito)
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezasDoLeito(leito)
+                .ConfigureAwait(false);
+
+            return Ok(resultado);
+        }
+
         [HttpPost("adicionar/concorrente")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel<LimpezaViewModel>), 200)]

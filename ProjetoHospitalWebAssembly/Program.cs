@@ -8,6 +8,7 @@ namespace ProjetoHospitalWebAssembly
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using ProjetoHospitalWebAssembly.Services;
     using ProjetoHospitalWebAssembly.Services.Http;
+    using Radzen;
     using System.Net;
 
     public class Program
@@ -21,6 +22,7 @@ namespace ProjetoHospitalWebAssembly
             builder.Services.AddBlazoredModal();
             builder.Services.AddBlazoredToast();
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddRadzenComponents();
 
             builder.Services.AddSingleton(sp =>
             {

@@ -3,6 +3,7 @@
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services.Http;
+    using System.Collections.Generic;
 
     public class LimpezaService(
         IHttpService httpService)
@@ -14,6 +15,20 @@
 
             var response = await httpService
                 .GetJsonAsync<ResponseModel<List<LeitoStatusLimpezaViewModel>>>(url)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseModel<List<LimpezaViewModel>>>ConsultarLimpezasDoLeitoAsync(
+            LeitoViewModel leito)
+        {
+            var url = $"Limpeza/limpezas-do-leito";
+
+            var response = await httpService
+                .PostJsonAsync<LeitoViewModel, ResponseModel<List<LimpezaViewModel>>>(
+                    url,
+                    leito)
                 .ConfigureAwait(false);
 
             return response;

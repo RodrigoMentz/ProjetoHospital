@@ -85,6 +85,35 @@
             return ultimaData;
         }
 
+        public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasDoLeito(
+            LeitoViewModel leito)
+        {
+            var limpezas = await limpezaRepository
+                .FindAllDerivedAsync<Limpeza>(
+                    l => l.LeitoId == leito.Id,
+                    l => l.Leito,
+                    l => l.Usuario);
+
+            var listaLimpezas = limpezas
+                .Select(l => new LimpezaViewModel(
+                    l.Id,
+                    l.LeitoId,
+                    l.Leito.Nome,
+                    l.UsuarioId,
+                    new UsuarioViewModel(
+                        l.Usuario.Id,
+                        l.Usuario.Nome),
+                    l.TipoLimpeza,
+                    l.DataInicioLimpeza,
+                    l.DataFimLimpeza))
+                .ToList();
+
+            return new ResponseModel<List<LimpezaViewModel>>
+            {
+                Data = listaLimpezas
+            };
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarLimpezaConcorrenteAsync(
             LimpezaConcorrenteViewModel limpeza)
         {
