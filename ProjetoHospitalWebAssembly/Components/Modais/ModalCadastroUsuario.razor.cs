@@ -2,6 +2,7 @@
 {
     using Blazored.Modal;
     using Blazored.Modal.Services;
+    using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
@@ -13,7 +14,7 @@
         public BlazoredModalInstance ModalInstance { get; set; }
 
         [Parameter]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Parameter]
         public string Nome { get; set; } = string.Empty;
@@ -30,11 +31,15 @@
         [Inject]
         public IUsuarioService UsuarioService { get; set; }
 
+        [Inject]
+        private IToastService ToastService { get; set; }
+
         private bool isLoading = false;
         private bool exibirMensagemNomeCampoObrigatorio = false;
         private bool exibirMensagemNumeroCampoObrigatorio = false;
         private bool exibirMensagemNumeroFormatoErrado = false;
         private bool exibirMensagemPerfilCampoObrigatorio = false;
+        private bool exibirMensagemSenhaRedefinida = false;
 
         private bool ativoInterno = true;
 
@@ -45,7 +50,7 @@
             this.isLoading = true;
             this.StateHasChanged();
 
-            if (Id != 0)
+            if ((!string.IsNullOrEmpty(this.Id)))
             {
                 this.ativoInterno = this.Ativo;
             }
@@ -75,6 +80,49 @@
             this.StateHasChanged();
         }
 
+        private async Task ReiniciarSenha()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var resetarSenhaViewModel = new ResetarSenhaViewModel(
+                    "HpCanela25!",
+                    "HpCanela25!");
+
+                resetarSenhaViewModel.Id = this.Id;
+
+                var response = await this.UsuarioService
+                    .ResetarSenhaAsync(resetarSenhaViewModel)
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.exibirMensagemSenhaRedefinida = true;
+
+                    this.ToastService.ShowSuccess(
+                        "Sucesso: Senha reiniciada com sucesso");
+                }
+                else if (response != null && response.Notifications.Any())
+                {
+                    foreach (var notification in response.Notifications)
+                    {
+                        this.ToastService.ShowError(
+                            $"Erro: {notification.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
         private async Task SalvarAsync()
         {
             this.Perfil = this.perfis
@@ -86,7 +134,7 @@
                 return;
             }
 
-            if (this.Id != 0)
+            if ((!string.IsNullOrEmpty(this.Id)))
             {
                 var usuarioparaEdicao = new UsuarioViewModel(
                     this.Id,

@@ -19,5 +19,15 @@
         public bool Ativo { get; set; }
 
         public virtual ICollection<UsuarioRole> UsuarioRoles { get; set; }
+
+        public void Modify(
+            string nome,
+            string numeroCelular,
+            bool ativo)
+        {
+            this.Nome = nome;
+            this.PhoneNumber = numeroCelular;
+            this.Ativo = ativo;
+        }
     }
 }

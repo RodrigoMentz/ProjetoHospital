@@ -28,7 +28,34 @@
             this.isLoading = true;
             this.StateHasChanged();
 
+            await this.ConsultarAsync()
+                .ConfigureAwait(true);
 
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ConsultarAsync()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.UsuarioService
+                    .GetUsuariosAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.usuarios = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -78,7 +105,8 @@
                             }
                         }
 
-                        // TODO: chamada para atualizar a lista de usuarios
+                        await this.ConsultarAsync()
+                            .ConfigureAwait(true);
                     }
                 }
             }
@@ -137,10 +165,26 @@
 
                     if (usuarioEditado != null)
                     {
-                        this.ToastService.ShowSuccess(
-                            "Sucesso: Atualização de usuário realizada");
-                        // TODO: chamada para editar usuario
-                        // TODO: chamada para atualizar a lista de usuarios
+                        var response = await this.UsuarioService
+                            .AtualizarAsync(usuarioEditado)
+                            .ConfigureAwait(true);
+
+                        if (response != null && response.Success)
+                        {
+                            this.ToastService.ShowSuccess(
+                                "Sucesso: Atualização de usuário realizada");
+                        }
+                        else if (response != null && response.Notifications.Any())
+                        {
+                            foreach (var notification in response.Notifications)
+                            {
+                                this.ToastService.ShowError(
+                                    $"Erro: {notification.Message}");
+                            }
+                        }
+
+                        await this.ConsultarAsync()
+                           .ConfigureAwait(true);
                     }
                 }
             }

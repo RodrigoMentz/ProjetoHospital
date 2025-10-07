@@ -13,7 +13,7 @@ namespace ProjetoHospitalShared.ViewModels
         }
 
         public UsuarioViewModel(
-            int id,
+            string id,
             string nome,
             PerfilViewModel perfil,
             string numeroTelefone,
@@ -38,7 +38,7 @@ namespace ProjetoHospitalShared.ViewModels
             this.Ativo = ativo;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Nome { get; set; }
 

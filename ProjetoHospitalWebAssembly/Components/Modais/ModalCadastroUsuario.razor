@@ -41,11 +41,24 @@ else
                 }
             </select>
         </div>
-        @if (this.exibirMensagemPerfilCampoObrigatorio)
+        @if(this.exibirMensagemPerfilCampoObrigatorio)
         {
             <div class="mb-3">
                 <span class="fs-5 text-danger">O campo Perfil é obrigatório</span>
             </div>
+        }
+        @if (!string.IsNullOrEmpty(this.Id))
+        {
+            <div class="my-3">
+                <BotaoSecundario Texto="Reiniciar senha" OnClick="ReiniciarSenha" Disabled="this.isLoading" />
+            </div>
+
+            @if (this.exibirMensagemSenhaRedefinida)
+            {
+                <div class="mb-3">
+                    <span class="fs-5 text-success">Senha reiniciada com sucesso. A nova senha é: <strong>HpCanela25!</strong></span>
+                </div>
+            }
         }
         <div class="mb-3 form-check d-flex align-items-center">
             <input type="checkbox" class="form-check-input" id="ativoUsuario" disabled="@this.isLoading" @bind="ativoInterno">

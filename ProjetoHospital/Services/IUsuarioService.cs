@@ -6,8 +6,17 @@
 
     public interface IUsuarioService
     {
-        Task<ResponseModel<Usuario>> Cadastrar(UsuarioViewModel cadastro);
+        Task<ResponseModel<List<UsuarioViewModel>>> GetAsync();
+
+        Task<ResponseModel> CadastrarAsync(
+            UsuarioViewModel cadastro);
+
+        Task<ResponseModel> AtualizarAsync(
+            UsuarioViewModel cadastro);
 
         Task<ResponseModel<List<PerfilViewModel>>> GetPerfis();
+
+        Task<ResponseModel> ResetarSenhaAsync(
+            ResetarSenhaViewModel resetarSenhaViewModel);
     }
 }

@@ -1,47 +1,54 @@
 ﻿@page "/usuarios"
 @using ProjetoHospitalWebAssembly.Components
 
-<div class="d-flex justify-content-between mt-4">
-    <h1 class="fs-3">Gerenciar Usuarios</h1>
-    <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar usuário" OnClick="AdicionarAsync" />
-</div>
-<div class="card mt-4">
-    <div class="card-header">
-        <h2 class="fs-4">Usuarios</h2>
+@if (this.isLoading)
+{
+    <Loading />
+}
+else
+{
+    <div class="d-flex justify-content-between mt-4">
+        <h1 class="fs-3">Gerenciar Usuarios</h1>
+        <BotaoPrincipal IconeBootstrap="bi-plus" Class="gap-1" ClassTexto="fs-6" Texto="Adicionar usuário" OnClick="AdicionarAsync" />
     </div>
-    <div class="card-body p-0 table-responsive">
-        <table class="table table-hover m-0">
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Perfil</th>
-                    <th scope="col">Num telefone</th>
-                    <th scope="col">Status</th>
-                    <th scope="col" class="text-center">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var usuario in usuarios)
-                {
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2 class="fs-4">Usuarios</h2>
+        </div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-hover m-0">
+                <thead>
                     <tr>
-                        <td>
-                            <span>@usuario.Nome</span>
-                        </td>
-                        <td>
-                            <span>@usuario.Perfil.Nome</span>
-                        </td>
-                        <td>
-                            <span>@usuario.NumeroTelefone</span>
-                        </td>
-                        <td>
-                            <BadgeStatusAtivo Ativo="usuario.Ativo" />
-                        </td>
-                        <td class="d-flex flex-row justify-content-center">
-                            <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" OnClick="() => EditarAsync(usuario)" />
-                        </td>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Perfil</th>
+                        <th scope="col">Num telefone</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-center">Ações</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in usuarios)
+                    {
+                        <tr>
+                            <td>
+                                <span>@usuario.Nome</span>
+                            </td>
+                            <td>
+                                <span>@usuario.Perfil.Nome</span>
+                            </td>
+                            <td>
+                                <span>@usuario.NumeroTelefone</span>
+                            </td>
+                            <td>
+                                <BadgeStatusAtivo Ativo="usuario.Ativo" />
+                            </td>
+                            <td class="d-flex flex-row justify-content-center">
+                                <BotaoSecundario ClassTexto="fs-6" Class="gap-1 ms-2" IconeBootstrap="bi-pen" Texto="Editar" OnClick="() => EditarAsync(usuario)" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+}

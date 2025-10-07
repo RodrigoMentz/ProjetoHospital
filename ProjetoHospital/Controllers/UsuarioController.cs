@@ -13,6 +13,18 @@
         IUsuarioService UsuarioService)
         : ControllerBase
     {
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<UsuarioViewModel>>), 200)]
+        public async Task<IActionResult> GetUsuarios()
+        {
+            var resultado = await UsuarioService
+                .GetAsync()
+                .ConfigureAwait(false);
+
+            return Ok(resultado);
+        }
+
         [HttpGet("perfis")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel<List<PerfilViewModel>>), 200)]
@@ -31,9 +43,34 @@
             [FromBody] UsuarioViewModel cadastro)
         {
             var resultado = await UsuarioService
-                .Cadastrar(cadastro);
+                .CadastrarAsync(cadastro);
 
             return this.Ok(resultado);
+        }
+
+        [HttpPost("atualizar")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel), 200)]
+        public async Task<IActionResult> Atualizar(
+            [FromBody] UsuarioViewModel cadastro)
+        {
+            var resultado = await UsuarioService
+                .AtualizarAsync(cadastro);
+
+            return this.Ok(resultado);
+        }
+
+        [HttpPost("resetar-senha")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel), 200)]
+        public async Task<IActionResult> ResetarSenhaAsyncV2(
+        [FromBody] ResetarSenhaViewModel resetarSenhaViewModel)
+        {
+            var resultado = await UsuarioService
+                .ResetarSenhaAsync(resetarSenhaViewModel)
+                .ConfigureAwait(false);
+
+            return Ok(resultado);
         }
     }
 }

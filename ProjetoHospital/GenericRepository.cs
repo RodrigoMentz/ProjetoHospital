@@ -161,6 +161,21 @@
                 .ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<TEntity>> FindAllAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        {
+            IQueryable<TEntity> query = this.DbSet;
+
+            if (include != null)
+                query = include(query);
+
+            return await query
+                .Where(predicate)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> where)
         {
             return await this.DbSet.Where<TEntity>(where).ToListAsync();
