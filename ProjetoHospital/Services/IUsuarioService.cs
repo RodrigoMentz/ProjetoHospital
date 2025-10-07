@@ -1,6 +1,6 @@
 ﻿namespace ProjetoHospital.Services
 {
-    using ProjetoHospital.Entities;
+    using ProjetoHospital.Models;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
 
@@ -18,5 +18,8 @@
 
         Task<ResponseModel> ResetarSenhaAsync(
             ResetarSenhaViewModel resetarSenhaViewModel);
+
+        Task<ResponseModel<AcessoModel>> LoginAsync(
+            LoginViewModel login);
     }
 }

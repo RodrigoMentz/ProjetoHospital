@@ -1,0 +1,46 @@
+﻿@page "/cadastrar-senha"
+@layout EmptyLayout
+
+<div class="card mt-5">
+    <div class="cabecalho px-3 py-2">
+        <h1>Cadastre sua senha:</h1>
+    </div>
+    <div class="card-body px-2 py-2">
+        <div class="row">
+            <div class="d-flex flex-column gap-1">
+                <span class="@(senhaTemNoMinimo6Digitos ? "text-success" : string.Empty)">Sua senha deve ter no mínimo 6 dígitos.</span>
+                <span class="@(senhaTemNoMinimo1NaoAlfanumerico ? "text-success" : string.Empty)">Sua senha deve ter no mínimo 1 dígito sem ser letras e números.</span>
+                <span class="@(senhaTemNoMinimo1Numero ? "text-success" : string.Empty)">Sua senha deve ter no mínimo 1 dígito numérico.</span>
+            </div>
+            <form>
+                <div class="mt-3">
+                    <label for="senha" class="form-label fs-5">Senha</label>
+                    <input type="@(exibirSenhas ? "text" : "password")" class="form-control" id="senha" aria-describedby="Senha" @bind-value="Senha" @bind-value:event="oninput" disabled="@this.isLoading">
+                </div>
+                <div class="mt-3">
+                    <label for="confirmarSenha" class="form-label fs-5">Confirmar senha</label>
+                    <input type="@(exibirSenhas ? "text" : "password")" class="form-control" id="confirmarSenha" aria-describedby="Confirmar sua senha" @bind-value="confirmarSenha" disabled="@this.isLoading">
+                </div>
+                <div class="mt-3 form-check d-flex align-items-center">
+                    <input type="checkbox" class="form-check-input" id="exibirSenha" @bind="exibirSenhas" disabled="@this.isLoading">
+                    <label class="form-check-label fs-5 ms-2" for="exibirSenha">Exibir senhas</label>
+                </div>
+                @if (exibirMensagemCamposVazios)
+                {
+                    <div class="mt-3 d-flex align-items-center">
+                        <span class="text-danger fs-5">Preencha os campos adequadamente</span>
+                    </div>
+                }
+                @if (exibirMensagemCamposDiferentes)
+                {
+                    <div class="mt-3 d-flex align-items-center">
+                        <span class="text-danger fs-5">As senhas não conferem. Verifique as senhas e tente novamente</span>
+                    </div>
+                }
+                <div class="mt-3 d-grid">
+                    <BotaoPrincipal Texto="Cadastrar senha" OnClick="CadastrarSenha" Disabled="this.isLoading" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

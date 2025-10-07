@@ -17,5 +17,10 @@
 
         Task<ResponseModel> ResetarSenhaAsync(
             ResetarSenhaViewModel resetarSenha);
+
+        Task<ResponseModel<AcessoViewModel>> LoginAsync(
+            LoginViewModel login);
+
+        Task LogoutAsync();
     }
 }

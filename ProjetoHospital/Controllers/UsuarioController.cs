@@ -1,7 +1,10 @@
 ﻿namespace ProjetoHospital.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using ProjetoHospital.Entities;
+    using ProjetoHospital.Models;
     using ProjetoHospital.Services;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
@@ -10,7 +13,8 @@
     [ApiController]
     [Route("api/[controller]")]
     public class UsuarioController(
-        IUsuarioService UsuarioService)
+        IUsuarioService UsuarioService,
+        SignInManager<Usuario> signInManager)
         : ControllerBase
     {
         [HttpGet]
@@ -64,13 +68,52 @@
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel), 200)]
         public async Task<IActionResult> ResetarSenhaAsyncV2(
-        [FromBody] ResetarSenhaViewModel resetarSenhaViewModel)
+            [FromBody] ResetarSenhaViewModel resetarSenhaViewModel)
         {
             var resultado = await UsuarioService
                 .ResetarSenhaAsync(resetarSenhaViewModel)
                 .ConfigureAwait(false);
 
             return Ok(resultado);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        [ProducesResponseType(typeof(ResponseModel<AcessoViewModel>), 200)]
+        public async Task<IActionResult> Login(
+            [FromBody] LoginViewModel login)
+        {
+            var resultado = await UsuarioService
+                .LoginAsync(
+                    login)
+                .ConfigureAwait(true);
+
+            if (resultado.Data == null)
+            {
+                return this.Ok(resultado);
+            }
+
+            return await this.GerarAcesso(resultado.Data);
+        }
+
+        [AllowAnonymous]
+        private async Task<IActionResult> GerarAcesso(
+            AcessoModel acesso)
+        {
+            this.HttpContext.User = await signInManager
+                .CreateUserPrincipalAsync(acesso.Usuario);
+
+            var acessoResponse = new AcessoViewModel(
+                acesso.Token,
+                acesso.NumTelefone,
+                new PerfilViewModel(
+                    acesso.Role.Id,
+                    acesso.Role.Name),
+                acesso.Usuario.Id,
+                acesso.Usuario.Nome,
+                acesso.NumTelefoneConfirmado);
+
+            return this.Ok(new ResponseModel<AcessoViewModel>(acessoResponse));
         }
     }
 }

@@ -3,14 +3,20 @@
     using Flunt.Notifications;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.IdentityModel.Tokens;
     using ProjetoHospital.Entities;
+    using ProjetoHospital.Models;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using System.Data;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
 
     public class UsuarioService(
         IGenericRepository<Usuario> usuarioRepository,
         UserManager<Usuario> usuarioManager,
+        SignInManager<Usuario> signInManager,
         RoleManager<Role> roleManager)
         : IUsuarioService
     {
@@ -233,9 +239,9 @@
         public async Task<ResponseModel<List<PerfilViewModel>>> GetPerfis()
         {
             var roles = await roleManager
-        .Roles
-        .ToListAsync()
-        .ConfigureAwait(false);
+                .Roles
+                .ToListAsync()
+                .ConfigureAwait(false);
 
             var perfis = roles
                 .Select(r => new PerfilViewModel(r.Id, r.Name ?? string.Empty))
@@ -274,6 +280,23 @@
                     resetarSenhaViewModel.Senha)
                 .ConfigureAwait(false);
 
+            if (resetarSenhaViewModel.Senha == "HpCanela25!")
+            {
+                usuario.PhoneNumberConfirmed = false;
+
+                await usuarioManager
+                    .UpdateAsync(usuario)
+                    .ConfigureAwait(false);
+            }
+            else
+            {
+                usuario.PhoneNumberConfirmed = true;
+
+                await usuarioManager
+                    .UpdateAsync(usuario)
+                    .ConfigureAwait(false);
+            }
+
             if (!resultado.Succeeded)
             {
                 return new ResponseModel(resultado.Errors.Select(e => new Notification(
@@ -282,6 +305,141 @@
             }
 
             return new ResponseModel();
+        }
+
+        public async Task<ResponseModel<AcessoModel>> LoginAsync(
+            LoginViewModel login)
+        {
+            var usuarioDb = await usuarioRepository
+                .FindAsync(u => u.PhoneNumber == login.NumTelefone
+                    && u.Ativo)
+                .ConfigureAwait(false);
+
+            if (usuarioDb is null)
+            {
+                return new ResponseModel<AcessoModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Usuario.Login", "Usuário não encontrado."),
+                        });
+            }
+
+            var usuario = await usuarioManager
+                .FindByIdAsync(usuarioDb.Id)
+                .ConfigureAwait(false);
+
+            if (usuario is null)
+            {
+                return new ResponseModel<AcessoModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Usuario.Login", "Usuário não encontrado."),
+                        });
+            }
+
+            var result = await signInManager
+                .PasswordSignInAsync(
+                    usuario,
+                    login.Senha,
+                    true,
+                    true)
+                .ConfigureAwait(false);
+
+            if (!result.Succeeded)
+            {
+                return new ResponseModel<AcessoModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Usuario.Login", "Usuário ou senha incorretos."),
+                        });
+            }
+
+            await usuarioRepository
+                .UpdateAsync(usuario)
+                .ConfigureAwait(false);
+
+            var rolesUser = await usuarioManager
+                .GetRolesAsync(usuario)
+                .ConfigureAwait(false);
+
+            var roleName = rolesUser.FirstOrDefault();
+
+            if (roleName is null)
+            {
+                return new ResponseModel<AcessoModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Usuario.Login", "Usuário sem permissão de acesso."),
+                        });
+            }
+
+            var role = await roleManager
+                .FindByNameAsync(roleName)
+                .ConfigureAwait(false);
+
+            var token = await this.GerarJWTAsync(
+                   usuario,
+                   role.Name)
+               .ConfigureAwait(false);
+
+            var acesso = new AcessoModel(
+                token,
+                login.NumTelefone,
+                usuario,
+                role,
+                usuario.PhoneNumberConfirmed);
+
+            return new ResponseModel<AcessoModel>(acesso);
+        }
+
+        private async Task<string> GerarJWTAsync(
+            Usuario usuario,
+            string role,
+            bool tokenTemValidade = true,
+            bool addRole = true,
+            bool addAudience = true)
+        {
+            var identityClaims = new ClaimsIdentity();
+
+            identityClaims.AddClaims(await usuarioManager
+                .GetClaimsAsync(usuario)
+                .ConfigureAwait(false));
+
+            identityClaims.AddClaim(new Claim(
+                    ClaimTypes.NameIdentifier,
+                    usuario.Id.ToString()));
+
+            if (addRole)
+            {
+                identityClaims.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var key = Encoding.ASCII.GetBytes("xvQ7qG9PZrW0n6pQXeE7x8A3Oa6fK9YtG5vW2zM4rJ1hL8nP0eC7sT9dU2qR6jV5mB1xF8wK3tS4cY0zN7uH9pD==");
+
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                Issuer = "PROJETOHOSPITAL",
+                Audience = addAudience
+                    ? "http://localhost"
+                    : default,
+                Expires = tokenTemValidade
+                    ? DateTime.UtcNow.AddHours(120)
+                    : DateTime.UtcNow.AddYears(2),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature),
+            };
+
+            return tokenHandler
+                .WriteToken(tokenHandler.CreateToken(tokenDescriptor));
         }
     }
 }

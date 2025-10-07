@@ -1,5 +1,6 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages
 {
+    using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
@@ -11,6 +12,9 @@
 
         [Inject]
         private IUsuarioService UsuarioService { get; set; }
+
+        [Inject]
+        private ILocalStorageService localStorageService { get; set; }
 
         private bool isLoading = false;
 
@@ -26,9 +30,20 @@
                 .GetPerfisAsync()
                 .ConfigureAwait(true);
 
+            var perfilLocalStorage = await this.localStorageService
+                .GetItemAsync<PerfilViewModel>("perfil")
+                .ConfigureAwait(true);
+
             if (response != null && response.Success)
             {
                 this.perfis = response.Data;
+
+                var perfilDoUsuario = this.perfis
+                    .FirstOrDefault(p => p.Id == perfilLocalStorage?.Id);
+
+                await this.SelecionarAsync(
+                        perfilDoUsuario)
+                    .ConfigureAwait(true);
             }
 
             this.isLoading = false;
@@ -37,7 +52,6 @@
 
         private async Task SelecionarAsync(PerfilViewModel perfil)
         {
-            // TODO: implementar chamada para selecionar perfil
             if (perfil.Nome == "Limpeza")
             {
                 this.NavigationManager

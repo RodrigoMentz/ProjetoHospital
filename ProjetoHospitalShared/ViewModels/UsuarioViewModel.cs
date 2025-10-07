@@ -38,7 +38,7 @@ namespace ProjetoHospitalShared.ViewModels
             this.Ativo = ativo;
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public string Nome { get; set; }
 

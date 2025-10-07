@@ -1,21 +1,91 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages
 {
+    using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
+    using System.Threading.Tasks;
 
     public partial class Home : ComponentBase
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        private IUsuarioService UsuarioService { get; set; }
+
+        [Inject]
+        private IToastService ToastService { get; set; }
+
+        private bool isLoading = false;
+
         private string numeroTelefone = string.Empty;
         private string senha = string.Empty;
         private bool exibirSenha = false;
 
-        private void LoginAsync()
+        private bool exibirMensagemCamposVazios = false;
+
+        private async Task LoginAsync()
         {
-            // TODO: Implementar a lógica de autenticação aqui
-            this.NavigationManager
-                .NavigateTo("/perfis");
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                this.exibirMensagemCamposVazios = false;
+
+                if (string.IsNullOrWhiteSpace(this.numeroTelefone) ||
+                    string.IsNullOrWhiteSpace(this.senha))
+                {
+                    this.exibirMensagemCamposVazios = true;
+
+                    return;
+                }
+
+                var login = new LoginViewModel(
+                    this.numeroTelefone,
+                    this.senha);
+
+                var response = await this.UsuarioService
+                    .LoginAsync(
+                        login)
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.ToastService.ShowSuccess(
+                        "Sucesso: Usuário logado com sucesso");
+
+                    await Task.Delay(2000);
+
+                    if (!response.Data.NumTelefoneConfirmado)
+                    {
+                        this.NavigationManager
+                            .NavigateTo("/cadastrar-senha");
+                    }
+                    else
+                    {
+                        this.NavigationManager
+                            .NavigateTo("/perfis");
+                    }
+                }
+                else if (response != null && response.Notifications.Any())
+                {
+                    foreach (var notification in response.Notifications)
+                    {
+                        this.ToastService.ShowError(
+                            $"Erro: {notification.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
         }
     }
 }

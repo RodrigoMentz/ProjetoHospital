@@ -2,6 +2,20 @@
 {
     public class ResetarSenhaViewModel
     {
+        public ResetarSenhaViewModel()
+        {
+        }
+
+        public ResetarSenhaViewModel(
+            string idUsuario,
+            string senha,
+            string confirmarSenha)
+        {
+            this.Id = idUsuario;
+            this.Senha = senha;
+            this.ConfirmarSenha = confirmarSenha;
+        }
+
         public ResetarSenhaViewModel(
             string senha,
             string confirmarSenha)
@@ -10,7 +24,7 @@
             this.ConfirmarSenha = confirmarSenha;
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public string Senha { get; set; }
 
