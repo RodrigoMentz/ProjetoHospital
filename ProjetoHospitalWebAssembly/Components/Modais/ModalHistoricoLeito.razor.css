@@ -1,0 +1,14 @@
+﻿.circulo {
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+}
+
+.limpeza-concorrente {
+    background-color: var(--cor-limpeza-concorrente);
+}
+
+.limpeza-terminal {
+    background-color: var(--cor-limpeza-terminal);
+}

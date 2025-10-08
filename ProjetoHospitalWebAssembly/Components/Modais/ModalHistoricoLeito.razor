@@ -4,11 +4,24 @@
 }
 else
 {
+    <div class="d-flex flex-wrap justify-content-between">
+        <span class="fs-5">Legenda:</span>
+        <div class="d-flex flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-concorrente"></div>
+                <span class="fs-5">Limpeza concorrente</span>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-terminal"></div>
+                <span class="fs-5">Limpeza terminal</span>
+            </div>
+        </div>
+    </div>
     <RadzenTimeline Orientation="Orientation.Vertical" LinePosition="LinePosition.Center" Reverse="false" class="rz-m-4">
         <Items>
             @foreach (var limpeza in limpezas)
             {
-                <RadzenTimelineItem PointStyle="PointStyle.Primary">
+                <RadzenTimelineItem PointStyle="@(limpeza.TipoLimpeza == 0 ? PointStyle.Primary : PointStyle.Secondary)">
                     <LabelContent>
                         <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
                             <div class="d-flex flex-column">

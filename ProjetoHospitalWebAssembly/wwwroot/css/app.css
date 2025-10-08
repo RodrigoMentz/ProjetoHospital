@@ -182,3 +182,11 @@ select.form-select:focus {
     top: calc(3rem + 50px) !important;
     right: 1rem !important;
 }
+
+.rz-timeline-point-primary {
+    background-color: var(--cor-limpeza-concorrente) !important;
+}
+
+.rz-timeline-point-secondary {
+    background-color: var(--cor-limpeza-terminal) !important;
+}

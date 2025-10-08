@@ -9,16 +9,6 @@ main {
     background-color: var(--cor-fundo);
 }
 
-.main {
-    height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    max-width: 1200px;
-    margin: 0 auto;
-/*    border-left: 1px solid black;
-    border-right: 1px solid black;*/
-}
-
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
@@ -106,5 +96,16 @@ article.content {
     .top-row {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .page {
+        background-color: var(--cor-fundo);
+    }
+
+    main {
+        max-width: 1200px;
+        margin: 0 auto;
     }
 }

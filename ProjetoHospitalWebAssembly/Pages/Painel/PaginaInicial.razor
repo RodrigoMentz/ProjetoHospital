@@ -2,103 +2,116 @@
 @using ProjetoHospitalShared
 @using ProjetoHospitalWebAssembly.Components
 
-<div class="row g-4 mt-4">
-    <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" Quantidade="this.quantidadeLeitosOcupados" />
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
     </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" Quantidade="this.quantidadeLeitosDisponiveis" />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_concorrente" Quantidade="this.quantidadeLeitosLimpezaConcorrente" />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-        <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" Quantidade="this.quantidadeLeitosLimpezaTerminal" />
-    </div>
-</div>
-<div class="border border-black d-flex align-items-center justify-content-center w-100 py-5 my-3">
-    <h1>Planta Hospital</h1>
-</div>
-<div class="d-flex flex-wrap mt-4 gap-3">
-    <div class="d-flex flex-grow-1 gap-3">
-        <BotaoPrincipal Texto="Andar 1" />
-        <BotaoSecundario Texto="Andar 2" />
-    </div>
-    <div class="d-flex flex-wrap gap-3 align-items-center">
-        <div class="d-flex align-items-center gap-1">
-            <div class="circulo ocupados"></div>
-            <span class="fs-5">Ocupado</span>
+}
+else
+{
+    <div class="row g-4 mt-4">
+        <div class="col-12 col-sm-6 col-lg-3">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" Quantidade="this.quantidadeLeitosOcupados" />
         </div>
-
-        <div class="d-flex align-items-center gap-1">
-            <div class="circulo disponiveis"></div>
-            <span class="fs-5">Disponível</span>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" Quantidade="this.quantidadeLeitosDisponiveis" />
         </div>
-
-        <div class="d-flex align-items-center gap-1">
-            <div class="circulo limpeza-concorrente"></div>
-            <span class="fs-5">Limpeza concorrente</span>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_concorrente" Quantidade="this.quantidadeLeitosLimpezaConcorrente" />
         </div>
-
-        <div class="d-flex align-items-center gap-1">
-            <div class="circulo limpeza-terminal"></div>
-            <span class="fs-5">Limpeza terminal</span>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" Quantidade="this.quantidadeLeitosLimpezaTerminal" />
         </div>
     </div>
-</div>
-
-<div class="card mt-4">
-    <div class="card-header">
-        <h2 class="fs-4">Leitos</h2>
+    <div class="border border-black d-flex align-items-center justify-content-center w-100 py-5 my-3">
+        <h1>Planta Hospital</h1>
     </div>
-    <div class="card-body p-0 table-responsive">
-        <table class="table table-hover m-0 align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Leito</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Última limpeza</th>
-                    <th scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var leito in this.statusLeitos)
-                {
+    <div class="d-flex flex-wrap mt-4 gap-3">
+        <div class="d-flex flex-grow-1 gap-3">
+            <BotaoPrincipal Texto="Andar 1" />
+            <BotaoSecundario Texto="Andar 2" />
+        </div>
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo ocupados"></div>
+                <span class="fs-5">Ocupado</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo disponiveis"></div>
+                <span class="fs-5">Disponível</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-concorrente"></div>
+                <span class="fs-5">Limpeza concorrente</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-terminal"></div>
+                <span class="fs-5">Limpeza terminal</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header d-flex align-items-center">
+            <h2 class="fs-4 my-2">Leitos</h2>
+        </div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-hover m-0 align-middle">
+                <thead>
                     <tr>
-                        <td>
-                            <span class="fw-bold">@leito.LeitoNome</span><br />
-                            <span>Quarto @leito.QuartoNome</span>
-                        </td>
-                        <td>
-                            <BadgeStatusQuarto LeitoStatus="leito" />
-                        </td>
-                        <td>
-                            @if (leito.DataHoraUltimaLimpeza == DateTime.MinValue)
-                            {
-                                <span>-</span>
-                            }
-                            else
-                            {
-                                <span>@leito.DataHoraUltimaLimpeza</span>
-                            }
-                        </td>
-                        <td class="align-middle">
-                            <div class="btn-group gap-3" role="group">
-                                <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" OnClick="() => VisualizarDetalhesAsync(leito.LeitoId)" />
-                                @if (!leito.Ocupado)
-                                {
-                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" OnClick="() => IniciarInternacao(leito)" />
-                                }
-                                @if (leito.Ocupado)
-                                {
-                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-check2-circle" Texto="Liberar leito" OnClick="() => EncerrarInternacao(leito)" />
-                                }
-
-                            </div>
-                        </td>
+                        <th scope="col">Leito</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Setor</th>
+                        <th scope="col">Última limpeza</th>
+                        <th scope="col">Ações</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var leito in this.statusLeitos)
+                    {
+                        <tr>
+                            <td>
+                                <span class="fw-bold">@leito.LeitoNome</span><br />
+                                <span>Quarto @leito.QuartoNome</span>
+                            </td>
+                            <td>
+                                <BadgeStatusQuarto LeitoStatus="leito" />
+                            </td>
+                            <td>
+                                <span>@leito.SetorNome</span>
+                            </td>
+                            <td>
+                                @if (leito.DataHoraUltimaLimpeza == DateTime.MinValue)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    <span>@leito.DataHoraUltimaLimpeza</span>
+                                }
+                            </td>
+                            <td class="align-middle">
+                                <div class="btn-group gap-3" role="group">
+                                    <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" OnClick="() => VisualizarDetalhesAsync(leito.LeitoId)" />
+                                    @if (!leito.Ocupado)
+                                    {
+                                        <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" OnClick="() => IniciarInternacao(leito)" />
+                                    }
+                                    @if (leito.Ocupado)
+                                    {
+                                        <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-check2-circle" Texto="Liberar leito" OnClick="() => EncerrarInternacao(leito)" />
+                                    }
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+}

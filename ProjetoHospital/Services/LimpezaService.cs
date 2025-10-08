@@ -39,9 +39,12 @@
                 var existeLimpezaTerminalDepoisDaLiberacao = await limpezaRepository
                     .FindAllDerivedAsync<LimpezaTerminal>(
                         l => l.LeitoId == leito.Id
+                        && leito.UltimaModificacao != null
                         && leito.UltimaModificacao != DateTime.MinValue
                         && l.DataInicioLimpeza.Date >= leito.UltimaModificacao.Value.Date)
                     .ConfigureAwait(false);
+
+                //TODO: continuar limpeza
 
                 var status = new LeitoStatusLimpezaViewModel
                 {

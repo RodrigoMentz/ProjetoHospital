@@ -59,7 +59,6 @@
                 this.ativoInterno = true;
             }
 
-            // TODO: chamada para consultar perfis
             var response = await this.UsuarioService
                 .GetPerfisAsync()
                 .ConfigureAwait(true);
