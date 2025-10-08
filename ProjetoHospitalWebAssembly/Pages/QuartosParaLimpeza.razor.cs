@@ -40,15 +40,6 @@ namespace ProjetoHospitalWebAssembly.Pages
                 .GetAsync()
                 .ConfigureAwait(true);
 
-            this.ToastService.ShowError(
-                    "Erro: Erro inesperado contate o suporte");
-
-            this.ToastService.ShowError(
-                    "Erro: Erro inesperado contate o suporte");
-
-            this.ToastService.ShowError(
-                    "Erro: Erro inesperado contate o suporte");
-
             if (responseSetores != null && responseSetores.Success)
             {
                 this.setores = responseSetores.Data;
