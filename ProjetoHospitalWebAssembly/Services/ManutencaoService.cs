@@ -19,6 +19,20 @@
 
             return resultado;
         }
+        public async Task<ResponseModel<ManutencaoViewModel>> GetDetalhesDaManutencaoAsync(
+            ManutencaoViewModel manutencao)
+        {
+            var url = $"Manutencao/detalhes";
+
+            var response = await httpService
+                .PostJsonAsync<ManutencaoViewModel, ResponseModel<ManutencaoViewModel>>(
+                    url,
+                    manutencao)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
 
         public async Task<ResponseModel> CriarAsync(
             ManutencaoViewModel manutencao)

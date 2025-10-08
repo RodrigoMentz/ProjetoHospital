@@ -17,6 +17,7 @@
             var manutencoes = manutencoesDb
                 .Select(m => new ManutencaoViewModel(
                     m.Id,
+                    m.IdSolicitante,
                     m.NomeSolicitante,
                     m.ContatoSolicitante,
                     m.Turno,
@@ -29,6 +30,32 @@
             var response = new ResponseModel<List<ManutencaoViewModel>>
             {
                 Data = manutencoes
+            };
+
+            return response;
+        }
+
+        public async Task<ResponseModel<ManutencaoViewModel>> GetDetalhesDaManutencaoAsync(
+            ManutencaoViewModel manutencao)
+        {
+            var manutencaoDb = await manutencaoRepository
+                .FindAsync(m => m.Id == manutencao.Id, m => m.Setor)
+                .ConfigureAwait(false);
+
+            var manutencaoResponse = new ManutencaoViewModel(
+                manutencaoDb.Id,
+                manutencaoDb.IdSolicitante,
+                manutencaoDb.NomeSolicitante,
+                manutencaoDb.ContatoSolicitante,
+                manutencaoDb.Turno,
+                manutencaoDb.Setor.Id,
+                manutencaoDb.Setor.Nome,
+                manutencaoDb.DataDeSolicitacao,
+                manutencaoDb.Descricao);
+
+            var response = new ResponseModel<ManutencaoViewModel>
+            {
+                Data = manutencaoResponse
             };
 
             return response;

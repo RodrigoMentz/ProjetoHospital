@@ -9,6 +9,9 @@
 
     public partial class SolicitarManutencao
     {
+        [Parameter]
+        public string Id { get; set; } = string.Empty;
+
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
@@ -30,6 +33,7 @@
 
         private bool isLoading = false;
         private bool exibirMensagemSetorCampoObrigatorio = false;
+        private bool exibirMensagemDescricaoObrigatoria = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,64 +44,171 @@
                 .GetAsync()
                 .ConfigureAwait(true);
 
+            this.turnos = Turnos.Listar();
+
             if (response != null && response.Success)
             {
                 this.setores = response.Data;
             }
 
-            var nomeUsuarioLocalStorage = await this.localStorageService
-                .GetItemAsync<string>("nomeUsuario")
-                .ConfigureAwait(true);
-
-            var idUsuarioLocalStorage = await this.localStorageService
-                .GetItemAsync<string>("IdUsuario")
-                .ConfigureAwait(true);
-
-            var numTelefoneUsuarioLocalStorage = await this.localStorageService
-                .GetItemAsync<string>("numTelefone")
-                .ConfigureAwait(true);
-
-            if (string.IsNullOrWhiteSpace(nomeUsuarioLocalStorage)
-                || string.IsNullOrWhiteSpace(idUsuarioLocalStorage)
-                || string.IsNullOrWhiteSpace(numTelefoneUsuarioLocalStorage))
+            if (Id != null)
             {
-                this.NavigationManager
-                    .NavigateTo("/inicio");
-
-                return;
+                await this.ConsultarLeitoParaEdicao()
+                    .ConfigureAwait(true);
             }
+            else
+            {
+                var nomeUsuarioLocalStorage = await this.localStorageService
+                    .GetItemAsync<string>("nomeUsuario")
+                    .ConfigureAwait(true);
 
-            this.turnos = Turnos.Listar();
-            this.manutencao.Turno = turnos.FirstOrDefault();
-            this.manutencao.IdSolicitante = idUsuarioLocalStorage;
-            this.manutencao.NomeSolicitante = nomeUsuarioLocalStorage;
-            this.manutencao.ContatoSolicitante = numTelefoneUsuarioLocalStorage;
-            this.manutencao.DataDeSolicitacao = DateTime.Now;
+                var idUsuarioLocalStorage = await this.localStorageService
+                    .GetItemAsync<string>("IdUsuario")
+                    .ConfigureAwait(true);
+
+                var numTelefoneUsuarioLocalStorage = await this.localStorageService
+                    .GetItemAsync<string>("numTelefone")
+                    .ConfigureAwait(true);
+
+                if (string.IsNullOrWhiteSpace(nomeUsuarioLocalStorage)
+                    || string.IsNullOrWhiteSpace(idUsuarioLocalStorage)
+                    || string.IsNullOrWhiteSpace(numTelefoneUsuarioLocalStorage))
+                {
+                    this.NavigationManager
+                        .NavigateTo("/inicio");
+
+                    return;
+                }
+
+                this.manutencao.Turno = turnos.FirstOrDefault();
+                this.manutencao.IdSolicitante = idUsuarioLocalStorage;
+                this.manutencao.NomeSolicitante = nomeUsuarioLocalStorage;
+                this.manutencao.ContatoSolicitante = numTelefoneUsuarioLocalStorage;
+                this.manutencao.DataDeSolicitacao = DateTime.Now;
+                
+            }
 
             this.isLoading = false;
             this.StateHasChanged();
         }
 
+        private async Task ConsultarLeitoParaEdicao()
+        {
+            try
+            {
+                var idLeito = int.Parse(this.Id);
+
+                var leitoParaEdicao = new ManutencaoViewModel(idLeito);
+                var response = await this.ManutencaoService
+                    .GetDetalhesDaManutencaoAsync(
+                        leitoParaEdicao)
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.manutencao = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+        }
+
         private async Task CriarManutencao()
         {
-            var response = await this.ManutencaoService
-                .CriarAsync(manutencao);
-
-            if (response != null && response.Success)
+            try
             {
-                this.ToastService.ShowSuccess(
-                    "Sucesso: Cadastro de manutenção realizado");
+                this.exibirMensagemSetorCampoObrigatorio = false;
+                this.exibirMensagemDescricaoObrigatoria = false;
 
-                this.NavigationManager
-                    .NavigateTo("/manutencoes");
-            }
-            else if (response != null && response.Notifications.Any())
-            {
-                foreach (var notification in response.Notifications)
+                if (manutencao.SetorId == 0)
                 {
-                    this.ToastService.ShowError(
-                        $"Erro: {notification.Message}");
+                    this.exibirMensagemSetorCampoObrigatorio = true;
+
+                    return;
                 }
+
+                if (string.IsNullOrEmpty(manutencao.Descricao))
+                {
+                    this.exibirMensagemDescricaoObrigatoria = true;
+
+                    return;
+                }
+
+                var response = await this.ManutencaoService
+                    .CriarAsync(this.manutencao);
+
+                if (response != null && response.Success)
+                {
+                    this.ToastService.ShowSuccess(
+                        "Sucesso: Cadastro de manutenção realizado");
+
+                    this.NavigationManager
+                        .NavigateTo("/manutencoes");
+                }
+                else if (response != null && response.Notifications.Any())
+                {
+                    foreach (var notification in response.Notifications)
+                    {
+                        this.ToastService.ShowError(
+                            $"Erro: {notification.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+        }
+
+        private async Task EditarManutencao()
+        {
+            try
+            {
+                this.exibirMensagemSetorCampoObrigatorio = false;
+                this.exibirMensagemDescricaoObrigatoria = false;
+
+                if (manutencao.SetorId == 0)
+                {
+                    this.exibirMensagemSetorCampoObrigatorio = true;
+
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(manutencao.Descricao))
+                {
+                    this.exibirMensagemDescricaoObrigatoria = true;
+
+                    return;
+                }
+
+                var response = await this.ManutencaoService
+                    .AtualizarAsync(this.manutencao);
+
+                if (response != null && response.Success)
+                {
+                    this.ToastService.ShowSuccess(
+                        "Sucesso: Edição da manutenção realizada");
+
+                    this.NavigationManager
+                        .NavigateTo("/manutencoes");
+                }
+                else if (response != null && response.Notifications.Any())
+                {
+                    foreach (var notification in response.Notifications)
+                    {
+                        this.ToastService.ShowError(
+                            $"Erro: {notification.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿@page "/manutencoes/criar"
+@page "/manutencoes/editar/{id}"
 @layout MainLayoutApp
 @using ProjetoHospitalShared
 
@@ -50,8 +51,21 @@ else
             <label for="descricaoDaSolicitacao" class="form-label">Descrição da solicitação</label>
             <textarea class="form-control" id="descricaoDaSolicitacao" rows="5" @bind="this.manutencao.Descricao"></textarea>
         </div>
+        @if (this.exibirMensagemDescricaoObrigatoria)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">O campo Descrição é obrigatório</span>
+            </div>
+        }
         <div class="d-grid col-12">
-            <BotaoPrincipal Texto="Solicitar manutenção" OnClick="CriarManutencao" Disabled="@this.isLoading" />
+            @if (this.Id != null)
+            {
+                <BotaoPrincipal Texto="Editar manutenção" OnClick="EditarManutencao" Disabled="@this.isLoading" />
+            }
+            else
+            {
+                <BotaoPrincipal Texto="Solicitar manutenção" OnClick="CriarManutencao" Disabled="@this.isLoading" />
+            }
         </div>
     </form>
 }

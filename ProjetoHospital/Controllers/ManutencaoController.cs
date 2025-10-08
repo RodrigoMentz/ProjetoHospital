@@ -23,6 +23,18 @@
             return this.Ok(resultado);
         }
 
+        [HttpPost("detalhes")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<ManutencaoViewModel>), 200)]
+        public async Task<IActionResult> GetDetalhesDaManutencaoAsync(
+            [FromBody] ManutencaoViewModel manutencao)
+        {
+            var resultado = await ManutencaoService
+                .GetDetalhesDaManutencaoAsync(manutencao);
+
+            return this.Ok(resultado);
+        }
+
         [HttpPost("adicionar")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel), 200)]

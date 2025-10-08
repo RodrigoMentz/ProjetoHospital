@@ -7,6 +7,9 @@
     {
         Task<ResponseModel<List<ManutencaoViewModel>>> GetAsync();
 
+        Task<ResponseModel<ManutencaoViewModel>> GetDetalhesDaManutencaoAsync(
+            ManutencaoViewModel manutencao);
+
         Task<ResponseModel> CriarAsync(
             ManutencaoViewModel manutencao);
 

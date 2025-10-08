@@ -7,7 +7,19 @@
         }
 
         public ManutencaoViewModel(
+            int id)
+        {
+            this.Id = id;
+            this.Turno = string.Empty;
+            this.Descricao = string.Empty;
+            this.IdSolicitante = string.Empty;
+            this.NomeSolicitante = string.Empty;
+            this.ContatoSolicitante = string.Empty;
+        }
+
+        public ManutencaoViewModel(
             int id,
+            string idSolicitante,
             string nomeSolicitante,
             string contatoSolicitante,
             string turno,
@@ -16,14 +28,15 @@
             DateTime dataDeSolicitacao,
             string descricao)
         {
-            Id = id;
-            NomeSolicitante = nomeSolicitante;
-            ContatoSolicitante = contatoSolicitante;
-            Turno = turno;
-            SetorId = setorId;
-            SetorNome = setorNome;
-            DataDeSolicitacao = dataDeSolicitacao;
-            Descricao = descricao;
+            this.Id = id;
+            this.IdSolicitante = idSolicitante;
+            this.NomeSolicitante = nomeSolicitante;
+            this.ContatoSolicitante = contatoSolicitante;
+            this.Turno = turno;
+            this.SetorId = setorId;
+            this.SetorNome = setorNome;
+            this.DataDeSolicitacao = dataDeSolicitacao;
+            this.Descricao = descricao;
         }
 
         public int Id { get; set; }
