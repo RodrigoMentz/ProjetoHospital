@@ -1,0 +1,31 @@
+﻿@page "/manutencoes"
+@layout MainLayoutApp
+
+<div class="d-grid col-12 mt-4">
+    <BotaoPrincipal Texto="Solicitar manutenção" OnClick="NavegarParaCriacao" />
+</div>
+<div class="mt-3">
+    @if (manutencoes.Count == 0)
+    {
+        <div class="d-flex align-items-center justify-content-center">
+            <h1>Não há solicitações de manutenção em aberto</h1>
+        </div>
+    }
+    else
+    {
+        <h1>Solicitações de manutenção em aberto</h1>
+        @foreach (var manutencao in manutencoes)
+        {
+            <div class="card mt-4">
+                <div class="card-body d-flex flex-column gap-2">
+                    <span>Data: @manutencao.DataDeSolicitacao</span>
+                    <span>Solicitado por: @manutencao.NomeSolicitante</span>
+                    <span>Contato: @manutencao.ContatoSolicitante</span>
+                    <span>Solicitado no Turno: @manutencao.Turno</span>
+                    <span>Setor: @manutencao.SetorNome</span>
+                    <span>Descrição: @manutencao.Descricao</span>
+                </div>
+            </div>
+        }
+    }
+</div>

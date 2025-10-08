@@ -8,6 +8,7 @@
 
         public Manutencao(
             int id,
+            string idSolicitante,
             string nomeSolicitante,
             string contatoSolicitante,
             string turno,
@@ -22,6 +23,7 @@
             Setor setor)
         {
             Id = id;
+            IdSolicitante = idSolicitante;
             NomeSolicitante = nomeSolicitante;
             ContatoSolicitante = contatoSolicitante;
             Turno = turno;
@@ -37,6 +39,8 @@
         }
 
         public int Id { get; set; }
+
+        public string IdSolicitante { get; set; }
 
         public string NomeSolicitante { get; set; }
 
@@ -54,6 +58,8 @@
 
         public DateTime? DataDeConclusao { get; set; }
 
+        public string? IdExecutante { get; set; }
+
         public string? NomeExecutante { get; set; }
 
         public string? ContatoExecutante { get; set; }
@@ -61,5 +67,9 @@
         public string? TurnoExecutante { get; set; }
 
         public virtual Setor Setor { get; set; }
+
+        public virtual Usuario Solicitante { get; set; }
+
+        public virtual Usuario Executante { get; set; }
     }
 }

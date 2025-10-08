@@ -8,11 +8,38 @@
         IGenericRepository<Manutencao> manutencaoRepository)
         : IManutencaoService
     {
+        public async Task<ResponseModel<List<ManutencaoViewModel>>> GetAsync()
+        {
+            var manutencoesDb = await manutencaoRepository
+                .FindAllAsync(m => m.DataDeConclusao == null, m => m.Setor)
+                .ConfigureAwait(false);
+
+            var manutencoes = manutencoesDb
+                .Select(m => new ManutencaoViewModel(
+                    m.Id,
+                    m.NomeSolicitante,
+                    m.ContatoSolicitante,
+                    m.Turno,
+                    m.Setor.Id,
+                    m.Setor.Nome,
+                    m.DataDeSolicitacao,
+                    m.Descricao))
+                .ToList();
+
+            var response = new ResponseModel<List<ManutencaoViewModel>>
+            {
+                Data = manutencoes
+            };
+
+            return response;
+        }
+
         public async Task<ResponseModel> CriarAsync(
             ManutencaoViewModel manutencao)
         {
             var manutencaoDb = new Manutencao
             {
+                IdSolicitante = manutencao.IdSolicitante,
                 NomeSolicitante = manutencao.NomeSolicitante,
                 ContatoSolicitante = manutencao.ContatoSolicitante,
                 Turno = manutencao.Turno,

@@ -40,6 +40,7 @@ namespace ProjetoHospitalWebAssembly
             builder.Services.AddTransient<ILeitoService, LeitoService>();
             builder.Services.AddTransient<ILimpezaService, LimpezaService>();
             builder.Services.AddTransient<IUsuarioService, UsuarioService>();
+            builder.Services.AddTransient<IManutencaoService, ManutencaoService>();
 
             await builder.Build().RunAsync();
         }

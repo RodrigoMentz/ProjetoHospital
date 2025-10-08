@@ -113,6 +113,12 @@
 
                 await localStorageService
                     .SetItemAsync(
+                        "numTelefone",
+                        response.Data.NumTelefone)
+                    .ConfigureAwait(false);
+
+                await localStorageService
+                    .SetItemAsync(
                         "perfil",
                         response.Data.Perfil)
                     .ConfigureAwait(false);

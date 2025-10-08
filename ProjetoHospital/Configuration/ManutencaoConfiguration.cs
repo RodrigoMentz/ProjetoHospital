@@ -12,6 +12,10 @@
 
             builder.HasKey(m => m.Id);
 
+            builder.Property(m => m.IdSolicitante)
+                .IsRequired()
+                .HasMaxLength(450);
+
             builder.Property(m => m.NomeSolicitante)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -35,6 +39,9 @@
             builder.Property(m => m.DataDeSolicitacao)
                 .IsRequired();
 
+            builder.Property(m => m.IdExecutante)
+                .HasMaxLength(450);
+
             builder.Property(m => m.NomeExecutante)
                 .HasMaxLength(100);
 
@@ -50,6 +57,16 @@
             builder.HasOne(m => m.Setor)
                 .WithMany(s => s.Manutencoes)
                 .HasForeignKey(m => m.SetorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(m => m.Solicitante)
+                .WithMany()
+                .HasForeignKey(m => m.IdSolicitante)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(m => m.Executante)
+                .WithMany()
+                .HasForeignKey(m => m.IdExecutante)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

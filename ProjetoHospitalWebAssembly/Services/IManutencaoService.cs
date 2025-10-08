@@ -1,4 +1,4 @@
-﻿namespace ProjetoHospital.Services
+﻿namespace ProjetoHospitalWebAssembly.Services
 {
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;

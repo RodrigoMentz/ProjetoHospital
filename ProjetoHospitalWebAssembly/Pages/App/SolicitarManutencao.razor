@@ -1,0 +1,57 @@
+﻿@page "/manutencoes/criar"
+@layout MainLayoutApp
+@using ProjetoHospitalShared
+
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    <form>
+        <div class="mb-3">
+            <label for="nomeSolicitante" class="form-label fs-5">Nome do Solicitante</label>
+            <input type="text" class="form-control" id="nomeSolicitante" aria-describedby="Nome do Solicitante" @bind-value="this.manutencao.NomeSolicitante">
+        </div>
+        <div class="mb-3">
+            <label for="numeroTelefone" class="form-label fs-5">Número de telefone do Solicitante</label>
+            <input type="tel" class="form-control" id="numeroTelefone" aria-describedby="Número de telefone" disabled="@this.isLoading" @bind-value="this.manutencao.ContatoSolicitante" inputmode="numeric" pattern="[0-9]*" maxlength="11" placeholder="Ex: 54987654321">
+        </div>
+        <div class="mb-3">
+            <label for="turnoManutencao" class="form-label fs-5">Turno</label>
+            <select class="form-select" id="turnoManutencao" aria-label="Turno do pedido da manutenção" disabled="@this.isLoading" @bind="this.manutencao.Turno">
+                @foreach (var turno in turnos)
+                {
+                    <option value="@turno">@turno</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="setorManutencao" class="form-label fs-5">Setor</label>
+            <select class="form-select" id="setorManutencao" aria-label="Setor da manutenção" disabled="@this.isLoading" @bind="this.manutencao.SetorId">
+                @foreach (var setor in setores)
+                {
+                    <option value="@setor.Id">@setor.Nome</option>
+                }
+            </select>
+        </div>
+        @if (this.exibirMensagemSetorCampoObrigatorio)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">O campo Setor é obrigatório</span>
+            </div>
+        }
+        <div class="mb-3">
+            <span>Data e hora da solicitação: @this.manutencao.DataDeSolicitacao</span>
+        </div>
+        <div class="mb-3">
+            <label for="descricaoDaSolicitacao" class="form-label">Descrição da solicitação</label>
+            <textarea class="form-control" id="descricaoDaSolicitacao" rows="5" @bind="this.manutencao.Descricao"></textarea>
+        </div>
+        <div class="d-grid col-12">
+            <BotaoPrincipal Texto="Solicitar manutenção" OnClick="CriarManutencao" Disabled="@this.isLoading" />
+        </div>
+    </form>
+}

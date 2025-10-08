@@ -31,16 +31,6 @@
             await this.ConsultarQuartos()
                 .ConfigureAwait(true);
 
-            //this.quartos = new List<QuartoViewModel>
-            //{
-            //    new QuartoViewModel(1, "101", 1, "SUS", 1, true),
-            //    new QuartoViewModel(2, "102", 2, "Maternidade", 1, true),
-            //    new QuartoViewModel(3, "103", 3, "Pediatria", 1, true),
-            //    new QuartoViewModel(4, "104", 4, "Emergência", 1, true),
-            //    new QuartoViewModel(5,"105", 5, "Sala vermelha", 1, true),
-            //    new QuartoViewModel(6, "106", 6, "Bloco cirúrgico", 1, false),
-            //};
-
             this.isLoading = false;
             this.StateHasChanged();
         }
@@ -174,7 +164,7 @@
                         if (response != null && response.Success)
                         {
                             this.ToastService.ShowSuccess(
-                            "Sucesso: Atualização de quarto realizada");
+                                "Sucesso: Atualização de quarto realizada");
                         }
 
                         await this.ConsultarQuartos()
