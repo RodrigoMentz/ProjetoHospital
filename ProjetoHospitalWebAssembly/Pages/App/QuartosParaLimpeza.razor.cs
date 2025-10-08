@@ -1,12 +1,12 @@
-﻿using Blazored.Toast.Services;
-using Microsoft.AspNetCore.Components;
-using ProjetoHospitalShared;
-using ProjetoHospitalShared.ViewModels;
-using ProjetoHospitalWebAssembly.Services;
-
-namespace ProjetoHospitalWebAssembly.Pages
+﻿namespace ProjetoHospitalWebAssembly.Pages.App
 {
-    public partial class QuartosParaLimpeza
+    using Blazored.Toast.Services;
+    using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared;
+    using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
+
+    public partial class QuartosParaLimpeza : ComponentBase
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; }

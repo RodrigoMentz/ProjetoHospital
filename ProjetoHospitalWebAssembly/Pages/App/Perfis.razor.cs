@@ -1,4 +1,4 @@
-﻿namespace ProjetoHospitalWebAssembly.Pages
+﻿namespace ProjetoHospitalWebAssembly.Pages.App
 {
     using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components;

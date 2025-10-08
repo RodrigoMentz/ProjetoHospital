@@ -36,6 +36,8 @@
 
         public DbSet<LimpezaTerminal> LimpezasTerminais { get; set; }
 
+        public DbSet<Manutencao> Manutencoes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

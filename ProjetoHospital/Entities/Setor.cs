@@ -30,5 +30,7 @@
         public bool Ativo { get; set; }
 
         public bool SoftDelete { get; set; }
+
+        public virtual ICollection<Manutencao> Manutencoes { get; set; }
     }
 }
