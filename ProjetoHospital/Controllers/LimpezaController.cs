@@ -38,6 +38,19 @@
             return Ok(resultado);
         }
 
+        [HttpPost("limpezas-nao-terminadas-do-usuario")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<LimpezaViewModel>>), 200)]
+        public async Task<IActionResult> ConsultarLimpezasNaoEncerradasDoUsuario(
+            [FromBody] UsuarioViewModel usuario)
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezasNaoEncerradasDoUsuario(usuario)
+                .ConfigureAwait(false);
+
+            return Ok(resultado);
+        }
+
         [HttpPost("adicionar/concorrente")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel<LimpezaViewModel>), 200)]

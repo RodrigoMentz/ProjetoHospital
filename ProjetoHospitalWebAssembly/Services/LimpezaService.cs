@@ -34,6 +34,20 @@
             return response;
         }
 
+        public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasNaoEncerradasDoUsuario(
+            UsuarioViewModel usuario)
+        {
+            var url = $"Limpeza/limpezas-nao-terminadas-do-usuario";
+
+            var response = await httpService
+                .PostJsonAsync<UsuarioViewModel, ResponseModel<List<LimpezaViewModel>>>(
+                    url,
+                    usuario)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarConcorrenteAsync(
             LimpezaConcorrenteViewModel limpezaConcorrente)
         {

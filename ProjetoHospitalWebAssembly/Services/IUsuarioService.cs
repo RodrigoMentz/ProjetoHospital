@@ -22,5 +22,7 @@
             LoginViewModel login);
 
         Task LogoutAsync();
+
+        Task<UsuarioViewModel> ConsultarUsuarioLocalStorage();
     }
 }

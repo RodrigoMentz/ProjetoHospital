@@ -1,16 +1,17 @@
 ﻿namespace ProjetoHospitalWebAssembly.Services
 {
     using Blazored.LocalStorage;
+    using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Authorization;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services.Http;
-    using System.Reflection.Metadata;
 
     public class UsuarioService(
         IHttpService httpService,
         AuthenticationStateProvider authenticationStateProvider,
-        ILocalStorageService localStorageService)
+        ILocalStorageService localStorageService,
+        NavigationManager navigationManager)
         : IUsuarioService
     {
         public async Task<ResponseModel<List<UsuarioViewModel>>> GetUsuariosAsync()
@@ -81,7 +82,7 @@
         {
             var url = $"Usuario/login";
             var response = await httpService
-                 .PostJsonAsync<LoginViewModel, ResponseModel<AcessoViewModel>> (
+                 .PostJsonAsync<LoginViewModel, ResponseModel<AcessoViewModel>>(
                      url,
                      login)
                  .ConfigureAwait(false);
@@ -140,6 +141,44 @@
             await ((ApiAuthenticationStateProvider)authenticationStateProvider)
                 .MarkUserAsLoggedOut()
                 .ConfigureAwait(false);
+        }
+
+        public async Task<UsuarioViewModel> ConsultarUsuarioLocalStorage()
+        {
+            var nomeUsuario = await localStorageService
+                .GetItemAsync<string>("nomeUsuario")
+                .ConfigureAwait(false);
+
+            var idUsuario = await localStorageService
+                .GetItemAsync<string>("IdUsuario")
+                .ConfigureAwait(false);
+
+            var numTelefone = await localStorageService
+                .GetItemAsync<string>("numTelefone")
+                .ConfigureAwait(false);
+
+            var perfil = await localStorageService
+                .GetItemAsync<PerfilViewModel>("perfil")
+                .ConfigureAwait(false);
+
+            if (string.IsNullOrWhiteSpace(nomeUsuario)
+                || string.IsNullOrWhiteSpace(idUsuario)
+                || string.IsNullOrWhiteSpace(numTelefone)
+                || perfil == null)
+            {
+               navigationManager
+                    .NavigateTo($"/inicio");
+
+                return new UsuarioViewModel();
+            }
+
+            var usuario = new UsuarioViewModel(
+                idUsuario,
+                nomeUsuario,
+                perfil,
+                numTelefone);
+
+            return usuario;
         }
     }
 }

@@ -117,6 +117,40 @@
             };
         }
 
+        public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasNaoEncerradasDoUsuario(
+            UsuarioViewModel usuario)
+        {
+            var limpezas = await limpezaRepository
+                .FindAllDerivedAsync<Limpeza>(
+                    l => l.UsuarioId == usuario.Id && l.DataFimLimpeza == null,
+                    l => l.Leito,
+                    l => l.Leito.Quarto,
+                    l => l.Leito.Quarto.Setor,
+                    l => l.Usuario);
+
+            var listaLimpezas = limpezas
+                .Select(l => new LimpezaViewModel(
+                    l.Id,
+                    l.LeitoId,
+                    l.Leito.Nome,
+                    l.Leito.Quarto.Nome,
+                    l.Leito.Quarto.IdSetor,
+                    l.Leito.Quarto.Setor.Nome,
+                    l.UsuarioId,
+                    new UsuarioViewModel(
+                        l.Usuario.Id,
+                        l.Usuario.Nome),
+                    l.TipoLimpeza,
+                    l.DataInicioLimpeza,
+                    l.DataFimLimpeza))
+                .ToList();
+
+            return new ResponseModel<List<LimpezaViewModel>>
+            {
+                Data = listaLimpezas
+            };
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarLimpezaConcorrenteAsync(
             LimpezaConcorrenteViewModel limpeza)
         {

@@ -3,6 +3,7 @@
     using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
 
@@ -21,15 +22,18 @@
         private IToastService ToastService { get; set; }
 
         [Inject]
-        private ILocalStorageService LocalStorageService { get; set; }
+        private IUsuarioService UsuarioService { get; set; }
 
         private bool isLoading = false;
 
         private List<SetorViewModel> setores = new();
         private List<LeitoStatusLimpezaViewModel> leitos = new();
         private List<LeitoStatusLimpezaViewModel> leitosFiltrados = new();
+        private List<LimpezaViewModel> limpezasNaoEncerradas = new();
+        private List<LimpezaViewModel> limpezasNaoEncerradasFiltradas = new();
 
         private SetorViewModel setorSelecionado = new();
+        private UsuarioViewModel usuarioLocalStorage = new();
 
         private int quantidadeLeitosParaLimpezaConcorrente = 0;
         private int quantidadeLeitosParaLimpezaTerminal = 0;
@@ -41,6 +45,10 @@
 
             var responseSetores = await this.SetorService
                 .GetAsync()
+                .ConfigureAwait(true);
+
+            this.usuarioLocalStorage = await UsuarioService
+                .ConsultarUsuarioLocalStorage()
                 .ConfigureAwait(true);
 
             if (responseSetores != null && responseSetores.Success)
@@ -55,10 +63,14 @@
                 return;
             }
 
-                await this.Consultarleitos()
+            await this.Consultarleitos()
+            .ConfigureAwait(true);
+
+            await ConsultarLimpezasNaoEncerradasDoUsuario()
                 .ConfigureAwait(true);
 
             this.leitosFiltrados = this.leitos;
+            this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas;
 
             this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
                 .Where(l => l.PrecisaLimpezaConcorrente)
@@ -105,6 +117,26 @@
             this.StateHasChanged();
         }
 
+        private async Task ConsultarLimpezasNaoEncerradasDoUsuario()
+        {
+            var response = await this.LimpezaService
+                .ConsultarLimpezasNaoEncerradasDoUsuario(
+                    this.usuarioLocalStorage)
+                .ConfigureAwait(true);
+
+            if (response != null && response.Success)
+            {
+                this.limpezasNaoEncerradas = response.Data;
+            }
+            else
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+
+                return;
+            }
+        }
+
         private void OnSetorChange(SetorViewModel setor)
         {
             this.setorSelecionado = setor;
@@ -119,6 +151,10 @@
             this.leitosFiltrados = this.leitos
                 .Where(l => l.SetorId == setor.Id)
                 .ToList();
+
+            this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas
+                .Where(l => l.IdSetor == setor.Id)
+                .ToList();
         }
 
         private async Task LimparLeito(LeitoStatusLimpezaViewModel leito)
@@ -128,12 +164,7 @@
                 this.isLoading = false;
                 this.StateHasChanged();
 
-                var IdUsuarioLogado = await this.LocalStorageService
-                    .GetItemAsync<string>("IdUsuario")
-                    .ConfigureAwait(true);
-
-                if (leito.LeitoId == 0
-                    || string.IsNullOrWhiteSpace(IdUsuarioLogado))
+                if (leito.LeitoId == 0)
                 {
                     this.NavigationManager
                         .NavigateTo($"/inicio");
@@ -147,7 +178,7 @@
 
                     limpeza.DataInicioLimpeza = DateTime.Now;
                     limpeza.LeitoId = leito.LeitoId;
-                    limpeza.UsuarioId = IdUsuarioLogado;
+                    limpeza.UsuarioId = this.usuarioLocalStorage.Id;
 
                     var response = await LimpezaService
                         .CriarConcorrenteAsync(limpeza)
@@ -172,7 +203,7 @@
 
                     limpeza.DataInicioLimpeza = DateTime.Now;
                     limpeza.LeitoId = leito.LeitoId;
-                    limpeza.UsuarioId = IdUsuarioLogado;
+                    limpeza.UsuarioId = this.usuarioLocalStorage.Id;
 
                     var response = await LimpezaService
                         .CriarTerminalAsync(limpeza)
@@ -200,6 +231,20 @@
 
             this.isLoading = false;
             this.StateHasChanged();
+        }
+
+        private void ContinuarLimpeza(LimpezaViewModel limpeza)
+        {
+            if (limpeza.TipoLimpeza == ProjetoHospitalShared.TipoLimpezaEnum.Concorrente)
+            {
+                this.NavigationManager
+                            .NavigateTo($"/limpeza-concorrente/{limpeza.Id}");
+            }
+            else if (limpeza.TipoLimpeza == ProjetoHospitalShared.TipoLimpezaEnum.Terminal)
+            {
+                this.NavigationManager
+                    .NavigateTo($"/limpeza-terminal/{limpeza.Id}");
+            }
         }
     }
 }

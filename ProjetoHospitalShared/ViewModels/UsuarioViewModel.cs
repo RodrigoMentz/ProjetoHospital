@@ -21,6 +21,18 @@
         }
 
         public UsuarioViewModel(
+            string id,
+            string nome,
+            PerfilViewModel perfil,
+            string numeroTelefone)
+        {
+            this.Id = id;
+            this.Nome = nome;
+            this.Perfil = perfil;
+            this.NumeroTelefone = numeroTelefone;
+        }
+
+        public UsuarioViewModel(
             string nome,
             PerfilViewModel perfil,
             string numeroTelefone,

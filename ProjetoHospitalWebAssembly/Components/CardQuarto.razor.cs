@@ -8,6 +8,9 @@ namespace ProjetoHospitalWebAssembly.Components
         public LeitoStatusLimpezaViewModel Leito { get; set; }
 
         [Parameter]
+        public LimpezaViewModel Limpeza { get; set; }
+
+        [Parameter]
         public EventCallback OnClick { get; set; }
     }
 }

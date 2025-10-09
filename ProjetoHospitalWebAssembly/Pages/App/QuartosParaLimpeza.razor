@@ -5,13 +5,15 @@
 
 @if (this.isLoading)
 {
-    <Loading />
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
 }
 else
 {
     <div class="card">
         <div class="cabecalho px-3 py-2">
-            <h1>Necessitam limpeza</h1>
+            <h1>Limpezas não iniciadas</h1>
         </div>
         <div class="card-body px-2 py-2">
             <div class="row">
@@ -46,6 +48,17 @@ else
             <span>Todos os leitos foram limpos.</span>
         </div>
     }
+    @if (limpezasNaoEncerradasFiltradas.Count() > 0)
+    {
+        <h1 class="mt-4">Limpezas iniciadas por você</h1>
+        @foreach (var limpezaNaoEncerrada in limpezasNaoEncerradasFiltradas)
+        {
+            <div class="mt-4">
+                <CardQuarto Limpeza="limpezaNaoEncerrada" OnClick="() => ContinuarLimpeza(limpezaNaoEncerrada)" />
+            </div>
+        }
+    }
+    <h1 class="mt-4">Necessitam limpeza</h1>
     @foreach (var leito in leitosFiltrados)
     {
         <div class="mt-4">
