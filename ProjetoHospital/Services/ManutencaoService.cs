@@ -15,6 +15,7 @@
                 .ConfigureAwait(false);
 
             var manutencoes = manutencoesDb
+                .OrderByDescending(m => m.DataDeSolicitacao)
                 .Select(m => new ManutencaoViewModel(
                     m.Id,
                     m.IdSolicitante,

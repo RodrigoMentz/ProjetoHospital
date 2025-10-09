@@ -5,7 +5,8 @@
     using ProjetoHospitalShared.ViewModels;
 
     public class QuartoService(
-        IGenericRepository<Quarto> quartoRepository)
+        IGenericRepository<Quarto> quartoRepository,
+        IGenericRepository<Leito> leitoRepository)
         : IQuartoService
     {
         public async Task<ResponseModel<List<QuartoViewModel>>> GetAsync()
@@ -83,6 +84,17 @@
             await quartoRepository
                 .UpdateAsync(quartoDb)
                 .ConfigureAwait(false);
+
+            var leitosDoQuartoDb = await leitoRepository
+                .FindAllAsync(l => l.IdQuarto == quarto.Id);
+
+            foreach (var leito in leitosDoQuartoDb)
+            {
+                leito.SoftDelete = true;
+            }
+
+            await leitoRepository
+                .UpdateRangeAsync(leitosDoQuartoDb);
 
             var response = new ResponseModel();
 
