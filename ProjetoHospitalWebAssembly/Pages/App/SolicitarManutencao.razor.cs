@@ -7,7 +7,7 @@
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
 
-    public partial class SolicitarManutencao
+    public partial class SolicitarManutencao : ComponentBase
     {
         [Parameter]
         public string Id { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-﻿@page "/limpeza-concorrente/{idLeito}"
+﻿@page "/limpeza-concorrente/{idLimpeza}"
 @layout MainLayoutApp
 
 @if (this.isLoading)
@@ -45,7 +45,7 @@ else
         </div>
     </div>
     <div class="d-grid gap-4">
-        <BotaoSecundario Texto="Marcar todos como realizado"  OnClick="MarcarTodosComoRealizado" />
-        <BotaoPrincipal Texto="Finalizar limpeza" OnClick="FinalizarLimpezaAsync" />
+        <BotaoSecundario Texto="Marcar todos como realizado" OnClick="MarcarTodosComoRealizado" Disabled="this.isLoading" />
+        <BotaoPrincipal Texto="Finalizar limpeza" OnClick="FinalizarLimpezaAsync"  Disabled="this.isLoading" />
     </div>
 }

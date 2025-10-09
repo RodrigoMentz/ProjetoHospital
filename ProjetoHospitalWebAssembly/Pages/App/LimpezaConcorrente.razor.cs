@@ -9,7 +9,7 @@
     public partial class LimpezaConcorrente : ComponentBase
     {
         [Parameter]
-        public string IdLeito { get; set; } = string.Empty;
+        public string IdLimpeza { get; set; } = string.Empty;
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
@@ -34,12 +34,11 @@
                 this.isLoading = true;
                 this.StateHasChanged();
 
-                var IdUsuarioLogado = await this.LocalStorageService
-                    .GetItemAsync<string>("IdUsuario")
-                    .ConfigureAwait(true);
+                var idUsuarioLogado = await this.LocalStorageService
+                   .GetItemAsync<string>("IdUsuario")
+                   .ConfigureAwait(true);
 
-                if (string.IsNullOrWhiteSpace(this.IdLeito)
-                    || string.IsNullOrWhiteSpace(IdUsuarioLogado))
+                if (string.IsNullOrWhiteSpace(idUsuarioLogado))
                 {
                     this.NavigationManager
                         .NavigateTo($"/inicio");
@@ -47,29 +46,8 @@
                     return;
                 }
 
-                this.limpeza.DataInicioLimpeza = DateTime.Now;
-                this.limpeza.LeitoId = int.Parse(this.IdLeito);
-                this.limpeza.UsuarioId = IdUsuarioLogado;
-            
-                var response = await LimpezaService
-                    .CriarConcorrenteAsync(this.limpeza)
-                    .ConfigureAwait(true);
-
-                if (response.Success)
-                {
-                    this.limpeza.Id = response.Data.Id;
-                }
-                else
-                {
-                    this.ToastService.ShowError(
-                        "Erro: Erro inesperado contate o suporte");
-
-                    await Task.Delay(5000)
-                        .ConfigureAwait(true);
-
-                    this.NavigationManager
-                        .NavigateTo($"/quartos-para-limpar");
-                }
+                this.limpeza.Id = int.Parse(IdLimpeza);
+                this.limpeza.UsuarioId = idUsuarioLogado;
             }
             catch (Exception e)
             {
@@ -97,6 +75,9 @@
         {
             try
             {
+                this.isLoading = true;
+                this.StateHasChanged();
+
                 this.limpeza.DataFimLimpeza = DateTime.Now;
 
                 var response = await LimpezaService

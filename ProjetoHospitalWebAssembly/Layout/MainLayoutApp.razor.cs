@@ -33,5 +33,23 @@
             this.NavigationManager
                 .NavigateTo("/inicio");
         }
+
+        private void NavegarParaLimpezas()
+        {
+            this.NavigationManager
+                .NavigateTo("/quartos-para-limpar");
+        }
+
+        private void NavegarParaGeral()
+        {
+            this.NavigationManager
+                .NavigateTo("/");
+        }
+
+        private void NavegarParaManutencoes()
+        {
+            this.NavigationManager
+                .NavigateTo("/manutencoes");
+        }
     }
 }

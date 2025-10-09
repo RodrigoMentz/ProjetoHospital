@@ -56,8 +56,8 @@
                     Ocupado = leito.Ocupado,
                     PrecisaLimpezaConcorrente = leito.Ocupado && !limpezasHoje.OfType<LimpezaConcorrente>().Any(l => l.LeitoId == leito.Id) && leito.UltimaModificacao.Value.Date != DateTime.Today.Date,
                     PrecisaLimpezaTerminal = !leito.Ocupado
-                        && leito.UltimaModificacao != DateTime.MinValue
-                        && existeLimpezaTerminalDepoisDaLiberacao == null,
+                        && leito.UltimaModificacao != null
+                        && existeLimpezaTerminalDepoisDaLiberacao.Count() == 0,
                     LimpezaEmAndamento = limpezasHoje.Any(l => l.LeitoId == leito.Id && l.DataFimLimpeza == null),
                     DataHoraUltimaLimpeza = await GetUltimaLimpezaDataAsync(leito.Id).ConfigureAwait(false)
                 };
@@ -211,10 +211,6 @@
                 LimparParedes = limpeza.LimparParedes,
                 LimparChao = limpeza.LimparChao
             };
-
-            await limpezaRepository
-                .InsertAsync(limpezaDb)
-                .ConfigureAwait(false);
 
             var response = await limpezaRepository
                 .InsertAsync(limpezaDb)

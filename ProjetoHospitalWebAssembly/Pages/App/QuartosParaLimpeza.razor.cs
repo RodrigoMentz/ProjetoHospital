@@ -1,8 +1,8 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages.App
 {
+    using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
-    using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
 
@@ -19,6 +19,9 @@
 
         [Inject]
         private IToastService ToastService { get; set; }
+
+        [Inject]
+        private ILocalStorageService LocalStorageService { get; set; }
 
         private bool isLoading = false;
 
@@ -118,18 +121,85 @@
                 .ToList();
         }
 
-        private void LimparLeito(LeitoStatusLimpezaViewModel leito)
+        private async Task LimparLeito(LeitoStatusLimpezaViewModel leito)
         {
-            if (leito.PrecisaLimpezaConcorrente)
+            try
             {
-                this.NavigationManager
-                    .NavigateTo($"/limpeza-concorrente/{leito.LeitoId}");
+                this.isLoading = false;
+                this.StateHasChanged();
+
+                var IdUsuarioLogado = await this.LocalStorageService
+                    .GetItemAsync<string>("IdUsuario")
+                    .ConfigureAwait(true);
+
+                if (leito.LeitoId == 0
+                    || string.IsNullOrWhiteSpace(IdUsuarioLogado))
+                {
+                    this.NavigationManager
+                        .NavigateTo($"/inicio");
+
+                    return;
+                }
+
+                if (leito.PrecisaLimpezaConcorrente)
+                {
+                    var limpeza = new LimpezaConcorrenteViewModel();
+
+                    limpeza.DataInicioLimpeza = DateTime.Now;
+                    limpeza.LeitoId = leito.LeitoId;
+                    limpeza.UsuarioId = IdUsuarioLogado;
+
+                    var response = await LimpezaService
+                        .CriarConcorrenteAsync(limpeza)
+                        .ConfigureAwait(true);
+
+                    if (response.Success)
+                    {
+                        limpeza.Id = response.Data.Id;
+
+                        this.NavigationManager
+                            .NavigateTo($"/limpeza-concorrente/{limpeza.Id}");
+                    }
+                    else
+                    {
+                        this.ToastService.ShowError(
+                            "Erro: Erro inesperado contate o suporte");
+                    } 
+                }
+                else if (leito.PrecisaLimpezaTerminal)
+                {
+                    var limpeza = new LimpezaTerminalViewModel();
+
+                    limpeza.DataInicioLimpeza = DateTime.Now;
+                    limpeza.LeitoId = leito.LeitoId;
+                    limpeza.UsuarioId = IdUsuarioLogado;
+
+                    var response = await LimpezaService
+                        .CriarTerminalAsync(limpeza)
+                        .ConfigureAwait(true);
+
+                    if (response.Success)
+                    {
+                       limpeza.Id = response.Data.Id;
+
+                        this.NavigationManager
+                            .NavigateTo($"/limpeza-terminal/{limpeza.Id}");
+                    }
+                    else
+                    {
+                        this.ToastService.ShowError(
+                            "Erro: Erro inesperado contate o suporte");
+                    }
+                }
             }
-            else
+            catch (Exception e)
             {
-                this.NavigationManager
-                    .NavigateTo($"/limpeza-terminal/{leito.LeitoId}");
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
             }
+
+            this.isLoading = false;
+            this.StateHasChanged();
         }
     }
 }
