@@ -27,7 +27,7 @@
         [Inject]
         private IToastService ToastService { get; set; }
 
-        private ManutencaoViewModel manutencao { get; set; } = new();
+        private ManutencaoViewModel manutencao = new();
         private List<string> turnos;
         private List<SetorViewModel> setores = new();
 
@@ -53,7 +53,7 @@
 
             if (Id != null)
             {
-                await this.ConsultarLeitoParaEdicao()
+                await this.ConsultarManutencaoParaEdicao()
                     .ConfigureAwait(true);
             }
             else
@@ -92,16 +92,16 @@
             this.StateHasChanged();
         }
 
-        private async Task ConsultarLeitoParaEdicao()
+        private async Task ConsultarManutencaoParaEdicao()
         {
             try
             {
-                var idLeito = int.Parse(this.Id);
+                var idManutencao = int.Parse(this.Id);
 
-                var leitoParaEdicao = new ManutencaoViewModel(idLeito);
+                var manutencaoParaEdicao = new ManutencaoViewModel(idManutencao);
                 var response = await this.ManutencaoService
                     .GetDetalhesDaManutencaoAsync(
-                        leitoParaEdicao)
+                        manutencaoParaEdicao)
                     .ConfigureAwait(true);
 
                 if (response != null && response.Success)

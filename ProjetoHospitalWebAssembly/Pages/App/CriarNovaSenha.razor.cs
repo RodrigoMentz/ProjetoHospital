@@ -3,6 +3,7 @@
     using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
     using System.Text.RegularExpressions;
@@ -31,6 +32,20 @@
         private bool senhaTemNoMinimo1NaoAlfanumerico = false;
         private bool senhaTemNoMinimo1Numero = false;
         private string confirmarSenha = string.Empty;
+        private UsuarioViewModel usuarioLocalStorage = new();
+
+        protected override async Task OnInitializedAsync()
+        {
+            this.isLoading = true;
+            this.StateHasChanged();
+
+            this.usuarioLocalStorage = await this.UsuarioService
+                .ConsultarUsuarioLocalStorage()
+                .ConfigureAwait(true);
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
 
         public string Senha
         {
@@ -97,8 +112,21 @@
 
                     await Task.Delay(2000);
 
-                    this.NavigationManager
-                        .NavigateTo("/perfis");
+                    if (usuarioLocalStorage.Perfil.Nome == "Limpeza")
+                    {
+                        this.NavigationManager
+                            .NavigateTo("/quartos-para-limpar");
+                    }
+                    else if (usuarioLocalStorage.Perfil.Nome == "Recepcão/Enfermagem")
+                    {
+                        this.NavigationManager
+                            .NavigateTo("/painel");
+                    }
+                    else if (usuarioLocalStorage.Perfil.Nome == "Manutenção")
+                    {
+                        this.NavigationManager
+                            .NavigateTo("/manutencoes");
+                    }
                 }
                 else if (response != null && response.Notifications.Any())
                 {

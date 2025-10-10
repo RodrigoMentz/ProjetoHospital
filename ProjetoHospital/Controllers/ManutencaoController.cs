@@ -58,5 +58,17 @@
 
             return this.Ok(resultado);
         }
+
+        [HttpPut("finalizar")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel), 200)]
+        public async Task<IActionResult> Finalizar(
+            [FromBody] ManutencaoViewModel manutencao)
+        {
+            var resultado = await ManutencaoService
+                .FinalizarAsync(manutencao);
+
+            return this.Ok(resultado);
+        }
     }
 }

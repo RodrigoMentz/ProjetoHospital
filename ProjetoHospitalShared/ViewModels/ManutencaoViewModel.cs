@@ -56,5 +56,15 @@
         public DateTime DataDeSolicitacao { get; set; }
 
         public string Descricao { get; set; }
+
+        public string? IdExecutante { get; set; }
+
+        public string? NomeExecutante { get; set; }
+
+        public string? ContatoExecutante { get; set; }
+
+        public string? TurnoExecutante { get; set; }
+
+        public DateTime? DataDeConclusao { get; set; }
     }
 }

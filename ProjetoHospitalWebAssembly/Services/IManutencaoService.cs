@@ -15,5 +15,8 @@
 
         Task<ResponseModel> AtualizarAsync(
             ManutencaoViewModel manutencao);
+
+        Task<ResponseModel> FinalizarAsync(
+            ManutencaoViewModel manutencao);
     }
 }

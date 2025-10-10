@@ -140,6 +140,11 @@
                     this.NavigationManager
                         .NavigateTo("/painel");
                 }
+                else if (perfilUsuario.Nome == "Manutenção")
+                {
+                    this.NavigationManager
+                        .NavigateTo("/manutencoes");
+                }
                 /* TODO: implementar outros perfis*/
             }
         }

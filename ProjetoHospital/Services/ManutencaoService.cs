@@ -108,5 +108,27 @@
 
             return response;
         }
+
+        public async Task<ResponseModel> FinalizarAsync(
+            ManutencaoViewModel manutencao)
+        {
+            var manutencaoDb = await manutencaoRepository
+                .FindAsync(manutencao.Id)
+                .ConfigureAwait(false);
+
+            manutencaoDb.IdExecutante = manutencao.IdExecutante;
+            manutencaoDb.NomeExecutante = manutencao.NomeExecutante;
+            manutencaoDb.ContatoExecutante = manutencao.ContatoExecutante;
+            manutencaoDb.TurnoExecutante = manutencao.TurnoExecutante;
+            manutencaoDb.DataDeConclusao = manutencao.DataDeConclusao;
+
+            await manutencaoRepository
+                .UpdateAsync(manutencaoDb)
+                .ConfigureAwait(false);
+
+            var response = new ResponseModel();
+
+            return response;
+        }
     }
 }

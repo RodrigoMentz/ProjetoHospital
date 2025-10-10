@@ -61,5 +61,19 @@
 
             return response;
         }
+
+        public async Task<ResponseModel> FinalizarAsync(
+            ManutencaoViewModel manutencao)
+        {
+            var url = $"Manutencao/finalizar";
+
+            var response = await httpService
+                 .PutJsonAsync<ManutencaoViewModel, ResponseModel>(
+                     url,
+                     manutencao)
+                 .ConfigureAwait(false);
+
+            return response;
+        }
     }
 }

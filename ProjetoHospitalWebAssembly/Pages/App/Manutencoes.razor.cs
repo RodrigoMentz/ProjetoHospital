@@ -1,6 +1,5 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages.App
 {
-    using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
@@ -14,13 +13,13 @@
         private IManutencaoService ManutencaoService { get; set; }
 
         [Inject]
-        private ILocalStorageService localStorageService { get; set; }
+        private IUsuarioService UsuarioService { get; set; }
 
         private bool isLoading = false;
 
         private List<ManutencaoViewModel> manutencoes = new();
 
-        private string idUsuarioLocalStorage = string.Empty;
+        private UsuarioViewModel usuarioLocalStorage = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,15 +35,9 @@
                 this.manutencoes = response.Data;
             }
 
-            this.idUsuarioLocalStorage = await this.localStorageService
-                .GetItemAsync<string>("IdUsuario")
+            this.usuarioLocalStorage = await this.UsuarioService
+                .ConsultarUsuarioLocalStorage()
                 .ConfigureAwait(true);
-
-            if (idUsuarioLocalStorage == null)
-            {
-                this.NavigationManager
-                    .NavigateTo($"/inicio");
-            }
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -60,6 +53,12 @@
         {
             this.NavigationManager
                 .NavigateTo($"/manutencoes/editar/{manutencaoId}");
+        }
+
+        private void NavegarParaRealizarManutencao(int manutencaoId)
+        {
+            this.NavigationManager
+                .NavigateTo($"/manutencoes/realizar/{manutencaoId}");
         }
     }
 }
