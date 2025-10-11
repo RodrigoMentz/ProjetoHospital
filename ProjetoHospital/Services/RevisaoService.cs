@@ -42,10 +42,41 @@
         public async Task<ResponseModel<List<RevisaoViewModel>>> GetRevisoesQueNecessitamLimpezaAsync()
         {
             var revisoesDb = await revisaoRepository
-                .FindAllAsync(r => r.DataFimLimpeza == null && r.NecessitaLimpeza, r => r.Leito, r => r.Leito.Quarto, r => r.Leito.Quarto.Setor)
+                .FindAllAsync(r => r.DataFimLimpeza == null && r.NecessitaLimpeza && r.ExecutanteId == null, r => r.Leito, r => r.Leito.Quarto, r => r.Leito.Quarto.Setor)
                 .ConfigureAwait(false);
 
             var listaRevisao =  revisoesDb.Select(r => new RevisaoViewModel(
+                r.Id,
+                r.Observacoes,
+                r.DataSolicitacao,
+                r.DataInicioLimpeza,
+                r.DataFimLimpeza,
+                r.SolicitanteId,
+                r.ExecutanteId,
+                r.LimpezaId,
+                r.LeitoId,
+                r.Leito.Nome,
+                r.Leito.Quarto.Nome,
+                r.Leito.Quarto.IdSetor,
+                r.Leito.Quarto.Setor.Nome))
+                .ToList();
+
+            var response = new ResponseModel<List<RevisaoViewModel>>
+            {
+                Data = listaRevisao
+            };
+
+            return response;
+        }
+
+        public async Task<ResponseModel<List<RevisaoViewModel>>> GetRevisoesQueNecessitamLimpezaENaoForamTerminadasPeloUsuarioAsync(
+            UsuarioViewModel usuario)
+        {
+            var revisoesDb = await revisaoRepository
+                .FindAllAsync(r => r.DataFimLimpeza == null && r.NecessitaLimpeza && r.ExecutanteId == usuario.Id, r => r.Leito, r => r.Leito.Quarto, r => r.Leito.Quarto.Setor)
+                .ConfigureAwait(false);
+
+            var listaRevisao = revisoesDb.Select(r => new RevisaoViewModel(
                 r.Id,
                 r.Observacoes,
                 r.DataSolicitacao,
@@ -112,6 +143,16 @@
 
             await revisaoRepository
                 .InsertAsync(revisaoDb)
+                .ConfigureAwait(false);
+
+            var limpezaDb = await limpezaRepository
+                .FindAsync(revisaoDb.LimpezaId)
+                .ConfigureAwait(false);
+
+            limpezaDb.Revisado = true;
+
+            await limpezaRepository
+                .UpdateAsync(limpezaDb)
                 .ConfigureAwait(false);
 
             var responseRevisao = new RevisaoViewModel(revisaoDb.Id);

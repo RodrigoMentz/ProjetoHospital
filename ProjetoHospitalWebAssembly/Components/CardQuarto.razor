@@ -92,7 +92,7 @@ else if (Revisao != null)
                 </ul>
                 <button type="button" class="btn" @onclick="OnClick">
                     <span class="fw-bold">
-                        INICIAR REVISÃO
+                        @(Revisao.ExecutanteId == null ? "INICIAR REVISÃO" : "CONTINUAR REVISAO")
                     </span>
                 </button>
             </div>

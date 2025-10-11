@@ -35,6 +35,8 @@
         private List<LimpezaViewModel> limpezasNaoEncerradasFiltradas = new();
         private List<RevisaoViewModel> revisoes = new();
         private List<RevisaoViewModel> revisoesFiltradas = new();
+        private List<RevisaoViewModel> revisoesNaoEncerradas = new();
+        private List<RevisaoViewModel> revisoesNaoEncerradasFiltradas = new();
 
         private SetorViewModel setorSelecionado = new();
         private UsuarioViewModel usuarioLocalStorage = new();
@@ -70,15 +72,19 @@
             await this.Consultarleitos()
                 .ConfigureAwait(true);
 
+            await ConsultarLimpezasNaoEncerradasDoUsuario()
+                .ConfigureAwait(true);
+
             await this.ConsultarRevisoes()
                 .ConfigureAwait(true);
 
-            await ConsultarLimpezasNaoEncerradasDoUsuario()
-                .ConfigureAwait(true);
+            await ConsultarRevisoesNaoTerminadasPeloUsuario()
+                 .ConfigureAwait(true);
 
             this.leitosFiltrados = this.leitos;
             this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas;
             this.revisoesFiltradas = revisoes;
+            this.revisoesNaoEncerradasFiltradas = this.revisoesNaoEncerradas;
 
             this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
                 .Where(l => l.PrecisaLimpezaConcorrente)
@@ -125,6 +131,26 @@
             this.StateHasChanged();
         }
 
+        private async Task ConsultarLimpezasNaoEncerradasDoUsuario()
+        {
+            var response = await this.LimpezaService
+                .ConsultarLimpezasNaoEncerradasDoUsuario(
+                    this.usuarioLocalStorage)
+                .ConfigureAwait(true);
+
+            if (response != null && response.Success)
+            {
+                this.limpezasNaoEncerradas = response.Data;
+            }
+            else
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+
+                return;
+            }
+        }
+
         private async Task ConsultarRevisoes()
         {
             try
@@ -151,24 +177,37 @@
             this.StateHasChanged();
         }
 
-        private async Task ConsultarLimpezasNaoEncerradasDoUsuario()
+        private async Task ConsultarRevisoesNaoTerminadasPeloUsuario()
         {
-            var response = await this.LimpezaService
-                .ConsultarLimpezasNaoEncerradasDoUsuario(
-                    this.usuarioLocalStorage)
-                .ConfigureAwait(true);
-
-            if (response != null && response.Success)
+            try
             {
-                this.limpezasNaoEncerradas = response.Data;
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var usuario = new UsuarioViewModel(
+                    this.usuarioLocalStorage.Id,
+                    this.usuarioLocalStorage.Nome,
+                    this.usuarioLocalStorage.Perfil,
+                    this.usuarioLocalStorage.NumeroTelefone);
+
+                var response = await this.RevisaoService
+                    .GetRevisoesQueNecessitamLimpezaENaoForamTerminadasPeloUsuarioAsync(
+                        usuario)
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.revisoesNaoEncerradas = response.Data;
+                }
             }
-            else
+            catch (Exception e)
             {
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
-
-                return;
             }
+
+            this.isLoading = false;
+            this.StateHasChanged();
         }
 
         private void OnSetorChange(SetorViewModel setor)
@@ -186,12 +225,16 @@
                 .Where(l => l.SetorId == setor.Id)
                 .ToList();
 
+            this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas
+                .Where(l => l.IdSetor == setor.Id)
+                .ToList();
+
             this.revisoesFiltradas = this.revisoes
                 .Where(r => r.SetorId == setor.Id)
                 .ToList();
 
-            this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas
-                .Where(l => l.IdSetor == setor.Id)
+            this.revisoesNaoEncerradasFiltradas = this.revisoesNaoEncerradas
+                .Where(r => r.SetorId == setor.Id)
                 .ToList();
         }
 
@@ -295,6 +338,26 @@
                     this.ToastService.ShowError(
                         "Erro: Erro inesperado contate o suporte");
                 }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task ContinuarLimpezaRevisao(RevisaoViewModel revisao)
+        {
+            try
+            {
+                this.isLoading = false;
+                this.StateHasChanged();
+
+                this.NavigationManager
+                    .NavigateTo($"/limpeza-revisao/{revisao.Id}");
             }
             catch (Exception e)
             {

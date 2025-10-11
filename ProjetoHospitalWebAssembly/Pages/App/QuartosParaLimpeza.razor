@@ -68,6 +68,16 @@ else
             </div>
         }
     }
+    @if (revisoesNaoEncerradasFiltradas.Count() > 0)
+    {
+        <h1 class="mt-4">Revisões iniciadas por você</h1>
+        @foreach (var revisao in revisoesNaoEncerradasFiltradas)
+        {
+            <div class="mt-4">
+                <CardQuarto Revisao="revisao" OnClick="() => ContinuarLimpezaRevisao(revisao)" />
+            </div>
+        }
+    }
     <h1 class="mt-4">Necessitam limpeza</h1>
     @foreach (var leito in leitosFiltrados)
     {

@@ -35,6 +35,19 @@
             return this.Ok(resultado);
         }
 
+        [HttpPost("revisoes-necessitam-limpeza-e-nao-foram-terminadas")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<RevisaoViewModel>>), 200)]
+        public async Task<IActionResult> GetRevisoesQueNecessitamLimpezaENaoForamTerminadasPeloUsuarioAsync(
+            [FromBody] UsuarioViewModel usuario)
+        {
+            var resultado = await RevisaoService
+                .GetRevisoesQueNecessitamLimpezaENaoForamTerminadasPeloUsuarioAsync(
+                    usuario);
+
+            return this.Ok(resultado);
+        }
+
         [HttpGet("revisoes-pendentes")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAsync()

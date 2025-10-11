@@ -34,6 +34,20 @@
             return resultado;
         }
 
+        public async Task<ResponseModel<List<RevisaoViewModel>>> GetRevisoesQueNecessitamLimpezaENaoForamTerminadasPeloUsuarioAsync(
+            UsuarioViewModel usuario)
+        {
+            var url = $"Revisao/revisoes-necessitam-limpeza-e-nao-foram-terminadas";
+
+            var resultado = await httpService
+                .PostJsonAsync<UsuarioViewModel, ResponseModel<List<RevisaoViewModel>>>(
+                    url,
+                    usuario)
+                .ConfigureAwait(false);
+
+            return resultado;
+        }
+
         public async Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> GetRevisoesPendentesAsync()
         {
             var url = $"Revisao/revisoes-pendentes";
