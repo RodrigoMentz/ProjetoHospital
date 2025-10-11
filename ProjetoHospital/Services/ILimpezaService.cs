@@ -1,5 +1,6 @@
 ﻿namespace ProjetoHospital.Services
 {
+    using ProjetoHospital.Entities;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
 
@@ -19,10 +20,16 @@
         Task<ResponseModel> FinalizarLimpezaConcorrenteAsync(
             LimpezaConcorrenteViewModel limpeza);
 
+        Task<ResponseModel<LimpezaConcorrenteViewModel>> ConsultarLimpezaConcorrenteAsync(
+           LimpezaViewModel limpeza);
+
         Task<ResponseModel<LimpezaViewModel>> CriarLimpezaTerminalAsync(
             LimpezaTerminalViewModel limpeza);
 
         Task<ResponseModel> FinalizarLimpezaTerminalAsync(
             LimpezaTerminalViewModel limpeza);
+
+        Task<ResponseModel<LimpezaTerminalViewModel>> ConsultarLimpezaTerminalAsync(
+           LimpezaViewModel limpeza);
     }
 }

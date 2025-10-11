@@ -16,6 +16,9 @@
             builder.Property(l => l.DataInicioLimpeza)
                 .IsRequired();
 
+            builder.Property(l => l.Revisado)
+                .HasDefaultValue(false);
+
             builder.Property(l => l.LeitoId)
                 .IsRequired();
 

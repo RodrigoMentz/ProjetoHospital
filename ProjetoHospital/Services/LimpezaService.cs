@@ -219,6 +219,44 @@
             return response;
         }
 
+        public async Task<ResponseModel<LimpezaConcorrenteViewModel>> ConsultarLimpezaConcorrenteAsync(
+           LimpezaViewModel limpeza)
+        {
+            var limpezaDb = await limpezaRepository
+                .FindDerivedAsync<LimpezaConcorrente>(
+                    l => l.Id == limpeza.Id,
+                    l => l.Leito,
+                    l => l.Leito.Quarto);
+
+            if (limpezaDb == null)
+            {
+                return new ResponseModel<LimpezaConcorrenteViewModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Limpeza.ConsultarLimpeza", "Limpeza Inexistente"),
+                        });
+            }
+
+            var limpezaConcorrente = new LimpezaConcorrenteViewModel(
+                limpezaDb.TirarLixo,
+                limpezaDb.LimparVasoSanitario,
+                limpezaDb.LimparBox,
+                limpezaDb.RevisarMofo,
+                limpezaDb.LimparPia,
+                limpezaDb.LimparCama,
+                limpezaDb.LimparMesaCabeceira,
+                limpezaDb.LimparLixeira);
+
+            limpezaConcorrente.Id = limpezaDb.Id;
+            limpezaConcorrente.LeitoNome = limpezaDb.Leito.Nome;
+            limpezaConcorrente.NomeQuarto = limpezaDb.Leito.Quarto.Nome;
+
+            var response = new ResponseModel<LimpezaConcorrenteViewModel>(limpezaConcorrente);
+
+            return response;
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarLimpezaTerminalAsync(
             LimpezaTerminalViewModel limpeza)
         {
@@ -300,6 +338,52 @@
                 .ConfigureAwait(false);
 
             var response = new ResponseModel();
+
+            return response;
+        }
+
+        public async Task<ResponseModel<LimpezaTerminalViewModel>> ConsultarLimpezaTerminalAsync(
+           LimpezaViewModel limpeza)
+        {
+            var limpezaDb = await limpezaRepository
+                .FindDerivedAsync<LimpezaTerminal>(
+                    l => l.Id == limpeza.Id,
+                    l => l.Leito,
+                    l => l.Leito.Quarto);
+
+            if (limpezaDb == null)
+            {
+                return new ResponseModel<LimpezaTerminalViewModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Limpeza.ConsultarLimpeza", "Limpeza Inexistente"),
+                        });
+            }
+
+            var limpezaConcorrente = new LimpezaTerminalViewModel(
+                limpezaDb.TirarLixo,
+                limpezaDb.LimparVasoSanitario,
+                limpezaDb.LimparBox,
+                limpezaDb.RevisarMofo,
+                limpezaDb.LimparPia,
+                limpezaDb.LimparCama,
+                limpezaDb.LimparEscadaCama,
+                limpezaDb.LimparMesaCabeceira,
+                limpezaDb.LimparArmario,
+                limpezaDb.RecolherRoupaSuja,
+                limpezaDb.RevisarPapelToalhaEHigienico,
+                limpezaDb.LimparDispensers,
+                limpezaDb.LimparLixeira,
+                limpezaDb.LimparTeto,
+                limpezaDb.LimparParedes,
+                limpezaDb.LimparChao);
+
+            limpezaConcorrente.Id = limpezaDb.Id;
+            limpezaConcorrente.LeitoNome = limpezaDb.Leito.Nome;
+            limpezaConcorrente.NomeQuarto = limpezaDb.Leito.Quarto.Nome;
+
+            var response = new ResponseModel<LimpezaTerminalViewModel>(limpezaConcorrente);
 
             return response;
         }

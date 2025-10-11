@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjetoHospital;
 
@@ -11,9 +12,11 @@ using ProjetoHospital;
 namespace ProjetoHospital.Migrations
 {
     [DbContext(typeof(ProjetoHospitalContext))]
-    partial class ProjetoHospitalContextModelSnapshot : ModelSnapshot
+    [Migration("20251010204335_AddColunaSoftDeleteRevisao")]
+    partial class AddColunaSoftDeleteRevisao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,11 +170,6 @@ namespace ProjetoHospital.Migrations
                     b.Property<int>("LeitoId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Revisado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false);
-
                     b.Property<int>("TipoLimpeza")
                         .HasColumnType("int");
 
@@ -323,11 +321,6 @@ namespace ProjetoHospital.Migrations
 
                     b.Property<int>("LimpezaId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("NecessitaLimpeza")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Observacoes")
                         .HasMaxLength(500)

@@ -75,6 +75,18 @@
             return this.Ok(resultado);
         }
 
+        [HttpPost("consultar/concorrente")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<LimpezaConcorrenteViewModel>), 200)]
+        public async Task<IActionResult> ConsultarLimpezaConcorrente(
+            [FromBody] LimpezaViewModel limpeza)
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezaConcorrenteAsync(limpeza);
+
+            return this.Ok(resultado);
+        }
+
         [HttpPost("adicionar/terminal")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel<LimpezaViewModel>), 200)]
@@ -95,6 +107,18 @@
         {
             var resultado = await limpezaService
                 .FinalizarLimpezaTerminalAsync(limpeza);
+
+            return this.Ok(resultado);
+        }
+
+        [HttpPost("consultar/terminal")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<LimpezaTerminalViewModel>), 200)]
+        public async Task<IActionResult> ConsultarLimpezaTerminal(
+            [FromBody] LimpezaViewModel limpeza)
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezaTerminalAsync(limpeza);
 
             return this.Ok(resultado);
         }

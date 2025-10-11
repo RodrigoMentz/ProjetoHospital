@@ -235,12 +235,12 @@
 
         private void ContinuarLimpeza(LimpezaViewModel limpeza)
         {
-            if (limpeza.TipoLimpeza == ProjetoHospitalShared.TipoLimpezaEnum.Concorrente)
+            if (limpeza.TipoLimpeza == TipoLimpezaEnum.Concorrente)
             {
                 this.NavigationManager
-                            .NavigateTo($"/limpeza-concorrente/{limpeza.Id}");
+                    .NavigateTo($"/limpeza-concorrente/{limpeza.Id}");
             }
-            else if (limpeza.TipoLimpeza == ProjetoHospitalShared.TipoLimpezaEnum.Terminal)
+            else if (limpeza.TipoLimpeza == TipoLimpezaEnum.Terminal)
             {
                 this.NavigationManager
                     .NavigateTo($"/limpeza-terminal/{limpeza.Id}");

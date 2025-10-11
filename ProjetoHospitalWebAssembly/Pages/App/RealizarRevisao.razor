@@ -1,0 +1,138 @@
+﻿@page "/revisar/{tipo}/{idLimpeza}/{idRevisao}"
+@using ProjetoHospitalShared
+@layout MainLayoutApp
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    @if (tipoLimpeza == TipoLimpezaEnum.Concorrente)
+    {
+        <div class="card">
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <span class="fs-5">Leito: @limpezaConcorrente.LeitoNome</span>
+                <span class="fs-5">Quarto: @limpezaConcorrente.NomeQuarto</span>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Tirar lixo
+                    <i class="bi @(limpezaConcorrente.TirarLixo ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar vaso sanitário
+                    <i class="bi @(limpezaConcorrente.LimparVasoSanitario ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar box
+                    <i class="bi @(limpezaConcorrente.LimparBox ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Revisar mofo
+                    <i class="bi @(limpezaConcorrente.RevisarMofo ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar pia
+                    <i class="bi @(limpezaConcorrente.LimparPia ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar cama
+                    <i class="bi @(limpezaConcorrente.LimparCama ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar mesa de cabeceira
+                    <i class="bi @(limpezaConcorrente.LimparMesaCabeceira ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar lixeira
+                    <i class="bi @(limpezaConcorrente.LimparLixeira ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <span class="fs-5">Leito: @limpezaTerminal.LeitoNome</span>
+                <span class="fs-5">Quarto: @limpezaTerminal.NomeQuarto</span>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Tirar lixo
+                    <i class="bi @(limpezaTerminal.TirarLixo ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar vaso sanitário
+                    <i class="bi @(limpezaTerminal.LimparVasoSanitario ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar box
+                    <i class="bi @(limpezaTerminal.LimparBox ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Revisar mofo
+                    <i class="bi @(limpezaTerminal.RevisarMofo ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar pia
+                    <i class="bi @(limpezaTerminal.LimparPia ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar cama
+                    <i class="bi @(limpezaTerminal.LimparCama ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar escada da cama
+                    <i class="bi @(limpezaTerminal.LimparEscadaCama ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar mesa de cabeceira
+                    <i class="bi @(limpezaTerminal.LimparMesaCabeceira ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar armário
+                    <i class="bi @(limpezaTerminal.LimparArmario ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Recolher roupa suja
+                    <i class="bi @(limpezaTerminal.RecolherRoupaSuja ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Revisar papel toalha e higiênico
+                    <i class="bi @(limpezaTerminal.RevisarPapelToalhaEHigienico ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar dispensers
+                    <i class="bi @(limpezaTerminal.LimparDispensers ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar lixeira
+                    <i class="bi @(limpezaTerminal.LimparLixeira ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar teto
+                    <i class="bi @(limpezaTerminal.LimparTeto ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar paredes
+                    <i class="bi @(limpezaTerminal.LimparParedes ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center fs-5">
+                    Limpar chão
+                    <i class="bi @(limpezaTerminal.LimparChao ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
+                </li>
+            </ul>
+        </div>
+    }
+    <div class="card p-2 mt-4">
+        <label for="descricaoDaRevisao" class="form-label fs-5">Observações da revisão</label>
+        <textarea class="form-control" id="descricaoDaRevisao" rows="5" @bind="this.observacoes"></textarea>
+        <div class="d-grid gap-4 mt-4">
+            <BotaoPrincipal Texto="Quarto limpo" Disabled="this.isLoading" OnClick="() => FinalizarRevisao(false)" />
+            <BotaoPrincipal Texto="Quarto precisa de revisão" Disabled="this.isLoading" OnClick="() => FinalizarRevisao(true)" />
+        </div>
+    </div>
+}

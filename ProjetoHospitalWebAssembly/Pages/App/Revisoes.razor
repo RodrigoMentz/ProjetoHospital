@@ -1,0 +1,19 @@
+﻿@page "/revisoes"
+@layout MainLayoutApp
+
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    <h1 class="mt-4">Limpezas que precisam de revisão</h1>
+    @foreach (var revisaoPendente in revisoesPendentes)
+    {
+        <div class="mt-4">
+            <CardQuarto NecessidadeRevisao="revisaoPendente" OnClick="() => IniciarRevisao(revisaoPendente)" Disabled="this.isLoading" />
+        </div>
+    }
+}

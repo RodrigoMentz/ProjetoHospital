@@ -11,6 +11,12 @@ namespace ProjetoHospitalWebAssembly.Components
         public LimpezaViewModel Limpeza { get; set; }
 
         [Parameter]
+        public NecessidadeDeRevisaoViewModel NecessidadeRevisao { get; set; }
+
+        [Parameter]
         public EventCallback OnClick { get; set; }
+
+        [Parameter]
+        public bool Disabled { get; set; } = false;
     }
 }

@@ -19,10 +19,16 @@
         Task<ResponseModel> FinalizarConcorrenteAsync(
             LimpezaConcorrenteViewModel limpeza);
 
+        Task<ResponseModel<LimpezaConcorrenteViewModel>> ConsultarConcorrenteAsync(
+            LimpezaViewModel limpeza);
+
         Task<ResponseModel<LimpezaViewModel>> CriarTerminalAsync(
             LimpezaTerminalViewModel limpezaTerminal);
 
         Task<ResponseModel> FinalizarTerminalAsync(
             LimpezaTerminalViewModel limpeza);
+
+        Task<ResponseModel<LimpezaTerminalViewModel>> ConsultarTerminalAsync(
+            LimpezaViewModel limpeza);
     }
 }

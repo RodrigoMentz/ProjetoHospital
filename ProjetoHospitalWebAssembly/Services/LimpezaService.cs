@@ -76,6 +76,20 @@
             return response;
         }
 
+        public async Task<ResponseModel<LimpezaConcorrenteViewModel>> ConsultarConcorrenteAsync(
+            LimpezaViewModel limpeza)
+        {
+            var url = $"Limpeza/consultar/concorrente";
+
+            var response = await httpService
+                .PostJsonAsync<LimpezaViewModel, ResponseModel<LimpezaConcorrenteViewModel>>(
+                    url,
+                    limpeza)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<ResponseModel<LimpezaViewModel>> CriarTerminalAsync(
             LimpezaTerminalViewModel limpezaTerminal)
         {
@@ -100,6 +114,20 @@
                      url,
                      limpeza)
                  .ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseModel<LimpezaTerminalViewModel>> ConsultarTerminalAsync(
+            LimpezaViewModel limpeza)
+        {
+            var url = $"Limpeza/consultar/terminal";
+
+            var response = await httpService
+                .PostJsonAsync<LimpezaViewModel, ResponseModel<LimpezaTerminalViewModel>>(
+                    url,
+                    limpeza)
+                .ConfigureAwait(false);
 
             return response;
         }

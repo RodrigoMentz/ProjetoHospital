@@ -10,6 +10,7 @@
             int id)
         {
             this.Id = id;
+            this.UsuarioId = string.Empty;
         }
 
         public LimpezaViewModel(

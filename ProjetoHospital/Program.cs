@@ -52,6 +52,7 @@ builder.Services.AddScoped<IGenericRepository<Leito>, GenericRepository<Leito>>(
 builder.Services.AddScoped<IGenericRepository<Limpeza>, GenericRepository<Limpeza>>();
 builder.Services.AddScoped<IGenericRepository<Usuario>, GenericRepository<Usuario>>();
 builder.Services.AddScoped<IGenericRepository<Manutencao>, GenericRepository<Manutencao>>();
+builder.Services.AddScoped<IGenericRepository<Revisao>, GenericRepository<Revisao>>();
 
 builder.Services.AddScoped<ISetorService, SetorService>();
 builder.Services.AddScoped<IQuartoService, QuartoService>();
@@ -59,6 +60,7 @@ builder.Services.AddScoped<ILeitoService, LeitoService>();
 builder.Services.AddScoped<ILimpezaService, LimpezaService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IManutencaoService, ManutencaoService>();
+builder.Services.AddScoped<IRevisaoService, RevisaoService>();
 
 var app = builder.Build();
 

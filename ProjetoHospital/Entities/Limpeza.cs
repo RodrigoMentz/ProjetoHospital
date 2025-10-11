@@ -36,6 +36,8 @@
 
         public TipoLimpezaEnum TipoLimpeza { get; set; }
 
+        public bool Revisado { get; set; }
+
         public virtual Leito Leito { get; set; }
 
         public virtual Usuario Usuario { get; set; }
