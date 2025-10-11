@@ -99,7 +99,8 @@ else
                                     <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeBootstrap="bi-eye" Texto="Visualizar" OnClick="() => VisualizarDetalhesAsync(leito.LeitoId)" />
                                     @if (!leito.Ocupado
                                         && !leito.PrecisaLimpezaConcorrente
-                                        && !leito.PrecisaLimpezaTerminal)
+                                        && !leito.PrecisaLimpezaTerminal
+                                        && !leito.PrecisaDeRevisao)
                                     {
                                         <BotaoSecundario Class="gap-1" ClassTexto="fs-6" IconeFontAwesome="fa-solid fa-bed" Texto="Iniciar internação" OnClick="() => IniciarInternacao(leito)" />
                                     }

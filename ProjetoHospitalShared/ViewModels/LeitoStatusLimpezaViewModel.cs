@@ -42,6 +42,10 @@
 
         public bool PrecisaLimpezaTerminal { get; set; }
 
+        public bool PrecisaDeRevisao { get; set; }
+
+        public bool PrecisaDeLimpezaDeRevisao { get; set; }
+
         public bool LimpezaEmAndamento { get; set; }
 
         public DateTime DataHoraUltimaLimpeza { get; set; }

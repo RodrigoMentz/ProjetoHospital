@@ -7,7 +7,8 @@
 
     public class LimpezaService(
         IGenericRepository<Limpeza> limpezaRepository,
-        IGenericRepository<Leito> leitoRepository)
+        IGenericRepository<Leito> leitoRepository,
+        IGenericRepository<Revisao> revisaoRepository)
         : ILimpezaService
     {
         public async Task<ResponseModel<List<LeitoStatusLimpezaViewModel>>> ConsultarListaStatusLimpezaAsync()
@@ -44,8 +45,6 @@
                         && l.DataInicioLimpeza.Date >= leito.UltimaModificacao.Value.Date)
                     .ConfigureAwait(false);
 
-                //TODO: continuar limpeza
-
                 var status = new LeitoStatusLimpezaViewModel
                 {
                     LeitoId = leito.Id,
@@ -58,6 +57,8 @@
                     PrecisaLimpezaTerminal = !leito.Ocupado
                         && leito.UltimaModificacao != null
                         && existeLimpezaTerminalDepoisDaLiberacao.Count() == 0,
+                    PrecisaDeRevisao = await PrecisaRevisaoParaAUltimaLimpezaDoLeito(leito.Id).ConfigureAwait(false),
+                    PrecisaDeLimpezaDeRevisao = await ExisteRevisaoParaAUltimaLimpezaEPrecisaDeLimpezaDoLeito(leito.Id).ConfigureAwait(false),
                     LimpezaEmAndamento = limpezasHoje.Any(l => l.LeitoId == leito.Id && l.DataFimLimpeza == null),
                     DataHoraUltimaLimpeza = await GetUltimaLimpezaDataAsync(leito.Id).ConfigureAwait(false)
                 };
@@ -86,6 +87,49 @@
                 .Max(l => l.DataFimLimpeza ?? DateTime.MinValue);
 
             return ultimaData;
+        }
+
+        private async Task<bool> PrecisaRevisaoParaAUltimaLimpezaDoLeito(int leitoId)
+        {
+            var limpezas = await limpezaRepository
+                .FindAllDerivedAsync<Limpeza>(l => l.LeitoId == leitoId);
+
+            var ultimaLimpeza = limpezas
+                .OrderByDescending(l => l.DataFimLimpeza)
+                .FirstOrDefault();
+
+            if (ultimaLimpeza != null
+                && ultimaLimpeza.Revisado)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ExisteRevisaoParaAUltimaLimpezaEPrecisaDeLimpezaDoLeito(int leitoId)
+        {
+            var limpezas = await limpezaRepository
+                .FindAllDerivedAsync<Limpeza>(l => l.LeitoId == leitoId);
+
+            var ultimaLimpeza = limpezas
+                .OrderByDescending(l => l.DataFimLimpeza)
+                .FirstOrDefault();
+
+            if (ultimaLimpeza != null)
+            {
+                var revisao = await revisaoRepository
+                    .FindAsync(r => r.LimpezaId == ultimaLimpeza.Id);
+
+                if (revisao != null
+                    && revisao.NecessitaLimpeza
+                    && revisao.DataFimLimpeza == null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasDoLeito(
