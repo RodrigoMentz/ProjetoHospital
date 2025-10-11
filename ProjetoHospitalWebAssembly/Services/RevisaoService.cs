@@ -22,6 +22,18 @@
             return response;
         }
 
+        public async Task<ResponseModel<List<RevisaoViewModel>>> GetRevisoesQueNecessitamLimpezaAsync()
+        {
+            var url = $"Revisao/revisoes-necessitam-limpeza";
+
+            var resultado = await httpService
+                .GetJsonAsync<ResponseModel<List<RevisaoViewModel>>>(
+                    url)
+                .ConfigureAwait(false);
+
+            return resultado;
+        }
+
         public async Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> GetRevisoesPendentesAsync()
         {
             var url = $"Revisao/revisoes-pendentes";

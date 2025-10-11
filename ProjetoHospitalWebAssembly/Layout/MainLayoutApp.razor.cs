@@ -2,6 +2,7 @@
 {
     using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
 
     public partial class MainLayoutApp
@@ -16,12 +17,15 @@
         private ILocalStorageService LocalStorageService { get; set; }
 
         private string nomeUsuario = string.Empty;
+        private UsuarioViewModel usuarioLocalStorage = new();
 
         protected override async Task OnInitializedAsync()
         {
-            this.nomeUsuario = await this.LocalStorageService
-                .GetItemAsync<string>("nomeUsuario")
-                .ConfigureAwait(true) ?? string.Empty;
+            this.usuarioLocalStorage = await this.UsuarioService
+                .ConsultarUsuarioLocalStorage()
+                .ConfigureAwait(true);
+
+            this.nomeUsuario = this.usuarioLocalStorage.Nome ?? string.Empty;
         }
 
         private async Task Logout()
@@ -50,6 +54,18 @@
         {
             this.NavigationManager
                 .NavigateTo("/manutencoes");
+        }
+
+        private bool MostrarMenuInferior()
+        {
+            if (this.usuarioLocalStorage.Perfil != null
+                && !string.IsNullOrEmpty(this.usuarioLocalStorage.Perfil.Nome)
+                && this.usuarioLocalStorage.Perfil.Nome == "Limpeza")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

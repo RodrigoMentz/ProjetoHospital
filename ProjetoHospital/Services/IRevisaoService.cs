@@ -8,6 +8,8 @@
         Task<ResponseModel<RevisaoViewModel>> GetDetalhesDaRevisaoAsync(
             RevisaoViewModel revisao);
 
+        Task<ResponseModel<List<RevisaoViewModel>>> GetRevisoesQueNecessitamLimpezaAsync();
+
         Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> ConsultarLimpezasQuePrecisamDeRevisaoAsync();
 
         Task<ResponseModel<RevisaoViewModel>> CriarAsync(

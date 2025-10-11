@@ -36,3 +36,20 @@
         color: var(--cor-fundo);
         background-color: var(--cor-limpeza-terminal);
     }
+
+.revisao {
+    border: 2px solid var(--cor-principal);
+}
+
+    .revisao .quarto {
+        color: var(--cor-principal);
+    }
+
+    .revisao .observacoes {
+        max-width: 65vw;
+    }
+
+    .revisao .btn {
+        color: white;
+        background-color: var(--cor-principal);
+    }

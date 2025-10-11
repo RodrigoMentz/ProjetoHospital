@@ -18,21 +18,24 @@
             </article>
         </div>
     </main>
-    <div class="menu-inferior fixed-bottom">
-        <hr class="mt-0 mb-0">
-        <div class="row">
-            <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaLimpezas">
-                <i class="icon-inferior bi bi-house"></i>
-                <span class="texto-menu-inferior">Inicio</span>
-            </div>
-            <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaGeral">
-                <i class="icon-inferior bi bi-hospital"></i>
-                <span class="texto-menu-inferior">Geral</span>
-            </div>
-            <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaManutencoes">
-                <i class="icon-inferior bi bi-tools"></i>
-                <span class="texto-menu-inferior">Manutenções</span>
+    @if (MostrarMenuInferior())
+    {
+        <div class="menu-inferior fixed-bottom">
+            <hr class="mt-0 mb-0">
+            <div class="row">
+                <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaLimpezas">
+                    <i class="icon-inferior bi bi-house"></i>
+                    <span class="texto-menu-inferior">Inicio</span>
+                </div>
+                <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaGeral">
+                    <i class="icon-inferior bi bi-hospital"></i>
+                    <span class="texto-menu-inferior">Geral</span>
+                </div>
+                <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaManutencoes">
+                    <i class="icon-inferior bi bi-tools"></i>
+                    <span class="texto-menu-inferior">Manutenções</span>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>

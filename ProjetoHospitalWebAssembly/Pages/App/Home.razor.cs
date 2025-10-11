@@ -89,8 +89,8 @@
                     }
                     else
                     {
-                        this.NavigationManager
-                            .NavigateTo("/perfis");
+                        await this.TratarCacheLogado()
+                            .ConfigureAwait(true);
                     }
                 }
                 else if (response != null && response.Notifications.Any())
@@ -145,7 +145,11 @@
                     this.NavigationManager
                         .NavigateTo("/manutencoes");
                 }
-                /* TODO: implementar outros perfis*/
+                else if (perfilUsuario.Nome == "Inspeção da limpeza")
+                {
+                    this.NavigationManager
+                        .NavigateTo("/revisoes");
+                }
             }
         }
     }

@@ -127,6 +127,11 @@
                         this.NavigationManager
                             .NavigateTo("/manutencoes");
                     }
+                    else if (usuarioLocalStorage.Perfil.Nome == "Inspeção da limpeza")
+                    {
+                        this.NavigationManager
+                            .NavigateTo("/revisoes");
+                    }
                 }
                 else if (response != null && response.Notifications.Any())
                 {

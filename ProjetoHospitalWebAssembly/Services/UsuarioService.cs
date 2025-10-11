@@ -166,6 +166,9 @@
                 || string.IsNullOrWhiteSpace(numTelefone)
                 || perfil == null)
             {
+                await this.LogoutAsync()
+                    .ConfigureAwait(true);
+
                navigationManager
                     .NavigateTo($"/inicio");
 

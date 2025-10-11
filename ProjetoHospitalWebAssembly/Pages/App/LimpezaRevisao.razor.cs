@@ -1,31 +1,27 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages.App
 {
-    using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
 
-    public partial class LimpezaConcorrente : ComponentBase
+    public partial class LimpezaRevisao : ComponentBase
     {
         [Parameter]
-        public string IdLimpeza { get; set; } = string.Empty;
+        public string IdRevisao { get; set; } = string.Empty;
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private ILimpezaService LimpezaService { get; set; }
+        private IRevisaoService RevisaoService { get; set; }
 
         [Inject]
         private IToastService ToastService { get; set; }
 
-        [Inject]
-        private ILocalStorageService LocalStorageService { get; set; }
-
         private bool isLoading = false;
 
-        private LimpezaConcorrenteViewModel limpeza = new();
+        private RevisaoViewModel revisao = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -34,20 +30,20 @@
                 this.isLoading = true;
                 this.StateHasChanged();
 
-                var idUsuarioLogado = await this.LocalStorageService
-                   .GetItemAsync<string>("IdUsuario")
-                   .ConfigureAwait(true);
+                var revisaoComId = new RevisaoViewModel(int.Parse(IdRevisao));
+                var response = await this.RevisaoService
+                    .GetDetalhesDaRevisaoAsync(revisaoComId)
+                    .ConfigureAwait(true);
 
-                if (string.IsNullOrWhiteSpace(idUsuarioLogado))
+                if (response != null && response.Success)
                 {
-                    this.NavigationManager
-                        .NavigateTo($"/inicio");
-
-                    return;
+                    this.revisao = response.Data;
                 }
-
-                this.limpeza.Id = int.Parse(IdLimpeza);
-                this.limpeza.UsuarioId = idUsuarioLogado;
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
+                }
             }
             catch (Exception e)
             {
@@ -59,35 +55,23 @@
             this.StateHasChanged();
         }
 
-        private void MarcarTodosComoRealizado()
-        {
-            this.limpeza.TirarLixo = true;
-            this.limpeza.LimparVasoSanitario = true;
-            this.limpeza.LimparBox = true;
-            this.limpeza.RevisarMofo = true;
-            this.limpeza.LimparPia = true;
-            this.limpeza.LimparCama = true;
-            this.limpeza.LimparMesaCabeceira = true;
-            this.limpeza.LimparLixeira = true;
-        }
-
-        private async Task FinalizarLimpezaAsync()
+        private async Task FinalizarRevisao()
         {
             try
             {
                 this.isLoading = true;
                 this.StateHasChanged();
 
-                this.limpeza.DataFimLimpeza = DateTime.Now;
+                this.revisao.DataFimLimpeza = DateTime.Now;
 
-                var response = await LimpezaService
-                    .FinalizarConcorrenteAsync(this.limpeza)
+                var response = await this.RevisaoService
+                    .FinalizarAsync(this.revisao)
                     .ConfigureAwait(true);
 
                 if (response != null && response.Success)
                 {
                     this.ToastService.ShowSuccess(
-                        "Sucesso: Limpeza finalizada com sucesso");
+                         "Sucesso: Limpeza finalizada com sucesso");
 
                     this.NavigationManager
                         .NavigateTo($"/quartos-para-limpar");

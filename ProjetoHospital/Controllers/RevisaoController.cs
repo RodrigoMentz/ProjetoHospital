@@ -25,6 +25,16 @@
             return this.Ok(resultado);
         }
 
+        [HttpGet("revisoes-necessitam-limpeza")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetRevisoesQueNecessitamLimpezaAsync()
+        {
+            var resultado = await RevisaoService
+                .GetRevisoesQueNecessitamLimpezaAsync();
+
+            return this.Ok(resultado);
+        }
+
         [HttpGet("revisoes-pendentes")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAsync()

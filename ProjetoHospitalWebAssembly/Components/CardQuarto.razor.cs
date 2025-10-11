@@ -14,6 +14,9 @@ namespace ProjetoHospitalWebAssembly.Components
         public NecessidadeDeRevisaoViewModel NecessidadeRevisao { get; set; }
 
         [Parameter]
+        public RevisaoViewModel Revisao { get; set; }
+
+        [Parameter]
         public EventCallback OnClick { get; set; }
 
         [Parameter]

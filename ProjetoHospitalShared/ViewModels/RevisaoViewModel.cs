@@ -42,6 +42,7 @@
             int leitoId,
             string leitoNome,
             string quartoNome,
+            int setorId,
             string setorNome)
         {
             this.Id = id;
@@ -55,6 +56,7 @@
             this.LeitoId = leitoId;
             this.LeitoNome = leitoNome;
             this.QuartoNome = quartoNome;
+            this.SetorId = setorId;
             this.SetorNome = setorNome;
         }
 
@@ -83,5 +85,7 @@
         public string? QuartoNome { get; set; }
 
         public string? SetorNome { get; set; }
+
+        public int? SetorId { get; set; }
     }
 }

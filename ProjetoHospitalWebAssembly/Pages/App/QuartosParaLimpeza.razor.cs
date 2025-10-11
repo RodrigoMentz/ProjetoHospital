@@ -1,6 +1,5 @@
 ﻿namespace ProjetoHospitalWebAssembly.Pages.App
 {
-    using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared;
@@ -24,6 +23,9 @@
         [Inject]
         private IUsuarioService UsuarioService { get; set; }
 
+        [Inject]
+        private IRevisaoService RevisaoService { get; set; }
+
         private bool isLoading = false;
 
         private List<SetorViewModel> setores = new();
@@ -31,6 +33,8 @@
         private List<LeitoStatusLimpezaViewModel> leitosFiltrados = new();
         private List<LimpezaViewModel> limpezasNaoEncerradas = new();
         private List<LimpezaViewModel> limpezasNaoEncerradasFiltradas = new();
+        private List<RevisaoViewModel> revisoes = new();
+        private List<RevisaoViewModel> revisoesFiltradas = new();
 
         private SetorViewModel setorSelecionado = new();
         private UsuarioViewModel usuarioLocalStorage = new();
@@ -64,13 +68,17 @@
             }
 
             await this.Consultarleitos()
-            .ConfigureAwait(true);
+                .ConfigureAwait(true);
+
+            await this.ConsultarRevisoes()
+                .ConfigureAwait(true);
 
             await ConsultarLimpezasNaoEncerradasDoUsuario()
                 .ConfigureAwait(true);
 
             this.leitosFiltrados = this.leitos;
             this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas;
+            this.revisoesFiltradas = revisoes;
 
             this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
                 .Where(l => l.PrecisaLimpezaConcorrente)
@@ -117,6 +125,32 @@
             this.StateHasChanged();
         }
 
+        private async Task ConsultarRevisoes()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.RevisaoService
+                    .GetRevisoesQueNecessitamLimpezaAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.revisoes = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
         private async Task ConsultarLimpezasNaoEncerradasDoUsuario()
         {
             var response = await this.LimpezaService
@@ -150,6 +184,10 @@
 
             this.leitosFiltrados = this.leitos
                 .Where(l => l.SetorId == setor.Id)
+                .ToList();
+
+            this.revisoesFiltradas = this.revisoes
+                .Where(r => r.SetorId == setor.Id)
                 .ToList();
 
             this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas
@@ -221,6 +259,41 @@
                         this.ToastService.ShowError(
                             "Erro: Erro inesperado contate o suporte");
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task IniciarLimpezaRevisao(RevisaoViewModel revisao)
+        {
+            try
+            {
+                this.isLoading = false;
+                this.StateHasChanged();
+
+                revisao.DataInicioLimpeza = DateTime.Now;
+                revisao.ExecutanteId = this.usuarioLocalStorage.Id;
+
+                var response = await this.RevisaoService
+                    .AtenderAsync(revisao)
+                    .ConfigureAwait(true);
+
+                if (response.Success)
+                {
+                    this.NavigationManager
+                        .NavigateTo($"/limpeza-revisao/{revisao.Id}");
+                }
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
                 }
             }
             catch (Exception e)

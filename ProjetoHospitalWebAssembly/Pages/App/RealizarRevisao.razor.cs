@@ -119,8 +119,23 @@
                 revisao.NecessitaLimpeza = necessitaLimpeza;
                 revisao.Observacoes = observacoes;
 
-                await this.RevisaoService
+                var response = await this.RevisaoService
                     .AtualizarAsync(revisao);
+
+                if (response.Success)
+                {
+                    this.ToastService.ShowSuccess(
+                        "Sucesso: Revisão realizada");
+
+                    this.NavigationManager
+                        .NavigateTo($"/revisoes");
+                }
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
+                }
+
             }
             catch (Exception e)
             {
