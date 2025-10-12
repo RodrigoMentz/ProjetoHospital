@@ -122,5 +122,64 @@
 
             return this.Ok(resultado);
         }
+
+        [HttpPost("adicionar/emergencial")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<LimpezaViewModel>), 200)]
+        public async Task<IActionResult> CriarLimpezaEmergencial(
+            [FromBody] LimpezaEmergencialViewModel limpeza)
+        {
+            var resultado = await limpezaService
+                 .CriarLimpezaEmergencialAsync(limpeza);
+
+            return this.Ok(resultado);
+        }
+
+        [HttpPost("atender/emergencial")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<LimpezaViewModel>), 200)]
+        public async Task<IActionResult> AtenderLimpezaEmergencialAsync(
+            [FromBody] LimpezaEmergencialViewModel limpeza)
+        {
+            var resultado = await limpezaService
+                 .AtenderLimpezaEmergencialAsync(limpeza);
+
+            return this.Ok(resultado);
+        }
+
+        [HttpPost("consultar/emergencial")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<LimpezaEmergencialViewModel>), 200)]
+        public async Task<IActionResult> ConsultarLimpezaEmergencial(
+            [FromBody] LimpezaViewModel limpeza)
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezaEmergencialAsync(limpeza);
+
+            return this.Ok(resultado);
+        }
+
+        [HttpGet("consultar/limpezas-emergenciais")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<LimpezaEmergencialViewModel>>), 200)]
+        public async Task<IActionResult> ConsultarLimpezasEmergenciaisAsync()
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezasEmergenciais();
+
+            return this.Ok(resultado);
+        }
+
+        [HttpPut("finalizar/emergencial")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel), 200)]
+        public async Task<IActionResult> FinalizarEmergencial(
+            [FromBody] LimpezaEmergencialViewModel limpeza)
+        {
+            var resultado = await limpezaService
+                .FinalizarLimpezaEmergencialAsync(limpeza);
+
+            return this.Ok(resultado);
+        }
     }
 }

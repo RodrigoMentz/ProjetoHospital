@@ -34,19 +34,57 @@ else
             </button>
         }
     </div>
-    @if (leitosFiltrados.Count == 0
+    @if (!leitosFiltrados.Any()
+        && !limpezasEmergenciaisFiltradas.Any()
+        && !revisoesNaoEncerradasFiltradas.Any()
+        && !revisoesFiltradas.Any()
+        && !limpezasNaoEncerradasFiltradas.Any()
         && setorSelecionado.Nome != "Todos")
     {
         <div class="alert alert-success mt-4" role="alert">
             <span>Nenhum leito precisando de limpeza para o setor selecionado.</span>
         </div>
     }
-    else if (leitosFiltrados.Count == 0
-            && setorSelecionado.Nome == "Todos")
+    else if (!leitosFiltrados.Any()
+        && !limpezasEmergenciaisFiltradas.Any()
+        && !revisoesNaoEncerradasFiltradas.Any()
+        && !revisoesFiltradas.Any()
+        && !limpezasNaoEncerradasFiltradas.Any()
+        && setorSelecionado.Nome == "Todos")
     {
         <div class="alert alert-success mt-4" role="alert">
             <span>Todos os leitos foram limpos.</span>
         </div>
+    }
+    @if (limpezasEmergenciaisFiltradas.Count() > 0)
+    {
+        <h1 class="mt-4">Limpezas emergenciais</h1>
+        @foreach (var limpezaEmergencial in limpezasEmergenciaisFiltradas)
+        {
+            <div class="mt-4">
+                <CardQuarto LimpezaEmergencial="limpezaEmergencial" OnClick="() => IniciarLimpezaEmergencial(limpezaEmergencial)" />
+            </div>
+        }
+    }
+    @if (revisoesNaoEncerradasFiltradas.Count() > 0)
+    {
+        <h1 class="mt-4">Limpezas solicitadas pós revisão iniciadas por você</h1>
+        @foreach (var revisao in revisoesNaoEncerradasFiltradas)
+        {
+            <div class="mt-4">
+                <CardQuarto Revisao="revisao" OnClick="() => ContinuarLimpezaRevisao(revisao)" />
+            </div>
+        }
+    }
+    @if (revisoesFiltradas.Count() > 0)
+    {
+        <h1 class="mt-4">Limpezas solicitadas pós revisão</h1>
+        @foreach (var revisao in revisoesFiltradas)
+        {
+            <div class="mt-4">
+                <CardQuarto Revisao="revisao" OnClick="() => IniciarLimpezaRevisao(revisao)" />
+            </div>
+        }
     }
     @if (limpezasNaoEncerradasFiltradas.Count() > 0)
     {
@@ -58,31 +96,14 @@ else
             </div>
         }
     }
-    @if (revisoesFiltradas.Count() > 0)
+    @if (leitosFiltrados.Count() > 0)
     {
-        <h1 class="mt-4">Revisões necessárias</h1>
-        @foreach (var revisao in revisoesFiltradas)
+        <h1 class="mt-4">Necessitam limpeza</h1>
+        @foreach (var leito in leitosFiltrados)
         {
             <div class="mt-4">
-                <CardQuarto Revisao="revisao" OnClick="() => IniciarLimpezaRevisao(revisao)" />
+                <CardQuarto Leito="leito" OnClick="() => LimparLeito(leito)" />
             </div>
         }
-    }
-    @if (revisoesNaoEncerradasFiltradas.Count() > 0)
-    {
-        <h1 class="mt-4">Revisões iniciadas por você</h1>
-        @foreach (var revisao in revisoesNaoEncerradasFiltradas)
-        {
-            <div class="mt-4">
-                <CardQuarto Revisao="revisao" OnClick="() => ContinuarLimpezaRevisao(revisao)" />
-            </div>
-        }
-    }
-    <h1 class="mt-4">Necessitam limpeza</h1>
-    @foreach (var leito in leitosFiltrados)
-    {
-        <div class="mt-4">
-            <CardQuarto Leito="leito" OnClick="() => LimparLeito(leito)" />
-        </div>
     }
 }

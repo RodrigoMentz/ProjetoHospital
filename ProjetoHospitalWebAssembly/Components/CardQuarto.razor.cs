@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using ProjetoHospitalShared.ViewModels;
-namespace ProjetoHospitalWebAssembly.Components
+﻿namespace ProjetoHospitalWebAssembly.Components
 {
+    using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared.ViewModels;
+    using ProjetoHospitalWebAssembly.Services;
+
     public partial class CardQuarto
     {
         [Parameter]
@@ -9,6 +11,9 @@ namespace ProjetoHospitalWebAssembly.Components
 
         [Parameter]
         public LimpezaViewModel Limpeza { get; set; }
+
+        [Parameter]
+        public LimpezaEmergencialViewModel LimpezaEmergencial { get; set; }
 
         [Parameter]
         public NecessidadeDeRevisaoViewModel NecessidadeRevisao { get; set; }
@@ -21,5 +26,21 @@ namespace ProjetoHospitalWebAssembly.Components
 
         [Parameter]
         public bool Disabled { get; set; } = false;
+
+        [Inject]
+        private IUsuarioService UsuarioService { get; set; }
+
+        private bool isMesmoUsuario = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+            var usuarioLocaLStorage = await UsuarioService
+                .ConsultarUsuarioLocalStorage()
+                .ConfigureAwait(true);
+
+            if (LimpezaEmergencial != null) {
+                this.isMesmoUsuario = LimpezaEmergencial.UsuarioId == usuarioLocaLStorage.Id;
+            }
+        }
     }
 }

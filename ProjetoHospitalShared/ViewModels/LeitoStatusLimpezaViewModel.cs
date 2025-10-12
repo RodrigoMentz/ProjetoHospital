@@ -46,6 +46,8 @@
 
         public bool PrecisaDeLimpezaDeRevisao { get; set; }
 
+        public bool PrecisaDeLimpezaEmergencial { get; set; }
+
         public bool LimpezaEmAndamento { get; set; }
 
         public DateTime DataHoraUltimaLimpeza { get; set; }

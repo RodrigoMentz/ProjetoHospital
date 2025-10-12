@@ -53,3 +53,16 @@
         color: white;
         background-color: var(--cor-principal);
     }
+
+.limpeza-emergencial {
+    border: 2px solid var(--cor-limpeza-emergencial);
+}
+
+    .limpeza-emergencial .quarto {
+        color: var(--cor-limpeza-emergencial);
+    }
+
+    .limpeza-emergencial .btn {
+        color: white;
+        background-color: var(--cor-limpeza-emergencial);
+    }

@@ -31,5 +31,19 @@
 
         Task<ResponseModel<LimpezaTerminalViewModel>> ConsultarLimpezaTerminalAsync(
            LimpezaViewModel limpeza);
+
+        Task<ResponseModel<LimpezaViewModel>> CriarLimpezaEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza);
+
+        Task<ResponseModel<LimpezaViewModel>> AtenderLimpezaEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza);
+
+        Task<ResponseModel<LimpezaEmergencialViewModel>> ConsultarLimpezaEmergencialAsync(
+           LimpezaViewModel limpeza);
+
+        Task<ResponseModel<List<LimpezaEmergencialViewModel>>> ConsultarLimpezasEmergenciais();
+
+        Task<ResponseModel> FinalizarLimpezaEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza);
     }
 }

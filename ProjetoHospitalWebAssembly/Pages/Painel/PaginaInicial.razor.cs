@@ -39,9 +39,16 @@
                 .ConfigureAwait(true);
 
             this.quantidadeLeitosOcupados = this.statusLeitos.Where(l => l.Ocupado).Count();
-            this.quantidadeLeitosDisponiveis = this.statusLeitos.Where(l => !l.Ocupado && !l.PrecisaLimpezaTerminal && !l.PrecisaLimpezaConcorrente).Count();
-            this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente).Count();
-            this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal).Count();
+            this.quantidadeLeitosDisponiveis = this.statusLeitos
+                .Where(l => !l.Ocupado
+                    && !l.PrecisaLimpezaTerminal
+                    && !l.PrecisaLimpezaConcorrente
+                    && !l.PrecisaDeRevisao
+                    && !l.PrecisaDeLimpezaDeRevisao
+                    && !l.PrecisaDeLimpezaEmergencial)
+                .Count();
+            this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente && l.Ocupado).Count();
+            this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal && !l.Ocupado).Count();
 
             this.isLoading = false;
             this.StateHasChanged();
@@ -230,6 +237,44 @@
                 if (!retornoModal.Cancelled)
                 {
                     
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task AdicionarLimpezaEmergencialAsync()
+        {
+            try
+            {
+                var options = new ModalOptions
+                {
+                    Position = ModalPosition.Middle,
+                    Size = ModalSize.Large,
+                };
+
+                //var parametros = new ModalParameters();
+
+                //parametros.Add(
+                //    nameof(ModalHistoricoLeito.IdLeito),
+                //    IdLeito);
+
+                var retornoModal = await this.ModalService
+                    .Show<ModalCadastroLimpezaEmergencial>(
+                        "Adicionar limpeza emergencial",
+                        options)
+                    .Result
+                    .ConfigureAwait(true);
+
+                if (!retornoModal.Cancelled)
+                {
+
                 }
             }
             catch (Exception e)

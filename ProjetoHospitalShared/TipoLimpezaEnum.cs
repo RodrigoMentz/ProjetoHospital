@@ -4,5 +4,6 @@
     {
         Concorrente = 0,
         Terminal = 1,
+        Emergencial = 2,
     }
 }

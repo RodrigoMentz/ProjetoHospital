@@ -1,5 +1,6 @@
 ﻿namespace ProjetoHospital.Services
 {
+    using Azure;
     using Flunt.Notifications;
     using ProjetoHospital.Entities;
     using ProjetoHospitalShared;
@@ -59,6 +60,7 @@
                         && existeLimpezaTerminalDepoisDaLiberacao.Count() == 0,
                     PrecisaDeRevisao = await PrecisaRevisaoParaAUltimaLimpezaDoLeito(leito.Id).ConfigureAwait(false),
                     PrecisaDeLimpezaDeRevisao = await ExisteRevisaoParaAUltimaLimpezaEPrecisaDeLimpezaDoLeito(leito.Id).ConfigureAwait(false),
+                    PrecisaDeLimpezaEmergencial = limpezasHoje.OfType<LimpezaEmergencial>().Any(l => l.LeitoId == leito.Id),
                     LimpezaEmAndamento = limpezasHoje.Any(l => l.LeitoId == leito.Id && l.DataFimLimpeza == null),
                     DataHoraUltimaLimpeza = await GetUltimaLimpezaDataAsync(leito.Id).ConfigureAwait(false)
                 };
@@ -433,5 +435,154 @@
         }
 
         // TODO: criar cancelar limpeza
+
+        public async Task<ResponseModel<LimpezaViewModel>> CriarLimpezaEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza)
+        {
+            var limpezaDb = new LimpezaEmergencial
+            {
+                LeitoId = limpeza.LeitoId,
+                TipoLimpeza = TipoLimpezaEnum.Emergencial,
+                Descricao = limpeza.Descricao,
+                IdSolicitante = limpeza.SolicitanteId,
+            };
+
+            var response = await limpezaRepository
+                .InsertAsync(limpezaDb)
+                .ConfigureAwait(false);
+
+            var responseModel = new ResponseModel<LimpezaViewModel>
+            {
+                Data = new LimpezaViewModel(response.Id)
+            };
+
+            return responseModel;
+        }
+
+        public async Task<ResponseModel<LimpezaViewModel>> AtenderLimpezaEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza)
+        {
+            var limpezaDb = await limpezaRepository
+                .FindAsync(limpeza.Id)
+                .ConfigureAwait(false);
+
+            limpezaDb.DataInicioLimpeza = limpeza.DataInicioLimpeza ?? DateTime.Now;
+            limpezaDb.UsuarioId = limpeza.UsuarioId;
+
+            await limpezaRepository
+                .UpdateAsync(limpezaDb)
+                .ConfigureAwait(false);
+
+            var responseModel = new ResponseModel<LimpezaViewModel>
+            {
+                Data = new LimpezaViewModel(limpeza.Id)
+            };
+
+            return responseModel;
+        }
+
+        public async Task<ResponseModel<LimpezaEmergencialViewModel>> ConsultarLimpezaEmergencialAsync(
+           LimpezaViewModel limpeza)
+        {
+            var limpezaDb = await limpezaRepository
+                .FindDerivedAsync<LimpezaEmergencial>(
+                    l => l.Id == limpeza.Id,
+                    l => l.Leito,
+                    l => l.Leito.Quarto,
+                    l => l.Leito.Quarto.Setor,
+                    l => l.Solicitante);
+
+            if (limpezaDb == null)
+            {
+                return new ResponseModel<LimpezaEmergencialViewModel>(
+                    null,
+                    new List<Notification>
+                        {
+                            new Notification("Limpeza.ConsultarLimpeza", "Limpeza Inexistente"),
+                        });
+            }
+
+            var limpezaEmergencial = new LimpezaEmergencialViewModel(
+                limpezaDb.Id,
+                limpezaDb.DataInicioLimpeza,
+                limpezaDb.DataFimLimpeza ?? DateTime.MinValue,
+                limpezaDb.Descricao,
+                limpezaDb.LeitoId,
+                limpezaDb.IdSolicitante,
+                limpezaDb.Solicitante.Nome,
+                limpezaDb.Leito.Nome,
+                limpezaDb.Leito.Quarto.Nome,
+                limpezaDb.Leito.Quarto.IdSetor,
+                limpezaDb.Leito.Quarto.Setor.Nome,
+                limpezaDb.UsuarioId,
+                limpezaDb.Revisado);
+
+            var response = new ResponseModel<LimpezaEmergencialViewModel>(limpezaEmergencial);
+
+            return response;
+        }
+
+        public async Task<ResponseModel<List<LimpezaEmergencialViewModel>>> ConsultarLimpezasEmergenciais()
+        {
+            var limpezas = await limpezaRepository
+                .FindAllDerivedAsync<LimpezaEmergencial>(
+                    l => l.DataFimLimpeza == null,
+                    l => l.Leito,
+                    l => l.Leito.Quarto,
+                    l => l.Leito.Quarto.Setor,
+                    l => l.Usuario,
+                    l => l.Solicitante);
+
+            var listaLimpezas = limpezas
+                .Select(l => new LimpezaEmergencialViewModel(
+                    l.Id,
+                    l.DataInicioLimpeza,
+                    l.DataFimLimpeza,
+                    l.Descricao,
+                    l.LeitoId,
+                    l.IdSolicitante,
+                    l.Solicitante.Nome,
+                    l.Leito.Nome,
+                    l.Leito.Quarto.Nome,
+                    l.Leito.Quarto.IdSetor,
+                    l.Leito.Quarto.Setor.Nome,
+                    l.UsuarioId,
+                    l.Revisado))
+                .ToList();
+
+            return new ResponseModel<List<LimpezaEmergencialViewModel>>
+            {
+                Data = listaLimpezas
+            };
+        }
+
+        public async Task<ResponseModel> FinalizarLimpezaEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza)
+        {
+            var limpezaDbExistente = await limpezaRepository
+                .FindDerivedAsync<LimpezaEmergencial>(
+                    l => l.Id == limpeza.Id,
+                    l => l.Leito,
+                    l => l.Usuario);
+
+            if (limpezaDbExistente == null)
+            {
+                return new ResponseModel(
+                    new List<Notification>
+                        {
+                            new Notification("Limpeza.FinalizarEmergencial", "Limpeza Inexistente"),
+                        });
+            }
+
+            limpezaDbExistente.DataFimLimpeza = DateTime.Now;
+
+            await limpezaRepository
+                .UpdateAsync(limpezaDbExistente)
+                .ConfigureAwait(false);
+
+            var response = new ResponseModel();
+
+            return response;
+        }
     }
 }

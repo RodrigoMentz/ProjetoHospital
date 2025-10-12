@@ -40,7 +40,8 @@
             builder
                 .HasDiscriminator<TipoLimpezaEnum>("TipoLimpeza")
                 .HasValue<LimpezaConcorrente>(TipoLimpezaEnum.Concorrente)
-                .HasValue<LimpezaTerminal>(TipoLimpezaEnum.Terminal);
+                .HasValue<LimpezaTerminal>(TipoLimpezaEnum.Terminal)
+                .HasValue<LimpezaEmergencial>(TipoLimpezaEnum.Emergencial);
         }
     }
 }

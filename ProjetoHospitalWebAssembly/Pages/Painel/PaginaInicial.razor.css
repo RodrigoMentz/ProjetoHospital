@@ -13,6 +13,18 @@
     background-color: var(--cor-disponivel);
 }
 
+.aguardando-revisao {
+    background-color: var(--cor-aguardando-revisao);
+}
+
+.limpeza-revisao {
+    background-color: var(--cor-aguardando-revisao-com-transparencia);
+}
+
+.limpeza-emergencial {
+    background-color: var(--cor-limpeza-emergencial);
+}
+
 .limpeza-concorrente {
     background-color: var(--cor-limpeza-concorrente);
 }

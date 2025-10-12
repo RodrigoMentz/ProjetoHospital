@@ -131,5 +131,73 @@
 
             return response;
         }
+
+        public async Task<ResponseModel<LimpezaViewModel>> CriarEmergencialAsync(
+            LimpezaEmergencialViewModel limpezaEmergencial)
+        {
+            var url = $"Limpeza/adicionar/emergencial";
+
+            var response = await httpService
+                .PostJsonAsync<LimpezaEmergencialViewModel, ResponseModel<LimpezaViewModel>>(
+                    url,
+                    limpezaEmergencial)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseModel<LimpezaViewModel>> AtenderEmergencialAsync(
+            LimpezaEmergencialViewModel limpezaEmergencial)
+        {
+            var url = $"Limpeza/atender/emergencial";
+
+            var response = await httpService
+                .PostJsonAsync<LimpezaEmergencialViewModel, ResponseModel<LimpezaViewModel>>(
+                    url,
+                    limpezaEmergencial)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseModel<LimpezaEmergencialViewModel>> ConsultarEmergencialAsync(
+            LimpezaViewModel limpeza)
+        {
+            var url = $"Limpeza/consultar/emergencial";
+
+            var response = await httpService
+                .PostJsonAsync<LimpezaViewModel, ResponseModel<LimpezaEmergencialViewModel>>(
+                    url,
+                    limpeza)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseModel<List<LimpezaEmergencialViewModel>>> ConsultarLimpezasEmergenciaisAsync()
+        {
+            var url = $"Limpeza/consultar/limpezas-emergenciais";
+
+            var response = await httpService
+                .GetJsonAsync<ResponseModel<List<LimpezaEmergencialViewModel>>>(
+                    url)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseModel> FinalizarEmergencialAsync(
+            LimpezaEmergencialViewModel limpeza)
+        {
+            var url = $"Limpeza/finalizar/emergencial";
+
+            var response = await httpService
+                 .PutJsonAsync<LimpezaEmergencialViewModel, ResponseModel>(
+                     url,
+                     limpeza)
+                 .ConfigureAwait(false);
+
+            return response;
+        }
     }
 }

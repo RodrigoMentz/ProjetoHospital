@@ -31,6 +31,8 @@
         private List<SetorViewModel> setores = new();
         private List<LeitoStatusLimpezaViewModel> leitos = new();
         private List<LeitoStatusLimpezaViewModel> leitosFiltrados = new();
+        private List<LimpezaEmergencialViewModel> limpezasEmergenciais = new();
+        private List<LimpezaEmergencialViewModel> limpezasEmergenciaisFiltradas = new();
         private List<LimpezaViewModel> limpezasNaoEncerradas = new();
         private List<LimpezaViewModel> limpezasNaoEncerradasFiltradas = new();
         private List<RevisaoViewModel> revisoes = new();
@@ -81,10 +83,14 @@
             await ConsultarRevisoesNaoTerminadasPeloUsuario()
                  .ConfigureAwait(true);
 
+            await ConsultarLimpezasEmergenciais()
+                 .ConfigureAwait(true);
+
             this.leitosFiltrados = this.leitos;
             this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas;
             this.revisoesFiltradas = revisoes;
             this.revisoesNaoEncerradasFiltradas = this.revisoesNaoEncerradas;
+            this.limpezasEmergenciaisFiltradas = this.limpezasEmergenciais;
 
             this.quantidadeLeitosParaLimpezaConcorrente = this.leitosFiltrados
                 .Where(l => l.PrecisaLimpezaConcorrente)
@@ -210,6 +216,32 @@
             this.StateHasChanged();
         }
 
+        private async Task ConsultarLimpezasEmergenciais()
+        {
+            try
+            {
+                this.isLoading = true;
+                this.StateHasChanged();
+
+                var response = await this.LimpezaService
+                    .ConsultarLimpezasEmergenciaisAsync()
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.limpezasEmergenciais = response.Data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
         private void OnSetorChange(SetorViewModel setor)
         {
             this.setorSelecionado = setor;
@@ -217,6 +249,10 @@
             if (setor.Id == 0)
             {
                 this.leitosFiltrados = this.leitos;
+                this.limpezasNaoEncerradasFiltradas = this.limpezasNaoEncerradas;
+                this.revisoesFiltradas = revisoes;
+                this.revisoesNaoEncerradasFiltradas = revisoesNaoEncerradas;
+                this.limpezasEmergenciaisFiltradas = this.limpezasEmergenciais;
 
                 return;
             }
@@ -235,6 +271,10 @@
 
             this.revisoesNaoEncerradasFiltradas = this.revisoesNaoEncerradas
                 .Where(r => r.SetorId == setor.Id)
+                .ToList();
+
+            this.limpezasEmergenciaisFiltradas = this.limpezasEmergenciais
+                .Where(l => l.SetorId == setor.Id)
                 .ToList();
         }
 
@@ -303,6 +343,52 @@
                             "Erro: Erro inesperado contate o suporte");
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+
+            this.isLoading = false;
+            this.StateHasChanged();
+        }
+
+        private async Task IniciarLimpezaEmergencial(LimpezaEmergencialViewModel limpeza)
+        {
+            try
+            {
+                this.isLoading = false;
+                this.StateHasChanged();
+
+                if (limpeza.LeitoId == 0)
+                {
+                    this.NavigationManager
+                        .NavigateTo($"/inicio");
+
+                    return;
+                }
+
+                limpeza.DataInicioLimpeza = DateTime.Now;
+                limpeza.UsuarioId = this.usuarioLocalStorage.Id;
+
+                var response = await LimpezaService
+                    .AtenderEmergencialAsync(limpeza)
+                    .ConfigureAwait(true);
+
+                if (response.Success)
+                {
+                    limpeza.Id = response.Data.Id;
+
+                    this.NavigationManager
+                        .NavigateTo($"/limpeza-emergencial/{limpeza.Id}");
+                }
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
+                }
+                
             }
             catch (Exception e)
             {

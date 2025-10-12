@@ -36,6 +36,8 @@
 
         public DbSet<LimpezaTerminal> LimpezasTerminais { get; set; }
 
+        public DbSet<LimpezaEmergencial> LimpezasEmergenciais { get; set; }
+
         public DbSet<Manutencao> Manutencoes { get; set; }
 
         public DbSet<Revisao> Revisoes { get; set; }

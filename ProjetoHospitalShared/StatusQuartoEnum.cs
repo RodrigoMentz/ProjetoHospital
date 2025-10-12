@@ -4,8 +4,10 @@
     {
         Ocupado,
         Disponivel,
+        Aguardando_revisao,
+        Limpeza_apos_revisao,
         Limpeza_concorrente,
         Limpeza_terminal,
-        Aguardando_Revisao
+        Limpeza_emergencial,
     }
 }

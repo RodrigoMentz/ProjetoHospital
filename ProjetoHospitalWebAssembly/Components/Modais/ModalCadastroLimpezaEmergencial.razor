@@ -1,0 +1,30 @@
+﻿@if (this.isLoading)
+{
+    <Loading />
+}
+else
+{
+    <form>
+        <div class="mb-3">
+            <label for="leitoLimpeza" class="form-label fs-5">Leito que precisa de limpeza</label>
+            <select class="form-select" id="leitoLimpeza" aria-label="Leito da limpeza" disabled="@this.isLoading" @bind="limpeza.LeitoId">
+                @foreach (var leito in leitos)
+                {
+                    <option value="@leito.Id">@leito.Nome</option>
+                }
+            </select>
+        </div>
+        @if (this.exibirMensagemLeitoCampoObrigatorio)
+        {
+            <div class="mb-3">
+                <span class="fs-5 text-danger">O campo Leito é obrigatório</span>
+            </div>
+        }
+        <div class="mb-3">
+            <label for="descricaoDaLimpeza" class="form-label">Descrição da limpeza</label>
+            <textarea class="form-control" id="descricaoDaLimpeza" rows="5" @bind="this.limpeza.Descricao"></textarea>
+        </div>
+
+        <BotaoPrincipal Texto="Salvar" OnClick="SalvarAsync" />
+    </form>
+}

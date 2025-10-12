@@ -27,3 +27,8 @@
     background-color: var(--cor-aguardando-revisao-com-transparencia);
     color: white;
 }
+
+.limpeza-emergencial {
+    background-color: var(--cor-limpeza-emergencial);
+    color: white;
+}

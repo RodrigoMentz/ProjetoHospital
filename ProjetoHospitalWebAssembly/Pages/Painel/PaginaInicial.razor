@@ -44,6 +44,21 @@ else
             </div>
 
             <div class="d-flex align-items-center gap-1">
+                <div class="circulo aguardando-revisao"></div>
+                <span class="fs-5">Aguardando revisão</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-revisao"></div>
+                <span class="fs-5">Limpeza pós revisão</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-emergencial"></div>
+                <span class="fs-5">Limpeza emergencial</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
                 <div class="circulo limpeza-concorrente"></div>
                 <span class="fs-5">Limpeza concorrente</span>
             </div>
@@ -56,8 +71,9 @@ else
     </div>
 
     <div class="card mt-4">
-        <div class="card-header d-flex align-items-center">
+        <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="fs-4 my-2">Leitos</h2>
+            <BotaoSecundario Texto="Cadastrar limpeza emergencial" OnClick="AdicionarLimpezaEmergencialAsync" />
         </div>
         <div class="card-body p-0 table-responsive">
             <table class="table table-hover m-0 align-middle">

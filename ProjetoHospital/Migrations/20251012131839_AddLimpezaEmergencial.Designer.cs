@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjetoHospital;
 
@@ -11,9 +12,11 @@ using ProjetoHospital;
 namespace ProjetoHospital.Migrations
 {
     [DbContext(typeof(ProjetoHospitalContext))]
-    partial class ProjetoHospitalContextModelSnapshot : ModelSnapshot
+    [Migration("20251012131839_AddLimpezaEmergencial")]
+    partial class AddLimpezaEmergencial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,6 +179,7 @@ namespace ProjetoHospital.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -679,7 +683,8 @@ namespace ProjetoHospital.Migrations
                     b.HasOne("ProjetoHospital.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Leito");
 
