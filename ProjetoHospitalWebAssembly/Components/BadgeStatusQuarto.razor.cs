@@ -18,9 +18,9 @@
             _ when !LeitoStatus.Ocupado && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente && !LeitoStatus.PrecisaDeRevisao && !LeitoStatus.PrecisaDeLimpezaDeRevisao && !LeitoStatus.PrecisaDeLimpezaEmergencial => "Disponível",
             _ when LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaConcorrente => "Limpeza Concorrente",
             _ when !LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaTerminal => "Limpeza Terminal",
-            _ when LeitoStatus.PrecisaDeRevisao => "Aguardando revisão",
+            _ when LeitoStatus.PrecisaDeRevisao && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente && !LeitoStatus.PrecisaDeLimpezaEmergencial => "Aguardando revisão",
             _ when !LeitoStatus.PrecisaDeRevisao && LeitoStatus.PrecisaDeLimpezaDeRevisao => "Necessita limpeza pós revisão",
-            _ => string.Empty /*TODO: aguardando revisao*/
+            _ => string.Empty
         };
 
         private string ClasseTextoEFundo => LeitoStatus switch
@@ -30,7 +30,7 @@
             _ when !LeitoStatus.Ocupado && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente && !LeitoStatus.PrecisaDeRevisao && !LeitoStatus.PrecisaDeLimpezaDeRevisao && !LeitoStatus.PrecisaDeLimpezaEmergencial => "disponiveis",
             _ when LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaConcorrente => "limpeza-concorrente",
             _ when !LeitoStatus.Ocupado && LeitoStatus.PrecisaLimpezaTerminal => "limpeza-terminal",
-            _ when LeitoStatus.PrecisaDeRevisao => "aguardando-revisao",
+            _ when LeitoStatus.PrecisaDeRevisao && !LeitoStatus.PrecisaLimpezaTerminal && !LeitoStatus.PrecisaLimpezaConcorrente && !LeitoStatus.PrecisaDeLimpezaEmergencial => "aguardando-revisao",
             _ when !LeitoStatus.PrecisaDeRevisao && LeitoStatus.PrecisaDeLimpezaDeRevisao => "necessita-limpeza-revisao",
             _ => string.Empty
         };

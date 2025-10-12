@@ -9,5 +9,6 @@
         Limpeza_concorrente,
         Limpeza_terminal,
         Limpeza_emergencial,
+        Todos,
     }
 }

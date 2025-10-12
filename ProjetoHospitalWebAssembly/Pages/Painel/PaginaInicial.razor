@@ -12,65 +12,91 @@ else
 {
     <div class="row g-4 mt-4">
         <div class="col-12 col-sm-6 col-lg-3">
-            <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" Quantidade="this.quantidadeLeitosOcupados" />
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_emergencial" Quantidade="this.quantidadeLeitosLimpezaEmergencial" />
         </div>
         <div class="col-12 col-sm-6 col-lg-3">
-            <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" Quantidade="this.quantidadeLeitosDisponiveis" />
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" Quantidade="this.quantidadeLeitosLimpezaTerminal" />
         </div>
         <div class="col-12 col-sm-6 col-lg-3">
             <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_concorrente" Quantidade="this.quantidadeLeitosLimpezaConcorrente" />
         </div>
         <div class="col-12 col-sm-6 col-lg-3">
-            <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_terminal" Quantidade="this.quantidadeLeitosLimpezaTerminal" />
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Limpeza_apos_revisao" Quantidade="this.quantidadeLeitosLimpezaPosRevisao" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Ocupado" Quantidade="this.quantidadeLeitosOcupados" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Disponivel" Quantidade="this.quantidadeLeitosDisponiveis" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <CardStatusQuartoPainel Status="StatusQuartoEnum.Aguardando_revisao" Quantidade="this.quantidadeLeitosAguardandoRevisao" />
         </div>
     </div>
     <div class="border border-black d-flex align-items-center justify-content-center w-100 py-5 my-3">
         <h1>Planta Hospital</h1>
     </div>
     <div class="d-flex flex-wrap mt-4 gap-3">
-        <div class="d-flex flex-grow-1 gap-3">
-            <BotaoPrincipal Texto="Andar 1" />
-            <BotaoSecundario Texto="Andar 2" />
-        </div>
         <div class="d-flex flex-wrap gap-3 align-items-center">
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo ocupados"></div>
-                <span class="fs-5">Ocupado</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo disponiveis"></div>
-                <span class="fs-5">Disponível</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo aguardando-revisao"></div>
-                <span class="fs-5">Aguardando revisão</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo limpeza-revisao"></div>
-                <span class="fs-5">Limpeza pós revisão</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo limpeza-emergencial"></div>
-                <span class="fs-5">Limpeza emergencial</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo limpeza-concorrente"></div>
-                <span class="fs-5">Limpeza concorrente</span>
-            </div>
-
-            <div class="d-flex align-items-center gap-1">
-                <div class="circulo limpeza-terminal"></div>
-                <span class="fs-5">Limpeza terminal</span>
-            </div>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Todos ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Todos, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <span class="fs-5">Todos</span>
+                </div>
+            </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Limpeza_emergencial ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Limpeza_emergencial, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo limpeza-emergencial"></div>
+                    <span class="fs-5">Limpeza emergencial</span>
+                </div>
+            </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Limpeza_terminal ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Limpeza_terminal, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo limpeza-terminal"></div>
+                    <span class="fs-5">Limpeza terminal</span>
+                </div>
+            </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Limpeza_concorrente ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Limpeza_concorrente, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo limpeza-concorrente"></div>
+                    <span class="fs-5">Limpeza concorrente</span>
+                </div>
+                </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Limpeza_apos_revisao ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Limpeza_apos_revisao, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo limpeza-revisao"></div>
+                    <span class="fs-5">Limpeza pós revisão</span>
+                </div>
+            </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Ocupado ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Ocupado, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo ocupados"></div>
+                    <span class="fs-5">Ocupado</span>
+                </div>
+            </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Disponivel ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Disponivel, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo disponiveis"></div>
+                    <span class="fs-5">Disponível</span>
+                </div>
+            </button>
+            <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Aguardando_revisao ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Aguardando_revisao, this.setorSelecionado)">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="circulo aguardando-revisao"></div>
+                    <span class="fs-5">Aguardando revisão</span>
+                </div>
+            </button>
+        </div>
+        <div class="d-flex flex-wrap align-items-center justify-content-center mt-4 gap-3">
+            @foreach (var setor in setores)
+            {
+                <button type="button" class="btn btn-badge rounded-pill @(setorSelecionado.Id == setor.Id ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(statusSelecionado, setor)">
+                    <span class="fs-5">@setor.Nome</span>
+                </button>
+            }
         </div>
     </div>
 
-    <div class="card mt-4">
+    <div class="card my-4">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="fs-4 my-2">Leitos</h2>
             <BotaoSecundario Texto="Cadastrar limpeza emergencial" OnClick="AdicionarLimpezaEmergencialAsync" />
@@ -87,7 +113,7 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var leito in this.statusLeitos)
+                    @foreach (var leito in this.statusLeitosFiltrados)
                     {
                         <tr>
                             <td>

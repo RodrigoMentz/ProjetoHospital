@@ -34,6 +34,31 @@
         background-color: var(--cor-disponivel);
     }
 
+
+.aguardando-revisao .quantidade {
+    color: var(--cor-aguardando-revisao);
+}
+
+.aguardando-revisao .fundo-circulo {
+    background-color: var(--cor-aguardando-revisao-com-transparencia);
+}
+
+.aguardando-revisao .circulo {
+    background-color: var(--cor-aguardando-revisao);
+}
+
+.limpeza-apos-revisao .quantidade {
+    color: var(--cor-limpeza-apos-revisao);
+}
+
+.limpeza-apos-revisao .fundo-circulo {
+    background-color: var(--cor-limpeza-apos-revisao-com-transparencia);
+}
+
+.limpeza-apos-revisao .circulo {
+    background-color: var(--cor-limpeza-apos-revisao);
+}
+
 .limpeza-concorrente .quantidade {
     color: var(--cor-limpeza-concorrente);
 }
@@ -55,6 +80,18 @@
     .limpeza-terminal .circulo {
         background-color: var(--cor-limpeza-terminal);
     }
+
+.limpeza-emergencial .quantidade {
+    color: var(--cor-limpeza-emergencial);
+}
+
+.limpeza-emergencial .fundo-circulo {
+    background-color: var(--cor-limpeza-emergencial-com-transparencia);
+}
+
+.limpeza-emergencial .circulo {
+    background-color: var(--cor-limpeza-emergencial);
+}
 
 @media (min-width: 992px) {
     .nome-limpeza {

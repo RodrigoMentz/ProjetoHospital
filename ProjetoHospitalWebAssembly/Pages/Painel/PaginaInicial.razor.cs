@@ -4,11 +4,12 @@
     using Blazored.Modal.Services;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
+    using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Components.Modais;
     using ProjetoHospitalWebAssembly.Services;
 
-    public partial class PaginaInicial
+    public partial class PaginaInicial : ComponentBase
     {
         [Inject]
         private ILeitoService LeitoService { get; set; }
@@ -22,13 +23,23 @@
         [Inject]
         private IModalService ModalService { get; set; }
 
+        [Inject]
+        private ISetorService SetorService { get; set; }
+
         private bool isLoading = false;
 
         private List<LeitoStatusLimpezaViewModel> statusLeitos = new();
+        private List<LeitoStatusLimpezaViewModel> statusLeitosFiltrados = new();
+        private List<SetorViewModel> setores = new();
+        private SetorViewModel setorSelecionado = new();
+        private StatusQuartoEnum statusSelecionado = StatusQuartoEnum.Todos;
+        private int quantidadeLeitosLimpezaEmergencial = 0;
+        private int quantidadeLeitosLimpezaTerminal = 0;
+        private int quantidadeLeitosLimpezaConcorrente = 0;
+        private int quantidadeLeitosLimpezaPosRevisao = 0;
         private int quantidadeLeitosOcupados = 0;
         private int quantidadeLeitosDisponiveis = 0;
-        private int quantidadeLeitosLimpezaConcorrente = 0;
-        private int quantidadeLeitosLimpezaTerminal = 0;
+        private int quantidadeLeitosAguardandoRevisao = 0;
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,6 +49,17 @@
             await this.ConsultarStatus()
                 .ConfigureAwait(true);
 
+            await this.ConsultarSetores()
+                .ConfigureAwait(true);
+
+            var setorTodos = new SetorViewModel(0, "Todos");
+            this.setores.Insert(0, setorTodos);
+            this.setorSelecionado = this.setores.First();
+
+            this.quantidadeLeitosLimpezaEmergencial = this.statusLeitos.Where(l => l.PrecisaDeLimpezaEmergencial).Count();
+            this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal && !l.Ocupado).Count();
+            this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente && l.Ocupado).Count();
+            this.quantidadeLeitosLimpezaPosRevisao = this.statusLeitos.Where(l => l.PrecisaDeLimpezaDeRevisao).Count();
             this.quantidadeLeitosOcupados = this.statusLeitos.Where(l => l.Ocupado).Count();
             this.quantidadeLeitosDisponiveis = this.statusLeitos
                 .Where(l => !l.Ocupado
@@ -47,11 +69,39 @@
                     && !l.PrecisaDeLimpezaDeRevisao
                     && !l.PrecisaDeLimpezaEmergencial)
                 .Count();
-            this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente && l.Ocupado).Count();
-            this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal && !l.Ocupado).Count();
+            this.quantidadeLeitosAguardandoRevisao = this.statusLeitos.Where(l => l.PrecisaDeRevisao
+                && !l.PrecisaLimpezaTerminal
+                && !l.PrecisaLimpezaConcorrente
+                && !l.PrecisaDeLimpezaEmergencial).Count();
+
 
             this.isLoading = false;
             this.StateHasChanged();
+        }
+
+        private async Task ConsultarSetores()
+        {
+            try
+            {
+                var responseSetores = await this.SetorService
+                    .GetAsync()
+                    .ConfigureAwait(true);
+
+                if (responseSetores != null && responseSetores.Success)
+                {
+                    this.setores = responseSetores.Data;
+                }
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
         }
 
         private async Task ConsultarStatus()
@@ -68,6 +118,7 @@
                 if (response != null && response.Success)
                 {
                     this.statusLeitos = response.Data;
+                    this.statusLeitosFiltrados = this.statusLeitos;
                 }
             }
             catch (Exception e)
@@ -259,12 +310,6 @@
                     Size = ModalSize.Large,
                 };
 
-                //var parametros = new ModalParameters();
-
-                //parametros.Add(
-                //    nameof(ModalHistoricoLeito.IdLeito),
-                //    IdLeito);
-
                 var retornoModal = await this.ModalService
                     .Show<ModalCadastroLimpezaEmergencial>(
                         "Adicionar limpeza emergencial",
@@ -285,6 +330,72 @@
 
             this.isLoading = false;
             this.StateHasChanged();
+        }
+
+        private void OnFiltroChange(StatusQuartoEnum status, SetorViewModel setor)
+        {
+            this.statusSelecionado = status;
+            this.setorSelecionado = setor;
+
+            var statusLeitosFiltradosSetor = this.statusLeitos;
+
+            if (setor.Id != 0)
+            {
+                statusLeitosFiltradosSetor = this.statusLeitos
+                    .Where(l => l.SetorId == setor.Id)
+                    .ToList();
+            }
+
+            this.statusLeitosFiltrados = status switch
+            {
+                StatusQuartoEnum.Todos => statusLeitosFiltradosSetor,
+
+                StatusQuartoEnum.Limpeza_emergencial => statusLeitosFiltradosSetor
+                    .Where(l => l.PrecisaDeLimpezaEmergencial)
+                    .ToList(),
+
+                StatusQuartoEnum.Ocupado => statusLeitosFiltradosSetor
+                   .Where(l => l.Ocupado
+                       && !l.PrecisaLimpezaTerminal
+                       && !l.PrecisaLimpezaConcorrente
+                       && !l.PrecisaDeRevisao
+                       && !l.PrecisaDeLimpezaDeRevisao
+                       && l.PrecisaDeLimpezaEmergencial)
+                   .ToList(),
+
+                StatusQuartoEnum.Disponivel => statusLeitosFiltradosSetor
+                     .Where(l => !l.Ocupado
+                         && !l.PrecisaLimpezaTerminal
+                         && !l.PrecisaLimpezaConcorrente
+                         && !l.PrecisaDeRevisao
+                         && !l.PrecisaDeLimpezaDeRevisao
+                         && !l.PrecisaDeLimpezaEmergencial)
+                     .ToList(),
+
+                StatusQuartoEnum.Limpeza_concorrente => statusLeitosFiltradosSetor
+                   .Where(l => l.PrecisaLimpezaConcorrente
+                       && l.Ocupado)
+                   .ToList(),
+
+                StatusQuartoEnum.Limpeza_terminal => statusLeitosFiltradosSetor
+                    .Where(l => l.PrecisaLimpezaTerminal
+                        && !l.Ocupado)
+                    .ToList(),
+
+                StatusQuartoEnum.Aguardando_revisao => statusLeitosFiltradosSetor
+                    .Where(l => l.PrecisaDeRevisao
+                        && !l.PrecisaLimpezaTerminal
+                        && !l.PrecisaLimpezaConcorrente
+                        && !l.PrecisaDeLimpezaEmergencial)
+                    .ToList(),
+
+                StatusQuartoEnum.Limpeza_apos_revisao => statusLeitosFiltradosSetor
+                    .Where(l => !l.PrecisaDeRevisao
+                        && l.PrecisaDeLimpezaDeRevisao)
+                    .ToList(),
+
+                _ => new List<LeitoStatusLimpezaViewModel>()
+            };
         }
     }
 }

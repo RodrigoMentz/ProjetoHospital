@@ -18,7 +18,7 @@
 }
 
 .limpeza-revisao {
-    background-color: var(--cor-aguardando-revisao-com-transparencia);
+    background-color: var(--cor-limpeza-apos-revisao);
 }
 
 .limpeza-emergencial {
@@ -31,4 +31,30 @@
 
 .limpeza-terminal {
     background-color: var(--cor-limpeza-terminal);
+}
+
+.btn-badge {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-principal);
+    border: 1px solid var(--cor-principal);
+}
+
+    .btn-badge:active,
+    .btn-badge:hover,
+    .btn-badge:focus,
+    .btn-badge:focus-visible {
+        background-color: var(--cor-principal) !important;
+        color: var(--cor-secundaria);
+        border: 1px solid var(--cor-principal);
+        box-shadow: 0 0 0 0.1rem var(--cor-secundaria-com-transparencia), 0 0 0 0.25rem var(--cor-secundaria-com-transparencia);
+    }
+
+.selecionado {
+    background-color: var(--cor-principal);
+    color: var(--cor-secundaria);
+    border: 1px solid var(--cor-principal);
+}
+
+.card {
+    min-height: 70vh;
 }

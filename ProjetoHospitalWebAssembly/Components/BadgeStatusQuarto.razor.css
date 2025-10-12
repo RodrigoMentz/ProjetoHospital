@@ -19,12 +19,12 @@
 }
 
 .aguardando-revisao {
-    background-color: var(--cor-aguardando-revisao);
+    background-color: var(--cor-aguardando-revisao-com-transparencia);
     color: black;
 }
 
 .necessita-limpeza-revisao {
-    background-color: var(--cor-aguardando-revisao-com-transparencia);
+    background-color: var(--cor-limpeza-apos-revisao);
     color: white;
 }
 

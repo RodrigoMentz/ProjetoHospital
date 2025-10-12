@@ -18,8 +18,11 @@ namespace ProjetoHospitalWebAssembly.Components
         {
             StatusQuartoEnum.Ocupado => "Ocupados",
             StatusQuartoEnum.Disponivel => "Disponíveis",
+            StatusQuartoEnum.Aguardando_revisao => "Aguardando Revisão",
+            StatusQuartoEnum.Limpeza_apos_revisao => "Limpeza Após Revisão",
             StatusQuartoEnum.Limpeza_concorrente => "Limpeza Concorrente",
             StatusQuartoEnum.Limpeza_terminal => "Limpeza Terminal",
+            StatusQuartoEnum.Limpeza_emergencial => "Limpeza Emergencial",
             _ => string.Empty
         };
 
@@ -27,8 +30,11 @@ namespace ProjetoHospitalWebAssembly.Components
         {
             StatusQuartoEnum.Ocupado => "ocupados",
             StatusQuartoEnum.Disponivel => "disponiveis",
+            StatusQuartoEnum.Aguardando_revisao => "aguardando-revisao",
+            StatusQuartoEnum.Limpeza_apos_revisao => "limpeza-apos-revisao",
             StatusQuartoEnum.Limpeza_concorrente => "limpeza-concorrente",
             StatusQuartoEnum.Limpeza_terminal => "limpeza-terminal",
+            StatusQuartoEnum.Limpeza_emergencial => "limpeza-emergencial",
             _ => string.Empty
         };
     }

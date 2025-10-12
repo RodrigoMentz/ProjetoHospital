@@ -60,7 +60,7 @@
                         && existeLimpezaTerminalDepoisDaLiberacao.Count() == 0,
                     PrecisaDeRevisao = await PrecisaRevisaoParaAUltimaLimpezaDoLeito(leito.Id).ConfigureAwait(false),
                     PrecisaDeLimpezaDeRevisao = await ExisteRevisaoParaAUltimaLimpezaEPrecisaDeLimpezaDoLeito(leito.Id).ConfigureAwait(false),
-                    PrecisaDeLimpezaEmergencial = limpezasHoje.OfType<LimpezaEmergencial>().Any(l => l.LeitoId == leito.Id),
+                    PrecisaDeLimpezaEmergencial = limpezasHoje.OfType<LimpezaEmergencial>().Any(l => l.LeitoId == leito.Id && l.DataFimLimpeza == null && l.UsuarioId == null),
                     LimpezaEmAndamento = limpezasHoje.Any(l => l.LeitoId == leito.Id && l.DataFimLimpeza == null),
                     DataHoraUltimaLimpeza = await GetUltimaLimpezaDataAsync(leito.Id).ConfigureAwait(false)
                 };
@@ -100,8 +100,9 @@
                 .OrderByDescending(l => l.DataFimLimpeza)
                 .FirstOrDefault();
 
-            if (ultimaLimpeza != null
+            if ((ultimaLimpeza != null
                 && ultimaLimpeza.Revisado)
+                || ultimaLimpeza == null)
             {
                 return false;
             }

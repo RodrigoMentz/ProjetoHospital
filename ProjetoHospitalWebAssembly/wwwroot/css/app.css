@@ -6,8 +6,10 @@
     --cor-limpeza-concorrente-com-transparencia: #a01a581A;
     --cor-limpeza-terminal: #ff6700;
     --cor-limpeza-terminal-com-transparencia: #ff67001A;
-    --cor-aguardando-revisao: #BBDEFB;
-    --cor-aguardando-revisao-com-transparencia: #0D47A1;
+    --cor-aguardando-revisao: #0D47A1;
+    --cor-aguardando-revisao-com-transparencia: #BBDEFB;
+    --cor-limpeza-apos-revisao: #169490;
+    --cor-limpeza-apos-revisao-com-transparencia: #C1F6F4;
     --cor-fundo: #e8e9eb;
     --cor-principal-com-transparencia: #2e41561A;
     --cor-principal-com-transparencia-dois: rgba(46, 65, 86, 0.5);
@@ -16,8 +18,8 @@
     --cor-disponivel-com-transparencia: #16A34A1A;
     --cor-inativo: #8a0404;
     --cor-inativo-com-transparencia: rgba(138, 4, 4, 0.2);
-    --cor-limpeza-emergencial: #169490;
-    --cor-limpeza-emergencial-com-transparencia: #F6BEF8;
+    --cor-limpeza-emergencial: #E81313;
+    --cor-limpeza-emergencial-com-transparencia: #FDE7E7;
 }
 
 html {
