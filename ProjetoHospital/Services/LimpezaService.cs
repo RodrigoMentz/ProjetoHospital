@@ -1,6 +1,5 @@
 ﻿namespace ProjetoHospital.Services
 {
-    using Azure;
     using Flunt.Notifications;
     using ProjetoHospital.Entities;
     using ProjetoHospitalShared;
@@ -140,7 +139,8 @@
         {
             var limpezas = await limpezaRepository
                 .FindAllDerivedAsync<Limpeza>(
-                    l => l.LeitoId == leito.Id,
+                    l => l.LeitoId == leito.Id
+                    && l.DataInicioLimpeza.Date >= DateTime.Now.AddDays(-30).Date,
                     l => l.Leito,
                     l => l.Usuario);
 

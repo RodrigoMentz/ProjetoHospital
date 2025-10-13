@@ -319,7 +319,8 @@
 
                 if (!retornoModal.Cancelled)
                 {
-
+                    await this.ConsultarStatus()
+                        .ConfigureAwait(true);
                 }
             }
             catch (Exception e)

@@ -1,4 +1,5 @@
-﻿@if (this.isLoading)
+﻿@using ProjetoHospitalShared
+@if (this.isLoading)
 {
     <Loading />
 }
@@ -8,20 +9,38 @@ else
         <span class="fs-5">Legenda:</span>
         <div class="d-flex flex-wrap gap-2">
             <div class="d-flex align-items-center gap-1">
-                <div class="circulo limpeza-concorrente"></div>
-                <span class="fs-5">Limpeza concorrente</span>
+                <div class="circulo limpeza-emergencial"></div>
+                <span class="fs-5">Limpeza emergencial</span>
             </div>
             <div class="d-flex align-items-center gap-1">
                 <div class="circulo limpeza-terminal"></div>
                 <span class="fs-5">Limpeza terminal</span>
             </div>
+            <div class="d-flex align-items-center gap-1">
+                <div class="circulo limpeza-concorrente"></div>
+                <span class="fs-5">Limpeza concorrente</span>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-wrap flex-column justify-content-center align-items-center mt-4">
+        <span class="fs-5">Selecione o período que deseja ver</span>
+        <div class="btn-group mt-2" role="group" aria-label="Controle de dias">
+            <button type="button" class="btn btn-outline-primary @(quantidadeDias == 30 ? "selecionado" : string.Empty)" @onclick="() => FiltrarPorDias(30)">
+                <span>Últimos 30 dias</span>
+            </button>
+            <button type="button" class="btn btn-outline-primary @(quantidadeDias == 7 ? "selecionado" : string.Empty)" @onclick="() => FiltrarPorDias(7)">
+                <span>Últimos 7 dias</span>
+            </button>
+            <button type="button" class="btn btn-outline-primary @(quantidadeDias == 0 ? "selecionado" : string.Empty)" @onclick="() => FiltrarPorDias(0)">
+                <span>Hoje</span>
+            </button>
         </div>
     </div>
     <RadzenTimeline Orientation="Orientation.Vertical" LinePosition="LinePosition.Center" Reverse="false" class="rz-m-4">
         <Items>
-            @foreach (var limpeza in limpezas)
+            @foreach (var limpeza in limpezasFiltradas)
             {
-                <RadzenTimelineItem PointStyle="@(limpeza.TipoLimpeza == 0 ? PointStyle.Primary : PointStyle.Secondary)">
+                <RadzenTimelineItem PointStyle="@(limpeza.TipoLimpeza == TipoLimpezaEnum.Concorrente ? PointStyle.Primary : limpeza.TipoLimpeza == TipoLimpezaEnum.Terminal ? PointStyle.Secondary : PointStyle.Danger)">
                     <LabelContent>
                         <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">
                             <div class="d-flex flex-column">
@@ -32,13 +51,17 @@ else
                     </LabelContent>
                     <ChildContent>
                         <div class="d-flex flex-column">
-                            @if (limpeza.TipoLimpeza == 0)
+                            @if (limpeza.TipoLimpeza == TipoLimpezaEnum.Concorrente)
                             {
                                 <span>Limpeza concorrente</span>
                             }
-                            else
+                            else if (limpeza.TipoLimpeza == TipoLimpezaEnum.Terminal)
                             {
                                 <span>Limpeza terminal</span>
+                            }
+                            else
+                            {
+                                <span>Limpeza Emergencial</span>
                             }
                             <span>Feita por: @limpeza.Usuario.Nome</span>
                         </div>

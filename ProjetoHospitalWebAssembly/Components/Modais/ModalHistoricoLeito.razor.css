@@ -12,3 +12,36 @@
 .limpeza-terminal {
     background-color: var(--cor-limpeza-terminal);
 }
+
+.limpeza-emergencial {
+    background-color: var(--cor-limpeza-emergencial);
+}
+
+.btn-outline-primary {
+    background-color: var(--cor-secundaria);
+    border-color: var(--cor-principal);
+    border-width: 2px;
+    color: var(--cor-principal);
+}
+
+    .btn-outline-primary :active,
+    .btn-outline-primary :hover,
+    .btn-outline-primary :focus,
+    .btn-outline-primary :focus-visible,
+    .btn:active,
+    .btn:focus {
+        background-color: var(--cor-secundaria);
+        border-color: var(--cor-principal);
+        color: var(--cor-principal);
+        box-shadow: none !important;
+    }
+
+.selecionado {
+    color: var(--cor-secundaria) !important;
+    background-color: var(--cor-principal) !important;
+}
+
+    .selecionado span {
+        color: var(--cor-secundaria) !important;
+        background-color: var(--cor-principal) !important;
+    }

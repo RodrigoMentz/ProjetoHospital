@@ -199,3 +199,7 @@ select.form-select:focus {
 .rz-timeline-point-secondary {
     background-color: var(--cor-limpeza-terminal) !important;
 }
+
+.rz-timeline-point-danger {
+    background-color: var(--cor-limpeza-emergencial) !important;
+}
