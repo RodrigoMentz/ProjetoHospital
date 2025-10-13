@@ -47,7 +47,7 @@
         private void NavegarParaGeral()
         {
             this.NavigationManager
-                .NavigateTo("/");
+                .NavigateTo("/status-geral");
         }
 
         private void NavegarParaManutencoes()
