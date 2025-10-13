@@ -1,0 +1,67 @@
+﻿@page "/status-geral"
+@layout MainLayoutApp
+
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    <div class="d-flex align-items-center justify-content-center mt-2">
+        <h2>Filtrar por setor</h2>
+    </div>
+    <div class="d-flex flex-wrap align-items-center justify-content-center mt-1 gap-3">
+        @foreach (var setor in setores)
+        {
+            <button type="button" class="btn btn-badge rounded-pill @(setorSelecionado.Id == setor.Id ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(setor)">
+                <span class="fs-5">@setor.Nome</span>
+            </button>
+        }
+    </div>
+    <div class="card my-4">
+        <div class="card-header d-flex align-items-center justify-content-center">
+            <h1 class="fs-4 my-2">Leitos</h1>
+        </div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-hover m-0 align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Leito</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Setor</th>
+                        <th scope="col">Última limpeza</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var leito in this.statusLeitosFiltrados)
+                    {
+                        <tr>
+                            <td>
+                                <span class="fw-bold">@leito.LeitoNome</span><br />
+                                <span>Quarto @leito.QuartoNome</span>
+                            </td>
+                            <td>
+                                <BadgeStatusQuarto LeitoStatus="leito" />
+                            </td>
+                            <td>
+                                <span>@leito.SetorNome</span>
+                            </td>
+                            <td>
+                                @if (leito.DataHoraUltimaLimpeza == DateTime.MinValue)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    <span>@leito.DataHoraUltimaLimpeza</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
