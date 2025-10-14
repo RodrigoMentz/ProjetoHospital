@@ -50,6 +50,7 @@
                     LeitoId = leito.Id,
                     LeitoNome = leito.Nome,
                     QuartoNome = leito.Quarto.Nome,
+                    QuartoId = leito.Quarto.Id,
                     SetorId = leito.Quarto.IdSetor,
                     SetorNome = leito.Quarto.Setor.Nome,
                     Ocupado = leito.Ocupado,

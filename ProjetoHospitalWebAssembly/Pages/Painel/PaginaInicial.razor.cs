@@ -26,10 +26,13 @@
         [Inject]
         private ISetorService SetorService { get; set; }
 
-        private bool isLoading = false;
+        [Inject]
+        private IQuartoService QuartoService { get; set; }
 
+        private bool isLoading = false;
         private List<LeitoStatusLimpezaViewModel> statusLeitos = new();
         private List<LeitoStatusLimpezaViewModel> statusLeitosFiltrados = new();
+        private List<QuartoViewModel> quartos = new();
         private List<SetorViewModel> setores = new();
         private SetorViewModel setorSelecionado = new();
         private StatusQuartoEnum statusSelecionado = StatusQuartoEnum.Todos;
@@ -40,6 +43,38 @@
         private int quantidadeLeitosOcupados = 0;
         private int quantidadeLeitosDisponiveis = 0;
         private int quantidadeLeitosAguardandoRevisao = 0;
+        private int idQuartoSelecionado;
+        private int idSetorSelecionado = 0;
+        private int IdQuartoSelecionado
+        {
+            get => idQuartoSelecionado;
+            set
+            {
+                if (idQuartoSelecionado != value)
+                {
+                    idQuartoSelecionado = value;
+                    OnFiltroChange(this.statusSelecionado, this.setorSelecionado);
+                }
+            }
+        }
+
+        private int IdSetorSelecionado
+        {
+            get => idSetorSelecionado;
+            set
+            {
+                if (idSetorSelecionado != value)
+                {
+                    idSetorSelecionado = value;
+
+                    var setor = this.setores
+                        .Where(s => s.Id == idSetorSelecionado)
+                        .FirstOrDefault() ?? this.setores.First();
+
+                    OnFiltroChange(this.statusSelecionado, setor);
+                }
+            }
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -50,6 +85,9 @@
                 .ConfigureAwait(true);
 
             await this.ConsultarSetores()
+                .ConfigureAwait(true);
+
+            await this.ConsultarQuartos()
                 .ConfigureAwait(true);
 
             var setorTodos = new SetorViewModel(0, "Todos");
@@ -90,6 +128,31 @@
                 if (responseSetores != null && responseSetores.Success)
                 {
                     this.setores = responseSetores.Data;
+                }
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+        }
+
+        private async Task ConsultarQuartos()
+        {
+            try
+            {
+                var responseSetores = await this.QuartoService
+                    .GetAsync()
+                    .ConfigureAwait(true);
+
+                if (responseSetores != null && responseSetores.Success)
+                {
+                    this.quartos = responseSetores.Data;
                 }
                 else
                 {
@@ -344,6 +407,13 @@
             {
                 statusLeitosFiltradosSetor = this.statusLeitos
                     .Where(l => l.SetorId == setor.Id)
+                    .ToList();
+            }
+
+            if (idQuartoSelecionado != 0)
+            {
+                statusLeitosFiltradosSetor = this.statusLeitos
+                    .Where(l => l.QuartoId == idQuartoSelecionado)
                     .ToList();
             }
 

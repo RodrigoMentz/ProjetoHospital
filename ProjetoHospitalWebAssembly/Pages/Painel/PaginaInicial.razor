@@ -37,7 +37,7 @@ else
         <h1>Planta Hospital</h1>
     </div>
     <div class="d-flex flex-wrap mt-4 gap-3">
-        <div class="d-flex flex-wrap gap-3 align-items-center">
+        <div class="d-flex btn-group flex-wrap gap-3 align-items-center">
             <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Todos ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Todos, this.setorSelecionado)">
                 <div class="d-flex align-items-center gap-1">
                     <span class="fs-5">Todos</span>
@@ -86,20 +86,37 @@ else
                 </div>
             </button>
         </div>
-        <div class="d-flex flex-wrap align-items-center justify-content-center mt-4 gap-3">
+        @* <div class="d-flex flex-wrap align-items-center justify-content-center mt-4 gap-3">
             @foreach (var setor in setores)
             {
                 <button type="button" class="btn btn-badge rounded-pill @(setorSelecionado.Id == setor.Id ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(statusSelecionado, setor)">
                     <span class="fs-5">@setor.Nome</span>
                 </button>
             }
-        </div>
+        </div> *@
     </div>
-
     <div class="card my-4">
-        <div class="card-header d-flex align-items-center justify-content-between">
-            <h2 class="fs-4 my-2">Leitos</h2>
-            <BotaoSecundario Texto="Cadastrar limpeza emergencial" OnClick="AdicionarLimpezaEmergencialAsync" />
+        <div class="card-header">
+            <div class="d-flex align-items-center justify-content-between">
+                <h2 class="fs-4 my-2">Leitos</h2>
+                <BotaoSecundario Texto="Cadastrar limpeza emergencial" OnClick="AdicionarLimpezaEmergencialAsync" />
+            </div>
+            <div class="d-flex">
+                <div>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+                        <RadzenLabel Text="Filtrar por setor" Component="DropDownDataGridFiltering" />
+                        <RadzenDropDownDataGrid FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                Data=@setores TextProperty="Nome" ValueProperty="Id" AllowClear="false" @bind-Value=IdSetorSelecionado Name="DropDownDataGridFiltering" />
+                    </RadzenStack>
+                </div>
+                <div class="ms-2">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+                        <RadzenLabel Text="Filtrar por quarto" Component="DropDownDataGridFiltering" />
+                        <RadzenDropDownDataGrid FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                Data=@quartos TextProperty="Nome" ValueProperty="Id" AllowClear="true" @bind-Value=IdQuartoSelecionado Name="DropDownDataGridFiltering" />
+                    </RadzenStack>
+                </div>
+            </div>
         </div>
         <div class="card-body p-0 table-responsive">
             <table class="table table-hover m-0 align-middle">

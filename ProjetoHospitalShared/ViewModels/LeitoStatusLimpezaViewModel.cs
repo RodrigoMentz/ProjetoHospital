@@ -32,6 +32,8 @@
 
         public string QuartoNome { get; set; }
 
+        public int QuartoId { get; set; }
+
         public int SetorId { get; set; }
 
         public string SetorNome { get; set; }
