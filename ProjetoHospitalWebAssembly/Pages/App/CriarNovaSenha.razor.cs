@@ -110,7 +110,8 @@
                     this.ToastService.ShowSuccess(
                         "Sucesso: Senha definida com sucesso");
 
-                    await Task.Delay(2000);
+                    this.isLoading = false;
+                    this.StateHasChanged();
 
                     if (usuarioLocalStorage.Perfil.Nome == "Limpeza")
                     {

@@ -4,7 +4,7 @@
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
 
-    public partial class MainLayoutApp
+    public partial class LayoutAppLimpeza
     {
         [Inject]
         private IUsuarioService UsuarioService { get; set; }
@@ -21,6 +21,13 @@
                 .ConsultarUsuarioLocalStorage()
                 .ConfigureAwait(true);
 
+            if (usuarioLocalStorage.Perfil.Nome != "Limpeza")
+            {
+                await this.UsuarioService
+                    .LogoutAsync()
+                    .ConfigureAwait(true);
+            }
+
             this.nomeUsuario = this.usuarioLocalStorage.Nome ?? string.Empty;
         }
 
@@ -29,9 +36,6 @@
             await this.UsuarioService
                 .LogoutAsync()
                 .ConfigureAwait(true);
-
-            this.NavigationManager
-                .NavigateTo("/inicio");
         }
 
         private void NavegarParaLimpezas()
@@ -50,18 +54,6 @@
         {
             this.NavigationManager
                 .NavigateTo("/manutencoes");
-        }
-
-        private bool MostrarMenuInferior()
-        {
-            if (this.usuarioLocalStorage.Perfil != null
-                && !string.IsNullOrEmpty(this.usuarioLocalStorage.Perfil.Nome)
-                && this.usuarioLocalStorage.Perfil.Nome == "Limpeza")
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+
+<BlazoredToasts />
+<div class="page">
+    <div class="menu-superior fixed-top">
+        <div class="p-3 d-flex align-items-center @(!string.IsNullOrEmpty(nomeUsuario) ? "justify-content-between" : "justify-content-end")">
+            @if (!string.IsNullOrEmpty(nomeUsuario))
+            {
+                <span class="fs-4 text-truncate">Olá, @nomeUsuario</span>
+            }
+            <BotaoSecundario ClassTexto="fs-6" Texto="Sair" OnClick="Logout" />
+        </div>
+    </div>
+    <main>
+        <div class="main">
+            <article class="content">
+                @Body
+            </article>
+        </div>
+    </main>
+</div>

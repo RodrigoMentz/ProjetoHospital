@@ -4,6 +4,10 @@
 
     public class Usuario : IdentityUser
     {
+        public Usuario()
+        {
+        }
+
         public Usuario(
             string nome,
             string phoneNumber,

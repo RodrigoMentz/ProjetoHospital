@@ -141,6 +141,9 @@
             await ((ApiAuthenticationStateProvider)authenticationStateProvider)
                 .MarkUserAsLoggedOut()
                 .ConfigureAwait(false);
+
+            navigationManager
+                .NavigateTo($"/inicio");
         }
 
         public async Task<UsuarioViewModel> ConsultarUsuarioLocalStorage()
@@ -168,9 +171,6 @@
             {
                 await this.LogoutAsync()
                     .ConfigureAwait(true);
-
-               navigationManager
-                    .NavigateTo($"/inicio");
 
                 return new UsuarioViewModel();
             }

@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+
+<BlazoredToasts />
+<div class="page">
+    <div class="menu-superior fixed-top">
+        <div class="p-3 d-flex align-items-center @(!string.IsNullOrEmpty(nomeUsuario) ? "justify-content-between" : "justify-content-end")">
+            @if (!string.IsNullOrEmpty(nomeUsuario))
+            {
+                <span class="fs-4 text-truncate">Olá, @nomeUsuario</span>
+            }
+            <BotaoSecundario ClassTexto="fs-6" Texto="Sair" OnClick="Logout" />
+        </div>
+    </div>
+    <main>
+        <div class="main">
+            <article class="content">
+                @Body
+            </article>
+        </div>
+    </main>
+    <div class="menu-inferior fixed-bottom">
+        <hr class="mt-0 mb-0">
+        <div class="row">
+            <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaLimpezas">
+                <i class="icon-inferior bi bi-house"></i>
+                <span class="texto-menu-inferior">Inicio</span>
+            </div>
+            <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaGeral">
+                <i class="icon-inferior bi bi-hospital"></i>
+                <span class="texto-menu-inferior">Geral</span>
+            </div>
+            <div class="cursor-pointer col-4 d-flex flex-column justify-content-center align-items-center" @onclick="NavegarParaManutencoes">
+                <i class="icon-inferior bi bi-tools"></i>
+                <span class="texto-menu-inferior">Manutenções</span>
+            </div>
+        </div>
+    </div>
+</div>

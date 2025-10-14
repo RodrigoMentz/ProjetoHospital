@@ -69,6 +69,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ProjetoHospitalContext>();
     db.Database.Migrate();
     await SeedRoles.InitializeAsync(scope.ServiceProvider);
+    await SeedUsers.InitializeAsync(scope.ServiceProvider);
 }
 
 // Configure the HTTP request pipeline.

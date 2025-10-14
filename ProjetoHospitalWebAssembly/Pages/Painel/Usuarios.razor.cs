@@ -63,9 +63,6 @@
 
         private async Task AdicionarAsync()
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -87,6 +84,9 @@
 
                     if (novoUsuario != null)
                     {
+                        this.isLoading = true;
+                        this.StateHasChanged();
+
                         var response = await this.UsuarioService
                             .CadastrarAsync(novoUsuario)
                             .ConfigureAwait(true);

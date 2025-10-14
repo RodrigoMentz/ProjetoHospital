@@ -1,5 +1,6 @@
 ﻿namespace ProjetoHospitalWebAssembly.Layout
 {
+    using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalWebAssembly.Services;
 
@@ -11,7 +12,30 @@
         [Inject]
         private IUsuarioService UsuarioService { get; set; }
 
+        [Inject]
+        private IToastService ToastService { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var usuarioLocalStorage = await UsuarioService
+                    .ConsultarUsuarioLocalStorage()
+                    .ConfigureAwait(true);
+
+                if (usuarioLocalStorage.Perfil.Nome != "Recepcão/Enfermagem")
+                {
+                    await this.UsuarioService
+                        .LogoutAsync()
+                        .ConfigureAwait(true);
+                }
+            }
+            catch (Exception e)
+            {
+                this.ToastService.ShowError(
+                    "Erro: Erro inesperado contate o suporte");
+            }
+        }
         private string abaAtiva = "painel";
 
         private void OnChangeAba(string aba)
