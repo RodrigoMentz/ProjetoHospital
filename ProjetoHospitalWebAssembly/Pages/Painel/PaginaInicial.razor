@@ -37,7 +37,7 @@ else
         <h1>Planta Hospital</h1>
     </div>
     <div class="d-flex flex-wrap mt-4 gap-3">
-        <div class="d-flex btn-group flex-wrap gap-3 align-items-center">
+        <div class="d-flex flex-wrap gap-3 align-items-center">
             <button type="button" class="btn btn-badge rounded-pill @(statusSelecionado == StatusQuartoEnum.Todos ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(StatusQuartoEnum.Todos, this.setorSelecionado)">
                 <div class="d-flex align-items-center gap-1">
                     <span class="fs-5">Todos</span>
@@ -86,14 +86,6 @@ else
                 </div>
             </button>
         </div>
-        @* <div class="d-flex flex-wrap align-items-center justify-content-center mt-4 gap-3">
-            @foreach (var setor in setores)
-            {
-                <button type="button" class="btn btn-badge rounded-pill @(setorSelecionado.Id == setor.Id ? "selecionado" : string.Empty)" @onclick="() => OnFiltroChange(statusSelecionado, setor)">
-                    <span class="fs-5">@setor.Nome</span>
-                </button>
-            }
-        </div> *@
     </div>
     <div class="card my-4">
         <div class="card-header">

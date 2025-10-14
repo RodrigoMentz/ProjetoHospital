@@ -15,6 +15,7 @@
 
     public class UsuarioService(
         IGenericRepository<Usuario> usuarioRepository,
+        IGenericRepository<AlteracoesDeUsuario> alteracoesDeUsuarioRepository,
         UserManager<Usuario> usuarioManager,
         SignInManager<Usuario> signInManager,
         RoleManager<Role> roleManager)
@@ -131,6 +132,15 @@
                     role.Name)
                 .ConfigureAwait(false);
 
+            var alteracaoDeUsuario = new AlteracoesDeUsuario(
+                cadastro.idUsuarioExecutante,
+                usuario.Id,
+                "Criação de usuário",
+                DateTime.Now);
+
+            await alteracoesDeUsuarioRepository
+                .InsertAsync(alteracaoDeUsuario);
+
             return new ResponseModel();
         }
 
@@ -231,6 +241,15 @@
                        role.Name)
                    .ConfigureAwait(false);
             }
+
+            var alteracaoDeUsuario = new AlteracoesDeUsuario(
+                cadastro.idUsuarioExecutante,
+                usuario.Id,
+                "Alteração de usuário",
+                DateTime.Now);
+
+            await alteracoesDeUsuarioRepository
+                .InsertAsync(alteracaoDeUsuario);
 
             return new ResponseModel();
         }

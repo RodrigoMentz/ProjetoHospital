@@ -22,6 +22,7 @@
         private bool isLoading = false;
 
         private List<UsuarioViewModel> usuarios = new();
+        private UsuarioViewModel usuario = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -29,6 +30,10 @@
             this.StateHasChanged();
 
             await this.ConsultarAsync()
+                .ConfigureAwait(true);
+
+            this.usuario = await this.UsuarioService
+                .ConsultarUsuarioLocalStorage()
                 .ConfigureAwait(true);
 
             this.isLoading = false;
@@ -87,6 +92,8 @@
                         this.isLoading = true;
                         this.StateHasChanged();
 
+                        novoUsuario.idUsuarioExecutante = this.usuario.Id;
+
                         var response = await this.UsuarioService
                             .CadastrarAsync(novoUsuario)
                             .ConfigureAwait(true);
@@ -122,9 +129,6 @@
 
         private async Task EditarAsync(UsuarioViewModel usuarioParaEdicao)
         {
-            this.isLoading = true;
-            this.StateHasChanged();
-
             try
             {
                 var options = new ModalOptions
@@ -161,10 +165,15 @@
 
                 if (!retornoModal.Cancelled)
                 {
+                    this.isLoading = true;
+                    this.StateHasChanged();
+
                     var usuarioEditado = (UsuarioViewModel)retornoModal.Data;
 
                     if (usuarioEditado != null)
                     {
+                        usuarioEditado.idUsuarioExecutante = this.usuario.Id;
+
                         var response = await this.UsuarioService
                             .AtualizarAsync(usuarioEditado)
                             .ConfigureAwait(true);

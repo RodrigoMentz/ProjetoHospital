@@ -42,6 +42,8 @@
 
         public DbSet<Revisao> Revisoes { get; set; }
 
+        public DbSet<Revisao> AlteracoesDeUsuario { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

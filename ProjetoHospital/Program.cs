@@ -53,6 +53,7 @@ builder.Services.AddScoped<IGenericRepository<Limpeza>, GenericRepository<Limpez
 builder.Services.AddScoped<IGenericRepository<Usuario>, GenericRepository<Usuario>>();
 builder.Services.AddScoped<IGenericRepository<Manutencao>, GenericRepository<Manutencao>>();
 builder.Services.AddScoped<IGenericRepository<Revisao>, GenericRepository<Revisao>>();
+builder.Services.AddScoped<IGenericRepository<AlteracoesDeUsuario>, GenericRepository<AlteracoesDeUsuario>>();
 
 builder.Services.AddScoped<ISetorService, SetorService>();
 builder.Services.AddScoped<IQuartoService, QuartoService>();

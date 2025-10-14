@@ -61,5 +61,7 @@
         public string NumeroTelefone { get; set; }
 
         public bool Ativo { get; set; }
+
+        public string? idUsuarioExecutante { get; set; }
     }
 }
