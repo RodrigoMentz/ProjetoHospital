@@ -1,14 +1,17 @@
 ﻿namespace ProjetoHospital.Services
 {
     using Flunt.Notifications;
+    using Microsoft.AspNetCore.SignalR;
     using ProjetoHospital.Entities;
+    using ProjetoHospital.Hub;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
 
     public class LimpezaService(
         IGenericRepository<Limpeza> limpezaRepository,
         IGenericRepository<Leito> leitoRepository,
-        IGenericRepository<Revisao> revisaoRepository)
+        IGenericRepository<Revisao> revisaoRepository,
+        IHubContext<AtualizacaoHub> atualizacaoHub)
         : ILimpezaService
     {
         public async Task<ResponseModel<List<LeitoStatusLimpezaViewModel>>> ConsultarListaStatusLimpezaAsync()
@@ -222,6 +225,12 @@
                 .InsertAsync(limpezaDb)
                 .ConfigureAwait(false);
 
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
+                .ConfigureAwait(false);
+
             var responseModel = new ResponseModel<LimpezaViewModel>
             {
                 Data = new LimpezaViewModel(response.Id)
@@ -260,6 +269,12 @@
 
             await limpezaRepository
                 .UpdateAsync(limpezaDbExistente)
+                .ConfigureAwait(false);
+
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
                 .ConfigureAwait(false);
 
             var response = new ResponseModel();
@@ -336,6 +351,12 @@
                 .InsertAsync(limpezaDb)
                 .ConfigureAwait(false);
 
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
+                .ConfigureAwait(false);
+
             var responseModel = new ResponseModel<LimpezaViewModel>
             {
                 Data = new LimpezaViewModel(response.Id)
@@ -383,6 +404,12 @@
 
             await limpezaRepository
                 .UpdateAsync(limpezaDbExistente)
+                .ConfigureAwait(false);
+
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
                 .ConfigureAwait(false);
 
             var response = new ResponseModel();
@@ -453,6 +480,12 @@
                 .InsertAsync(limpezaDb)
                 .ConfigureAwait(false);
 
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
+                .ConfigureAwait(false);
+
             var responseModel = new ResponseModel<LimpezaViewModel>
             {
                 Data = new LimpezaViewModel(response.Id)
@@ -479,6 +512,12 @@
             {
                 Data = new LimpezaViewModel(limpeza.Id)
             };
+
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
+                .ConfigureAwait(false);
 
             return responseModel;
         }
@@ -580,6 +619,12 @@
 
             await limpezaRepository
                 .UpdateAsync(limpezaDbExistente)
+                .ConfigureAwait(false);
+
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
                 .ConfigureAwait(false);
 
             var response = new ResponseModel();

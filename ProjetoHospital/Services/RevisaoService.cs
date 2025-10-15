@@ -1,12 +1,15 @@
 ﻿namespace ProjetoHospital.Services
 {
+    using Microsoft.AspNetCore.SignalR;
     using ProjetoHospital.Entities;
+    using ProjetoHospital.Hub;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
 
     public class RevisaoService(
         IGenericRepository<Revisao> revisaoRepository,
-        IGenericRepository<Limpeza> limpezaRepository)
+        IGenericRepository<Limpeza> limpezaRepository,
+        IHubContext<AtualizacaoHub> atualizacaoHub)
         : IRevisaoService
     {
         public async Task<ResponseModel<RevisaoViewModel>> GetDetalhesDaRevisaoAsync(
@@ -176,6 +179,12 @@
                 .UpdateAsync(revisaoDb)
                 .ConfigureAwait(false);
 
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
+                .ConfigureAwait(false);
+
             var response = new ResponseModel();
 
             return response;
@@ -211,6 +220,12 @@
 
             await revisaoRepository
                 .UpdateAsync(revisaoDb)
+                .ConfigureAwait(false);
+
+            await atualizacaoHub.Clients
+                .Group($"atualizacao")
+                .SendAsync(
+                    "NovaAtualizacao")
                 .ConfigureAwait(false);
 
             var response = new ResponseModel();

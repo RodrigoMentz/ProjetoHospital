@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjetoHospital;
 using ProjetoHospital.Entities;
+using ProjetoHospital.Hub;
 using ProjetoHospital.Seeds;
 using ProjetoHospital.Services;
 
@@ -63,6 +64,12 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IManutencaoService, ManutencaoService>();
 builder.Services.AddScoped<IRevisaoService, RevisaoService>();
 
+builder.Services.AddSignalR()
+    .AddHubOptions<AtualizacaoHub>(options =>
+    {
+        options.ClientTimeoutInterval = TimeSpan.FromHours(20);
+    });
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -87,5 +94,7 @@ app.UseCors("MyPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<AtualizacaoHub>("/hubAtualizacoes");
 
 app.Run();

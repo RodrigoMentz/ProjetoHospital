@@ -69,7 +69,6 @@
             List<Claim> claims,
             Dictionary<string, object> keyValuePairs)
         {
-            // TODO: fix nome da claim diferente
             keyValuePairs.TryGetValue("role", out object roles);
 
             if (roles != null)

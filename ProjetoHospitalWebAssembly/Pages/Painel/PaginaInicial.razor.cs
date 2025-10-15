@@ -4,10 +4,13 @@
     using Blazored.Modal.Services;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
+    using Microsoft.AspNetCore.SignalR.Client;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Components.Modais;
     using ProjetoHospitalWebAssembly.Services;
+    using ProjetoHospitalWebAssembly.Services.Http;
+    using ProjetoHospitalWebAssembly.Util;
 
     public partial class PaginaInicial : ComponentBase
     {
@@ -29,13 +32,19 @@
         [Inject]
         private IQuartoService QuartoService { get; set; }
 
+        [Inject]
+        private IHttpService HttpService { get; set; }
+
         private bool isLoading = false;
+
+        private HubConnection hubConnection;
         private List<LeitoStatusLimpezaViewModel> statusLeitos = new();
         private List<LeitoStatusLimpezaViewModel> statusLeitosFiltrados = new();
         private List<QuartoViewModel> quartos = new();
         private List<SetorViewModel> setores = new();
         private SetorViewModel setorSelecionado = new();
         private StatusQuartoEnum statusSelecionado = StatusQuartoEnum.Todos;
+
         private int quantidadeLeitosLimpezaEmergencial = 0;
         private int quantidadeLeitosLimpezaTerminal = 0;
         private int quantidadeLeitosLimpezaConcorrente = 0;
@@ -45,6 +54,7 @@
         private int quantidadeLeitosAguardandoRevisao = 0;
         private int idQuartoSelecionado;
         private int idSetorSelecionado = 0;
+
         private int IdQuartoSelecionado
         {
             get => idQuartoSelecionado;
@@ -76,6 +86,14 @@
             }
         }
 
+        public bool AtualizadoTempoReal => this.hubConnection is not null
+            && this.hubConnection.State == HubConnectionState.Connected;
+
+        public async ValueTask DisposeAsync()
+        {
+            await this.hubConnection.StopAsync();
+        }
+
         protected override async Task OnInitializedAsync()
         {
             this.isLoading = true;
@@ -88,6 +106,9 @@
                 .ConfigureAwait(true);
 
             await this.ConsultarQuartos()
+                .ConfigureAwait(true);
+
+            await this.ConectarHubAtualizacoes()
                 .ConfigureAwait(true);
 
             var setorTodos = new SetorViewModel(0, "Todos");
@@ -467,6 +488,49 @@
 
                 _ => new List<LeitoStatusLimpezaViewModel>()
             };
+        }
+
+        private async Task ConectarHubAtualizacoes()
+        {
+            this.hubConnection = new HubConnectionBuilder()
+                .WithUrl(this.HttpService
+                    .GetApiUrl()
+                    .AbsoluteUri
+                    .Replace("/api/", "/hubAtualizacoes"))
+                .WithAutomaticReconnect(new RetryPolicy())
+                .Build();
+
+            this.hubConnection.Reconnecting += error => Task.CompletedTask;
+
+            this.hubConnection.Reconnected += connectionId => Task.CompletedTask;
+
+            this.hubConnection.Closed += async error =>
+            {
+                await Task.Delay(
+                    TimeSpan.FromMinutes(1));
+
+                await this.hubConnection
+                    .StartAsync()
+                    .ConfigureAwait(true);
+            };
+
+            this.hubConnection.On("NovaAtualizacao", async () =>
+            {
+                await this.ConsultarStatus()
+                    .ConfigureAwait(true);
+
+                this.StateHasChanged();
+            });
+
+            await this.hubConnection
+                .StartAsync()
+                .ConfigureAwait(true);
+
+            await this.hubConnection
+                .SendAsync(
+                    "ConectarAtualizacao",
+                    "atualizacao")
+                .ConfigureAwait(true);
         }
     }
 }

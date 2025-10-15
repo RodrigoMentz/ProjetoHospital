@@ -7,6 +7,7 @@
     using System.Net.Http.Headers;
     using System.Net.Http.Json;
     using System.Text.Json;
+    using static System.Net.WebRequestMethods;
 
     public class HttpService : IHttpService
     {
@@ -209,7 +210,8 @@
 
         public Uri GetApiUrl()
         {
-            return appSettings.ApiBaseUrl;
+            //TODO: return appSettings.ApiBaseUrl;
+            return new Uri("https://localhost:7271/api/");
         }
 
         public async Task<byte[]> GetBytesAsync(string uri)
