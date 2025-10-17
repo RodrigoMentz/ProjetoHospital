@@ -210,8 +210,7 @@
 
         public Uri GetApiUrl()
         {
-            //TODO: return appSettings.ApiBaseUrl;
-            return new Uri("https://localhost:7271/api/");
+            return appSettings.ApiBaseUrl;
         }
 
         public async Task<byte[]> GetBytesAsync(string uri)
@@ -267,7 +266,10 @@
 
         private string DynamicAddress(string url)
         {
-            var baseAddressSettings = "https://localhost:7271/";
+            var baseAddressSettings = appSettings
+                .ApiBaseUrl
+                .ToString();
+
             if (baseAddressSettings.Last() == '/')
             {
                 if (baseAddressSettings.Contains(

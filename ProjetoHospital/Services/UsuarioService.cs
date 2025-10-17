@@ -18,7 +18,8 @@
         IGenericRepository<AlteracoesDeUsuario> alteracoesDeUsuarioRepository,
         UserManager<Usuario> usuarioManager,
         SignInManager<Usuario> signInManager,
-        RoleManager<Role> roleManager)
+        RoleManager<Role> roleManager,
+        IConfiguration configuration)
         : IUsuarioService
     {
         public async Task<ResponseModel<List<UsuarioViewModel>>> GetAsync()
@@ -440,14 +441,14 @@
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var key = Encoding.ASCII.GetBytes("xvQ7qG9PZrW0n6pQXeE7x8A3Oa6fK9YtG5vW2zM4rJ1hL8nP0eC7sT9dU2qR6jV5mB1xF8wK3tS4cY0zN7uH9pD==");
-
+            var jwtSettings = configuration.GetSection("Jwt");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identityClaims,
                 Issuer = "PROJETOHOSPITAL",
                 Audience = addAudience
-                    ? "http://localhost"
+                    ? jwtSettings["Audience"]
                     : default,
                 Expires = tokenTemValidade
                     ? DateTime.UtcNow.AddHours(120)
