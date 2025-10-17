@@ -112,9 +112,6 @@
         {
             try
             {
-                this.isLoading = true;
-                this.StateHasChanged();
-
                 var response = await this.LimpezaService
                     .ConsultarListaStatusLimpezaAsync()
                     .ConfigureAwait(true);
@@ -132,28 +129,33 @@
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
             }
-
-            this.isLoading = false;
-            this.StateHasChanged();
         }
 
         private async Task ConsultarLimpezasNaoEncerradasDoUsuario()
         {
-            var response = await this.LimpezaService
-                .ConsultarLimpezasNaoEncerradasDoUsuario(
-                    this.usuarioLocalStorage)
-                .ConfigureAwait(true);
-
-            if (response != null && response.Success)
+            try
             {
-                this.limpezasNaoEncerradas = response.Data;
+                var response = await this.LimpezaService
+                    .ConsultarLimpezasNaoEncerradasDoUsuario(
+                        this.usuarioLocalStorage)
+                    .ConfigureAwait(true);
+
+                if (response != null && response.Success)
+                {
+                    this.limpezasNaoEncerradas = response.Data;
+                }
+                else
+                {
+                    this.ToastService.ShowError(
+                        "Erro: Erro inesperado contate o suporte");
+
+                    return;
+                }
             }
-            else
+            catch (Exception e)
             {
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
-
-                return;
             }
         }
 
@@ -161,9 +163,6 @@
         {
             try
             {
-                this.isLoading = true;
-                this.StateHasChanged();
-
                 var response = await this.RevisaoService
                     .GetRevisoesQueNecessitamLimpezaAsync()
                     .ConfigureAwait(true);
@@ -178,18 +177,12 @@
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
             }
-
-            this.isLoading = false;
-            this.StateHasChanged();
         }
 
         private async Task ConsultarRevisoesNaoTerminadasPeloUsuario()
         {
             try
             {
-                this.isLoading = true;
-                this.StateHasChanged();
-
                 var usuario = new UsuarioViewModel(
                     this.usuarioLocalStorage.Id,
                     this.usuarioLocalStorage.Nome,
@@ -211,18 +204,12 @@
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
             }
-
-            this.isLoading = false;
-            this.StateHasChanged();
         }
 
         private async Task ConsultarLimpezasEmergenciais()
         {
             try
             {
-                this.isLoading = true;
-                this.StateHasChanged();
-
                 var response = await this.LimpezaService
                     .ConsultarLimpezasEmergenciaisAsync()
                     .ConfigureAwait(true);
@@ -237,9 +224,6 @@
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
             }
-
-            this.isLoading = false;
-            this.StateHasChanged();
         }
 
         private void OnSetorChange(SetorViewModel setor)

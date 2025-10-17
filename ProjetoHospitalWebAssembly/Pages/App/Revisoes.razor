@@ -10,10 +10,19 @@
 else
 {
     <h1 class="mt-4">Limpezas que precisam de revisão</h1>
-    @foreach (var revisaoPendente in revisoesPendentes)
+    @if (!revisoesPendentes.Any())
     {
-        <div class="mt-4">
-            <CardQuarto NecessidadeRevisao="revisaoPendente" OnClick="() => IniciarRevisao(revisaoPendente)" Disabled="this.isLoading" />
+        <div class="alert alert-success mt-4" role="alert">
+            <span>Todas as limpezas foram revisadas.</span>
         </div>
+    }
+    else
+    {
+        @foreach (var revisaoPendente in revisoesPendentes)
+        {
+            <div class="mt-4">
+                <CardQuarto NecessidadeRevisao="revisaoPendente" OnClick="() => IniciarRevisao(revisaoPendente)" Disabled="this.isLoading" />
+            </div>
+        }
     }
 }

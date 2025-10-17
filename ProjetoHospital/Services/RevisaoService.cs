@@ -103,7 +103,8 @@
             return response;
         }
 
-        public async Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> ConsultarLimpezasQuePrecisamDeRevisaoAsync()
+        public async Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> ConsultarLimpezasQuePrecisamDeRevisaoAsync(
+            UsuarioViewModel usuario)
         {
             var limpezasFinalizadasSemRevisao = await limpezaRepository
                 .FindAllDerivedAsync<Limpeza>(
@@ -112,6 +113,15 @@
                     l => l.Leito,
                     l => l.Leito.Quarto,
                     l => l.Leito.Quarto.Setor);
+
+            var revisoesNaoTerminadas = await revisaoRepository
+                .FindAllAsync(r => r.DataSolicitacao == DateTime.MinValue && r.SolicitanteId == usuario.Id,
+                    r => r.Leito,
+                    r => r.Leito.Quarto,
+                    r => r.Leito.Quarto.Setor,
+                    r => r.Limpeza);
+
+            //TODO: ver revisoes que foram iniciadas e nao foram terminadas
 
             var revisoesNecessarias = new List<NecessidadeDeRevisaoViewModel>();
 
@@ -128,6 +138,21 @@
                 revisoesNecessarias.Add(necessitaRevisao);
             }
 
+            foreach (var revisao in revisoesNaoTerminadas)
+            {
+                var necessitaRevisao = new NecessidadeDeRevisaoViewModel(
+                    revisao.LimpezaId,
+                    revisao.LeitoId,
+                    revisao.Leito.Nome,
+                    revisao.Leito.Quarto.Nome,
+                    revisao.Leito.Quarto.Setor.Nome,
+                    revisao.Limpeza.TipoLimpeza,
+                    revisao.Id,
+                    revisao.SolicitanteId);
+
+                revisoesNecessarias.Add(necessitaRevisao);
+            }
+
             var response = new ResponseModel<List<NecessidadeDeRevisaoViewModel>>(revisoesNecessarias);
 
             return response;
@@ -139,7 +164,7 @@
             var revisaoDb = new Revisao(
                revisao.Observacoes,
                revisao.NecessitaLimpeza,
-               revisao.DataSolicitacao,
+               revisao.DataSolicitacao = DateTime.MinValue,
                revisao.SolicitanteId,
                revisao.LimpezaId,
                revisao.LeitoId);
@@ -174,6 +199,7 @@
 
             revisaoDb.Observacoes = revisao.Observacoes;
             revisaoDb.NecessitaLimpeza = revisao.NecessitaLimpeza;
+            revisaoDb.DataSolicitacao = DateTime.Now;
 
             await revisaoRepository
                 .UpdateAsync(revisaoDb)

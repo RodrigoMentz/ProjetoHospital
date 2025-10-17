@@ -48,12 +48,13 @@
             return this.Ok(resultado);
         }
 
-        [HttpGet("revisoes-pendentes")]
+        [HttpPost("revisoes-pendentes")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> ConsultarLimpezasQuePrecisamDeRevisaoAsync(
+            [FromBody] UsuarioViewModel usuario)
         {
             var resultado = await RevisaoService
-                .ConsultarLimpezasQuePrecisamDeRevisaoAsync();
+                .ConsultarLimpezasQuePrecisamDeRevisaoAsync(usuario);
 
             return this.Ok(resultado);
         }

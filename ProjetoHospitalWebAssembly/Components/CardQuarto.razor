@@ -58,7 +58,7 @@ else if (NecessidadeRevisao != null)
                 </ul>
                 <button type="button" class="btn" @onclick="OnClick">
                     <span class="fw-bold">
-                        INICIAR REVISÃO
+                        @(string.IsNullOrEmpty(NecessidadeRevisao.SolicitanteId) ? "INICIAR REVISÃO" : "CONTINUAR REVISÃO" )
                     </span>
                 </button>
             </div>

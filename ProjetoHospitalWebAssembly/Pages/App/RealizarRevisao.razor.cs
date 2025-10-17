@@ -34,6 +34,7 @@
         private TipoLimpezaEnum tipoLimpeza;
         private LimpezaConcorrenteViewModel limpezaConcorrente = new();
         private LimpezaTerminalViewModel limpezaTerminal = new();
+        private LimpezaEmergencialViewModel limpezaEmergencial = new();
         private string observacoes = string.Empty;
 
         protected override async Task OnInitializedAsync()
@@ -94,6 +95,24 @@
                     if (response.Success)
                     {
                         this.limpezaTerminal = response.Data;
+                    }
+                    else
+                    {
+                        this.ToastService.ShowError(
+                            "Erro: Erro inesperado contate o suporte");
+                    }
+                }
+                else if (Tipo == "e")
+                {
+                    this.tipoLimpeza = TipoLimpezaEnum.Emergencial;
+
+                    var response = await this.LimpezaService
+                        .ConsultarEmergencialAsync(limpeza)
+                        .ConfigureAwait(true);
+
+                    if (response.Success)
+                    {
+                        this.limpezaEmergencial = response.Data;
                     }
                     else
                     {

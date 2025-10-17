@@ -53,7 +53,7 @@ else
             </ul>
         </div>
     }
-    else
+    else if (tipoLimpeza == TipoLimpezaEnum.Terminal)
     {
         <div class="card">
             <div class="d-flex justify-content-between align-items-center p-3">
@@ -126,6 +126,19 @@ else
                     <i class="bi @(limpezaTerminal.LimparChao ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger")"></i>
                 </li>
             </ul>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <span class="fs-5">Leito: @limpezaEmergencial.LeitoNome</span>
+                <span class="fs-5">Quarto: @limpezaEmergencial.QuartoNome</span>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <span class="fs-5">Descrição:</span>
+                <span class="fs-5">@limpezaEmergencial.Descricao</span>
+            </div>
         </div>
     }
     <div class="card p-2 mt-4">

@@ -173,7 +173,7 @@
         {
             var limpezas = await limpezaRepository
                 .FindAllDerivedAsync<Limpeza>(
-                    l => l.UsuarioId == usuario.Id && l.DataFimLimpeza == null,
+                    l => l.UsuarioId == usuario.Id && l.DataFimLimpeza == null && l.TipoLimpeza != TipoLimpezaEnum.Emergencial,
                     l => l.Leito,
                     l => l.Leito.Quarto,
                     l => l.Leito.Quarto.Setor,

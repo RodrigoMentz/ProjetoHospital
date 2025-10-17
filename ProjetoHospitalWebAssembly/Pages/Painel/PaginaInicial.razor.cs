@@ -115,25 +115,6 @@
             this.setores.Insert(0, setorTodos);
             this.setorSelecionado = this.setores.First();
 
-            this.quantidadeLeitosLimpezaEmergencial = this.statusLeitos.Where(l => l.PrecisaDeLimpezaEmergencial).Count();
-            this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal && !l.Ocupado).Count();
-            this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente && l.Ocupado).Count();
-            this.quantidadeLeitosLimpezaPosRevisao = this.statusLeitos.Where(l => l.PrecisaDeLimpezaDeRevisao).Count();
-            this.quantidadeLeitosOcupados = this.statusLeitos.Where(l => l.Ocupado).Count();
-            this.quantidadeLeitosDisponiveis = this.statusLeitos
-                .Where(l => !l.Ocupado
-                    && !l.PrecisaLimpezaTerminal
-                    && !l.PrecisaLimpezaConcorrente
-                    && !l.PrecisaDeRevisao
-                    && !l.PrecisaDeLimpezaDeRevisao
-                    && !l.PrecisaDeLimpezaEmergencial)
-                .Count();
-            this.quantidadeLeitosAguardandoRevisao = this.statusLeitos.Where(l => l.PrecisaDeRevisao
-                && !l.PrecisaLimpezaTerminal
-                && !l.PrecisaLimpezaConcorrente
-                && !l.PrecisaDeLimpezaEmergencial).Count();
-
-
             this.isLoading = false;
             this.StateHasChanged();
         }
@@ -203,6 +184,24 @@
                 {
                     this.statusLeitos = response.Data;
                     this.statusLeitosFiltrados = this.statusLeitos;
+
+                    this.quantidadeLeitosLimpezaEmergencial = this.statusLeitos.Where(l => l.PrecisaDeLimpezaEmergencial).Count();
+                    this.quantidadeLeitosLimpezaTerminal = this.statusLeitos.Where(l => l.PrecisaLimpezaTerminal && !l.Ocupado).Count();
+                    this.quantidadeLeitosLimpezaConcorrente = this.statusLeitos.Where(l => l.PrecisaLimpezaConcorrente && l.Ocupado).Count();
+                    this.quantidadeLeitosLimpezaPosRevisao = this.statusLeitos.Where(l => l.PrecisaDeLimpezaDeRevisao).Count();
+                    this.quantidadeLeitosOcupados = this.statusLeitos.Where(l => l.Ocupado).Count();
+                    this.quantidadeLeitosDisponiveis = this.statusLeitos
+                        .Where(l => !l.Ocupado
+                            && !l.PrecisaLimpezaTerminal
+                            && !l.PrecisaLimpezaConcorrente
+                            && !l.PrecisaDeRevisao
+                            && !l.PrecisaDeLimpezaDeRevisao
+                            && !l.PrecisaDeLimpezaEmergencial)
+                        .Count();
+                    this.quantidadeLeitosAguardandoRevisao = this.statusLeitos.Where(l => l.PrecisaDeRevisao
+                        && !l.PrecisaLimpezaTerminal
+                        && !l.PrecisaLimpezaConcorrente
+                        && !l.PrecisaDeLimpezaEmergencial).Count();
                 }
             }
             catch (Exception e)

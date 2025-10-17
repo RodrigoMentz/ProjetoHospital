@@ -13,7 +13,8 @@
         Task<ResponseModel<List<RevisaoViewModel>>> GetRevisoesQueNecessitamLimpezaENaoForamTerminadasPeloUsuarioAsync(
             UsuarioViewModel usuario);
 
-        Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> ConsultarLimpezasQuePrecisamDeRevisaoAsync();
+        Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> ConsultarLimpezasQuePrecisamDeRevisaoAsync(
+            UsuarioViewModel usuario);
 
         Task<ResponseModel<RevisaoViewModel>> CriarAsync(
             RevisaoViewModel revisao);

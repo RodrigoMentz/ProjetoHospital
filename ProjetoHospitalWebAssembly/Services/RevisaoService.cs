@@ -48,13 +48,15 @@
             return resultado;
         }
 
-        public async Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> GetRevisoesPendentesAsync()
+        public async Task<ResponseModel<List<NecessidadeDeRevisaoViewModel>>> ConsultarRevisoesPendentesAsync(
+            UsuarioViewModel usuario)
         {
             var url = $"Revisao/revisoes-pendentes";
 
             var resultado = await httpService
-                .GetJsonAsync<ResponseModel<List<NecessidadeDeRevisaoViewModel>>>(
-                    url)
+                .PostJsonAsync<UsuarioViewModel, ResponseModel<List<NecessidadeDeRevisaoViewModel>>>(
+                    url,
+                    usuario)
                 .ConfigureAwait(false);
 
             return resultado;
