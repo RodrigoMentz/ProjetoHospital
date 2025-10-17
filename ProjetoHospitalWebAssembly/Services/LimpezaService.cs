@@ -34,6 +34,20 @@
             return response;
         }
 
+        public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarRelatorioLimpezasAsync(
+            RelatorioLimpezaRequestModel requestModel)
+        {
+            var url = $"Limpeza/relatorio-limpezas";
+
+            var response = await httpService
+                .PostJsonAsync<RelatorioLimpezaRequestModel, ResponseModel<List<LimpezaViewModel>>>(
+                    url,
+                    requestModel)
+                .ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasNaoEncerradasDoUsuario(
             UsuarioViewModel usuario)
         {

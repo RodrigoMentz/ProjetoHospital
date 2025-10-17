@@ -1,6 +1,5 @@
 ﻿namespace ProjetoHospital.Services
 {
-    using ProjetoHospital.Entities;
     using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
 
@@ -10,6 +9,9 @@
 
         Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasDoLeito(
             LeitoViewModel leito);
+
+        Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasRelatorioAsync(
+            RelatorioLimpezaRequestModel requestModel);
 
         Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasNaoEncerradasDoUsuario(
             UsuarioViewModel usuario);

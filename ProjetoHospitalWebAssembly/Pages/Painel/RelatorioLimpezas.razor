@@ -1,0 +1,105 @@
+﻿@page "/relatorio-limpezas"
+
+@if (this.isLoading)
+{
+    <div class="height-loading d-flex align-items-center justify-content-center">
+        <Loading />
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-between mt-4">
+        <h1 class="fs-3">Relatório de limpezas</h1>
+    </div>
+    <div class="card mt-4">
+        <div class="card-header ">
+            <div class="d-flex align-items-center">
+                <h2 class="fs-4 my-2">Limpezas</h2>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex align-items-center">
+                            <RadzenLabel Text="Data inicial" Component="RadzenDatePicker" />
+                            <div class="ms-2">
+                                <RadzenDatePicker Disabled="isLoading" @bind-Value="@this.requestModelRelatorio.DataInicio" DateFormat="dd/MM/yyyy" />
+                            </div>
+                        </div>
+                        <div class="d-flex ms-2 align-items-center">
+                            <RadzenLabel Text="Data final" Component="RadzenDatePicker" />
+                            <div class="ms-2">
+                                <RadzenDatePicker Disabled="isLoading" @bind-Value="@this.requestModelRelatorio.DataFim" DateFormat="dd/MM/yyyy" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row mt-2">
+                        <div class="d-flex">
+                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+                                <RadzenLabel Text="Filtrar por leito" Component="DropDownDataGridFiltering" />
+                                <RadzenDropDownDataGrid FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                        Data=@leitos TextProperty="Nome" ValueProperty="Id" AllowClear="true" @bind-Value=requestModelRelatorio.LeitoId Name="DropDownDataGridFiltering" />
+                            </RadzenStack>
+                        </div>
+                        <div class="d-flex ms-2">
+                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+                                <RadzenLabel Text="Filtrar por usuário" Component="DropDownDataGridFiltering" />
+                                <RadzenDropDownDataGrid FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                        Data=@usuarios TextProperty="Nome" ValueProperty="Id" AllowClear="true" @bind-Value=requestModelRelatorio.UsuarioId Name="DropDownDataGridFiltering" />
+                            </RadzenStack>
+                        </div>
+                    </div>
+                    @if (mostrarMensagemLeitoUsuarioNecessario)
+                    {
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <div class="alert alert-warning p-2" role="alert">
+                                É necessário informar ao menos um leito ou um usuário para a emissão do relatório
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div>
+                    <BotaoPrincipal Texto="Consultar" OnClick="ConsultarLimpezas" />
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-hover m-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Leito</th>
+                        <th scope="col">Quarto</th>
+                        <th scope="col">Início</th>
+                        <th scope="col">Fim</th>
+                        <th scope="col">Executante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var limpeza in limpezas)
+                    {
+                        <tr>
+                            <td>
+                                <span>@limpeza.TipoLimpeza</span>
+                            </td>
+                            <td>
+                                <span>@limpeza.LeitoNome</span>
+                            </td>
+                            <td>
+                                <span>@limpeza.NomeQuarto</span>
+                            </td>
+                            <td>
+                                <span>@limpeza.DataInicioLimpeza</span>
+                            </td>
+                            <td>
+                                <span>@limpeza.DataFimLimpeza</span>
+                            </td>
+                            <td>
+                                <span>@limpeza.Usuario.Nome</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

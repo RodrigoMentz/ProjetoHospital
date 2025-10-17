@@ -168,6 +168,67 @@
             };
         }
 
+        public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasRelatorioAsync(
+            RelatorioLimpezaRequestModel requestModel)
+        {
+            var limpezas = new List<Limpeza>();
+
+            if ((requestModel.LeitoId == 0 || requestModel.LeitoId == null) && !string.IsNullOrEmpty(requestModel.UsuarioId))
+            {
+                limpezas = await limpezaRepository
+                    .FindAllDerivedAsync<Limpeza>(
+                        l => l.UsuarioId == requestModel.UsuarioId
+                        && l.DataInicioLimpeza.Date >= requestModel.DataInicio.Date
+                        && l.DataFimLimpeza < requestModel.DataFim.Date.AddDays(1),
+                        l => l.Leito,
+                        l => l.Leito.Quarto,
+                        l => l.Usuario);
+            }
+            else if ((requestModel.LeitoId != 0 && requestModel.LeitoId != null) && string.IsNullOrEmpty(requestModel.UsuarioId))
+            {
+                limpezas = await limpezaRepository
+                    .FindAllDerivedAsync<Limpeza>(
+                        l => l.LeitoId == requestModel.LeitoId
+                        && l.DataInicioLimpeza.Date >= requestModel.DataInicio.Date
+                        && l.DataFimLimpeza < requestModel.DataFim.Date.AddDays(1),
+                        l => l.Leito,
+                        l => l.Leito.Quarto,
+                        l => l.Usuario);
+            }
+            else
+            {
+                limpezas = await limpezaRepository
+                    .FindAllDerivedAsync<Limpeza>(
+                        l => l.LeitoId == requestModel.LeitoId
+                        && l.DataInicioLimpeza.Date >= requestModel.DataInicio.Date
+                        && l.DataFimLimpeza <= requestModel.DataFim.Date
+                        && l.UsuarioId == requestModel.UsuarioId,
+                        l => l.Leito,
+                        l => l.Leito.Quarto,
+                        l => l.Usuario);
+            }
+                
+            var listaLimpezas = limpezas
+                .Select(l => new LimpezaViewModel(
+                    l.Id,
+                    l.LeitoId,
+                    l.Leito.Nome,
+                    l.Leito.Quarto.Nome,
+                    l.UsuarioId,
+                    new UsuarioViewModel(
+                        l.Usuario.Id,
+                        l.Usuario.Nome),
+                    l.TipoLimpeza,
+                    l.DataInicioLimpeza,
+                    l.DataFimLimpeza))
+                .ToList();
+
+            return new ResponseModel<List<LimpezaViewModel>>
+            {
+                Data = listaLimpezas
+            };
+        }
+
         public async Task<ResponseModel<List<LimpezaViewModel>>> ConsultarLimpezasNaoEncerradasDoUsuario(
             UsuarioViewModel usuario)
         {

@@ -38,6 +38,19 @@
             return Ok(resultado);
         }
 
+        [HttpPost("relatorio-limpezas")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(ResponseModel<List<LimpezaViewModel>>), 200)]
+        public async Task<IActionResult> ConsultarLimpezasRelatorioAsync(
+            [FromBody] RelatorioLimpezaRequestModel requestModel)
+        {
+            var resultado = await limpezaService
+                .ConsultarLimpezasRelatorioAsync(requestModel)
+                .ConfigureAwait(false);
+
+            return Ok(resultado);
+        }
+
         [HttpPost("limpezas-nao-terminadas-do-usuario")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ResponseModel<List<LimpezaViewModel>>), 200)]

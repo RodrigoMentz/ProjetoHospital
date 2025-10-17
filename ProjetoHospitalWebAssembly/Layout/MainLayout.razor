@@ -20,6 +20,7 @@
                                 <a class="nav-link fw-semibold @(abaAtiva == "quartos" ? "active" : string.Empty)" aria-current="page" href="/quartos" @onclick='() => OnChangeAba("quartos")'>Quartos</a>
                                 <a class="nav-link fw-semibold @(abaAtiva == "leitos" ? "active" : string.Empty)" aria-current="page" href="/leitos" @onclick='() => OnChangeAba("leitos")'>Leitos</a>
                                 <a class="nav-link fw-semibold @(abaAtiva == "usuarios" ? "active" : string.Empty)" aria-current="page" href="/usuarios" @onclick='() => OnChangeAba("usuarios")'>Usuários</a>
+                                <a class="nav-link fw-semibold @(abaAtiva == "relatorio" ? "active" : string.Empty)" aria-current="page" href="/relatorio-limpezas" @onclick='() => OnChangeAba("relatorio")'>Relatório Limpezas</a>
                                 <div class="d-flex flex-grow-1 justify-content-md-end">
                                     <BotaoSecundario ClassTexto="fs-6" Texto="Sair" OnClick="FazerLogout" />
                                 </div>

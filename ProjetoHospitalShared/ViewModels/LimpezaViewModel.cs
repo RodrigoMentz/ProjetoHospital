@@ -38,6 +38,28 @@
             int leitoId,
             string? leitoNome,
             string nomeQuarto,
+            string usuarioId,
+            UsuarioViewModel? usuario,
+            TipoLimpezaEnum tipoLimpeza,
+            DateTime dataInicioLimpeza,
+            DateTime? dataFimLimpeza)
+        {
+            this.Id = id;
+            this.LeitoId = leitoId;
+            this.LeitoNome = leitoNome;
+            this.NomeQuarto = nomeQuarto;
+            this.UsuarioId = usuarioId;
+            this.Usuario = usuario;
+            this.TipoLimpeza = tipoLimpeza;
+            this.DataInicioLimpeza = dataInicioLimpeza;
+            this.DataFimLimpeza = dataFimLimpeza;
+        }
+
+        public LimpezaViewModel(
+            int id,
+            int leitoId,
+            string? leitoNome,
+            string nomeQuarto,
             int idSetor,
             string nomeSetor,
             string usuarioId,
