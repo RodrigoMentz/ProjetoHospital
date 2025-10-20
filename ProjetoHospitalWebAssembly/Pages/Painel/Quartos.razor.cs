@@ -56,8 +56,6 @@
             await this.ConsultarQuartos()
                 .ConfigureAwait(true);
 
-            this.quartosFiltrados = quartos;
-
             await ConsultarSetores()
                 .ConfigureAwait(true);
 
@@ -83,6 +81,7 @@
                 if (response != null && response.Success)
                 {
                     this.quartos = response.Data;
+                    this.quartosFiltrados = quartos;
                 }
             }
             catch (Exception e)

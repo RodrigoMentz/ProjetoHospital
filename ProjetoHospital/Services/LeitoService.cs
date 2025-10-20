@@ -71,11 +71,16 @@
         public async Task<ResponseModel> AtualizarAsync
             (LeitoViewModel leito)
         {
+            var leitoDb = await leitoRepository
+                .FindAsync(leito.Id)
+                .ConfigureAwait(false);
+
             var quarto = await quartoRepository
                 .FindAsync(q => q.Id == leito.IdQuarto, q => q.Leitos)
                 .ConfigureAwait(false);
 
-            if (quarto.Capacidade < quarto.Leitos.Count(l => !l.SoftDelete) + 1)
+            if (leitoDb.IdQuarto != leito.IdQuarto
+                && quarto.Capacidade < quarto.Leitos.Count(l => !l.SoftDelete) + 1)
             {
                 return new ResponseModel(
                     new List<Notification>
@@ -83,10 +88,6 @@
                             new Notification("Leitos.Atualizar", "Capacidade do Quarto Atingida"),
                         });
             }
-
-            var leitoDb = await leitoRepository
-                .FindAsync(leito.Id)
-                .ConfigureAwait(false);
 
             leitoDb.Nome = leito.Nome;
             leitoDb.IdQuarto = leito.IdQuarto;

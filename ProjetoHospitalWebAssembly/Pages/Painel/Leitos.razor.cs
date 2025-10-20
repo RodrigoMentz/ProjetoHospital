@@ -56,8 +56,6 @@
             await this.Consultarleitos()
                 .ConfigureAwait(true);
 
-            this.leitosFiltrados = this.leitos;
-
             await ConsultarSetores()
                 .ConfigureAwait(true);
 
@@ -83,6 +81,7 @@
                 if (response != null && response.Success)
                 {
                     this.leitos = response.Data;
+                    this.leitosFiltrados = leitos;
                 }
             }
             catch (Exception e)
@@ -140,7 +139,7 @@
                         }
 
                         await this.Consultarleitos()
-                            .ConfigureAwait(true);
+                                .ConfigureAwait(true);
                     }
                 }
             }
@@ -203,7 +202,7 @@
                         if (response != null && response.Success)
                         {
                             this.ToastService.ShowSuccess(
-                            "Sucesso: Atualização de leito realizada");
+                                "Sucesso: Atualização de leito realizada");
                         }
                         else if (response != null && response.Notifications.Any())
                         {

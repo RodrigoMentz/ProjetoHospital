@@ -104,7 +104,7 @@
                         if (response != null && response.Success)
                         {
                             this.ToastService.ShowSuccess(
-                            "Sucesso: Cadastro de setor realizado");
+                                "Sucesso: Cadastro de setor realizado");
                         }
 
                         await this.ConsultarSetores()
