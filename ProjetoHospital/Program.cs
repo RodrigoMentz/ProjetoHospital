@@ -10,9 +10,6 @@ using ProjetoHospital.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddRazorComponents().AddInteractiveWebAssemblyComponents();
