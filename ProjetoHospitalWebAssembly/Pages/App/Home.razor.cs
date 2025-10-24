@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Components;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
+    using System;
     using System.Threading.Tasks;
 
     public partial class Home : ComponentBase
@@ -23,9 +24,8 @@
 
         private bool isLoading = false;
 
-        private string numeroTelefone = string.Empty;
-        private string senha = string.Empty;
         private bool exibirSenha = false;
+        private LoginViewModel login = new ();
 
         private bool exibirMensagemCamposVazios = false;
 
@@ -58,29 +58,25 @@
 
                 this.exibirMensagemCamposVazios = false;
 
-                if (string.IsNullOrWhiteSpace(this.numeroTelefone) ||
-                    string.IsNullOrWhiteSpace(this.senha))
+                if (string.IsNullOrWhiteSpace(this.login.NumTelefone) ||
+                    string.IsNullOrWhiteSpace(this.login.Senha))
                 {
                     this.exibirMensagemCamposVazios = true;
+                    this.isLoading = false;
+                    this.StateHasChanged();
 
                     return;
                 }
 
-                var login = new LoginViewModel(
-                    this.numeroTelefone,
-                    this.senha);
-
                 var response = await this.UsuarioService
                     .LoginAsync(
-                        login)
+                        this.login)
                     .ConfigureAwait(true);
 
                 if (response != null && response.Success)
                 {
                     this.ToastService.ShowSuccess(
                         "Sucesso: Usuário logado com sucesso");
-
-                    await Task.Delay(2000);
 
                     if (!response.Data.NumTelefoneConfirmado)
                     {
@@ -106,6 +102,11 @@
             {
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
+
+                this.ToastService.ShowError(
+                    $"{e.Message}");
+
+                Console.WriteLine(e);
             }
 
             this.isLoading = false;

@@ -23,6 +23,9 @@
         public string TextoSecundario { get; set; } = string.Empty;
 
         [Parameter]
+        public string Tipo { get; set; } = "button";
+
+        [Parameter]
         public EventCallback OnClick { get; set; }
 
         [Parameter]

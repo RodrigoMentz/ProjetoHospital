@@ -3,7 +3,6 @@
     using Blazored.LocalStorage;
     using Blazored.Toast.Services;
     using Microsoft.AspNetCore.Components;
-    using ProjetoHospitalShared;
     using ProjetoHospitalShared.ViewModels;
     using ProjetoHospitalWebAssembly.Services;
     using System.Text.RegularExpressions;
@@ -24,15 +23,15 @@
 
         private bool isLoading = false;
 
-        private string senha = string.Empty;
         private bool exibirSenhas = false;
         private bool exibirMensagemCamposVazios = false;
         private bool exibirMensagemCamposDiferentes = false;
         private bool senhaTemNoMinimo6Digitos = false;
         private bool senhaTemNoMinimo1NaoAlfanumerico = false;
         private bool senhaTemNoMinimo1Numero = false;
-        private string confirmarSenha = string.Empty;
+        private bool senhaTemNoMinimo1Maiuscula = false;
         private UsuarioViewModel usuarioLocalStorage = new();
+        private ResetarSenhaViewModel resetarSenha = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -43,16 +42,18 @@
                 .ConsultarUsuarioLocalStorage()
                 .ConfigureAwait(true);
 
+            this.resetarSenha.Id = usuarioLocalStorage.Id;
+
             this.isLoading = false;
             this.StateHasChanged();
         }
 
         public string Senha
         {
-            get => senha;
+            get => this.resetarSenha.Senha;
             set
             {
-                senha = value;
+                this.resetarSenha.Senha = value;
                 ValidarSenhas();
             }
         }
@@ -67,8 +68,8 @@
                 this.exibirMensagemCamposVazios = false;
                 this.exibirMensagemCamposDiferentes = false;
 
-                if (string.IsNullOrEmpty(this.senha)
-                    || string.IsNullOrEmpty(this.confirmarSenha))
+                if (string.IsNullOrEmpty(this.resetarSenha.Senha)
+                    || string.IsNullOrEmpty(this.resetarSenha.ConfirmarSenha))
                 {
                     this.exibirMensagemCamposVazios = true;
                     this.isLoading = false;
@@ -77,9 +78,18 @@
                     return;
                 }
 
-                if (this.senha != confirmarSenha)
+                if (this.resetarSenha.Senha != this.resetarSenha.ConfirmarSenha)
                 {
                     this.exibirMensagemCamposDiferentes = true;
+                    this.isLoading = false;
+                    this.StateHasChanged();
+
+                    return;
+                }
+
+                if (!ValidarSenhas())
+                {
+                    this.exibirMensagemCamposVazios = true;
                     this.isLoading = false;
                     this.StateHasChanged();
 
@@ -96,13 +106,8 @@
                         .NavigateTo("/inicio");
                 }
 
-                var resetarSenhaViewModel = new ResetarSenhaViewModel(
-                    idUsuarioLogado,
-                    senha,
-                    confirmarSenha);
-
                 var response = await this.UsuarioService
-                    .ResetarSenhaAsync(resetarSenhaViewModel)
+                    .ResetarSenhaAsync(resetarSenha)
                     .ConfigureAwait(true);
 
                 if (response != null && response.Success)
@@ -147,25 +152,34 @@
             {
                 this.ToastService.ShowError(
                     "Erro: Erro inesperado contate o suporte");
+
+                Console.WriteLine(e);
             }
 
             this.isLoading = false;
             this.StateHasChanged();
         }
 
-        private void ValidarSenhas()
+        private bool ValidarSenhas()
         {
             this.senhaTemNoMinimo6Digitos = false;
             this.senhaTemNoMinimo1NaoAlfanumerico = false;
             this.senhaTemNoMinimo1Numero = false;
+            this.senhaTemNoMinimo1Maiuscula = false;
             this.exibirMensagemCamposVazios = false;
             this.exibirMensagemCamposDiferentes = false;
 
-            this.senhaTemNoMinimo6Digitos = this.senha.Length >= 6;
-            this.senhaTemNoMinimo1NaoAlfanumerico = Regex.IsMatch(this.senha, @"[^A-Za-z0-9]");
-            this.senhaTemNoMinimo1Numero = Regex.IsMatch(this.senha, @"\d");
+            this.senhaTemNoMinimo6Digitos = this.resetarSenha.Senha.Length >= 6;
+            this.senhaTemNoMinimo1NaoAlfanumerico = Regex.IsMatch(this.resetarSenha.Senha, @"[^A-Za-z0-9]");
+            this.senhaTemNoMinimo1Numero = Regex.IsMatch(this.resetarSenha.Senha, @"\d");
+            this.senhaTemNoMinimo1Maiuscula = Regex.IsMatch(this.resetarSenha.Senha, @"[A-Z]");
 
             this.StateHasChanged();
+
+            return senhaTemNoMinimo6Digitos
+                && senhaTemNoMinimo1NaoAlfanumerico
+                && senhaTemNoMinimo1Numero
+                && senhaTemNoMinimo1Maiuscula;
         }
     }
 }

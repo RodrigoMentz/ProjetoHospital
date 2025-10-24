@@ -300,6 +300,13 @@
                     resetarSenhaViewModel.Senha)
                 .ConfigureAwait(false);
 
+            if (!resultado.Succeeded)
+            {
+                return new ResponseModel(resultado.Errors.Select(e => new Notification(
+                    "Usuario.ResetarSenha",
+                    e.Description)));
+            }
+
             if (resetarSenhaViewModel.Senha == "HpCanela25!")
             {
                 usuario.PhoneNumberConfirmed = false;
@@ -315,13 +322,6 @@
                 await usuarioManager
                     .UpdateAsync(usuario)
                     .ConfigureAwait(false);
-            }
-
-            if (!resultado.Succeeded)
-            {
-                return new ResponseModel(resultado.Errors.Select(e => new Notification(
-                    "Usuario.ResetarSenha",
-                    e.Description)));
             }
 
             return new ResponseModel();

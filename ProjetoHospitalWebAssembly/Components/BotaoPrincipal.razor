@@ -1,4 +1,4 @@
-﻿<button type="button" @onclick="OnClick" class="btn btn-primary d-flex align-items-center justify-content-center @(string.IsNullOrEmpty(Class) ? string.Empty : Class)" disabled="@Disabled">
+﻿<button type="@Tipo" @onclick="OnClick" class="btn btn-primary d-flex align-items-center justify-content-center @(string.IsNullOrEmpty(Class) ? string.Empty : Class)" disabled="@Disabled">
     @if (!string.IsNullOrEmpty(IconeGoogle))
     {
         <span class="material-symbols-outlined">
