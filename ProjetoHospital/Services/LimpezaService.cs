@@ -535,6 +535,7 @@
                 TipoLimpeza = TipoLimpezaEnum.Emergencial,
                 Descricao = limpeza.Descricao,
                 IdSolicitante = limpeza.SolicitanteId,
+                Revisado = true
             };
 
             var response = await limpezaRepository
