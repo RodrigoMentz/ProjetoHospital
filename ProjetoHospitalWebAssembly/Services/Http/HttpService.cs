@@ -210,7 +210,15 @@
 
         public Uri GetApiUrl()
         {
-            return appSettings.ApiBaseUrl;
+            var baseAddressSettings = httpClient.BaseAddress.ToString();
+
+            baseAddressSettings = baseAddressSettings + "api/";
+
+            //Local
+            //return appSettings.ApiBaseUrl;
+
+            return new Uri(baseAddressSettings);
+
         }
 
         public async Task<byte[]> GetBytesAsync(string uri)
@@ -266,9 +274,12 @@
 
         private string DynamicAddress(string url)
         {
-            var baseAddressSettings = appSettings
-                .ApiBaseUrl
-                .ToString();
+            var baseAddressSettings = httpClient.BaseAddress.ToString();
+
+            // Local
+            //var baseAddressSettings = appSettings
+            //    .ApiBaseUrl
+            //    .ToString();
 
             if (baseAddressSettings.Last() == '/')
             {
